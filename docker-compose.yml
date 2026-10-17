@@ -6,8 +6,8 @@ services:
     container_name: chambi-motors-web
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=80
       - HOSTNAME=0.0.0.0
