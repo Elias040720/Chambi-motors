@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chambi Motors — Portal Documental ISO/IEC 27001:2022 &amp; Megaprompt Antigravity</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', ' system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #090d14;
+      color: #e2e8f0;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#090d14] text-slate-100 antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 hidden items-center gap-3 rounded-xl border border-emerald-500/40 bg-slate-900/95 px-4 py-3 text-sm font-medium text-emerald-300 shadow-2xl backdrop-blur">
+    <span class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+    <span id="toastMessage">Copiado al portapapeles</span>
+  </div>
+
+  <!-- Top Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#090d14]/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 font-extrabold text-slate-950 shadow-lg shadow-amber-500/20">
+          CM
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-base font-bold tracking-tight text-white sm:text-lg">Chambi Motors</h1>
+            <span class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-300">ISO/IEC 27001:2022</span>
+            <span class="hidden rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-0.5 text-xs font-semibold text-sky-300 sm:inline-block">ISO 9001 / 12207 / 25010</span>
+          </div>
+          <p class="text-xs text-slate-400">Auditoría Profunda de Repositorio, Mejora de Procesos, Diagramas y Megaprompt para Antigravity</p>
+        </div>
+      </div>
+
+      <div class="no-print flex flex-wrap items-center gap-2">
+        <a href="https://github.com/Elias040720/Chambi-motors" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:border-slate-600 hover:bg-slate-800">
+          <span>Repo GitHub</span>
+          <span class="text-amber-400">↗</span>
+        </a>
+        <button id="btnCopyQuickPrompt" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-amber-500 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-amber-500/10 transition hover:bg-amber-400">
+          <span>Copiar Megaprompt Antigravity</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <nav class="flex flex-wrap gap-1 border-t border-slate-800/60 pt-2 pb-2" aria-label="Secciones principales">
+        <button type="button" data-tab="auditoria" class="nav-tab rounded-lg bg-amber-500/15 px-3.5 py-2 text-xs font-semibold text-amber-300 border border-amber-500/30 transition">
+          1. Auditoría Profunda (As-Is)
+        </button>
+        <button type="button" data-tab="iso" class="nav-tab rounded-lg px-3.5 py-2 text-xs font-medium text-slate-400 border border-transparent hover:bg-slate-800/60 hover:text-slate-200 transition">
+          2. SGSI ISO 27001 &amp; SoA
+        </button>
+        <button type="button" data-tab="flujos" class="nav-tab rounded-lg px-3.5 py-2 text-xs font-medium text-slate-400 border border-transparent hover:bg-slate-800/60 hover:text-slate-200 transition">
+          3. Flujos Mejorados (Simulador)
+        </button>
+        <button type="button" data-tab="diagramas" class="nav-tab rounded-lg px-3.5 py-2 text-xs font-medium text-slate-400 border border-transparent hover:bg-slate-800/60 hover:text-slate-200 transition">
+          4. Diagramas de Procesos (7)
+        </button>
+        <button type="button" data-tab="megaprompt" class="nav-tab rounded-lg px-3.5 py-2 text-xs font-medium text-slate-400 border border-transparent hover:bg-slate-800/60 hover:text-slate-200 transition">
+          5. Megaprompt Antigravity (.md + .html)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+
+    <!-- ==================== TAB 1: AUDITORÍA PROFUNDA ==================== -->
+    <section id="tab-auditoria" class="tab-panel space-y-6">
+      <!-- KPI Summary Banner -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Stack Detectado</p>
+          <p class="mt-1 text-xl font-bold text-white">Next.js 15 + React 19</p>
+          <p class="mt-1 text-xs text-slate-400">Tailwind v4, GSAP 3.15, Framer Motion, Lenis</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Módulos y Archivos</p>
+          <p class="mt-1 text-xl font-bold text-amber-400">23 Componentes UI</p>
+          <p class="mt-1 text-xs text-slate-400">Store useReducer (8 acciones) + 7 interfaces TS</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Brechas ISO 27001</p>
+          <p class="mt-1 text-xl font-bold text-rose-400">6 Hallazgos Clave</p>
+          <p class="mt-1 text-xs text-slate-400">PII en placas, RBAC, Dockerfile puerto 80, Nginx huérfano</p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-4">
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Evolución de Procesos</p>
+          <p class="mt-1 text-xl font-bold text-emerald-400">4 → 8 Etapas ISO</p>
+          <p class="mt-1 text-xs text-slate-400">Suma Check-in, Inspección de Repuesto, QA y Garantía</p>
+        </div>
+      </div>
+
+      <!-- Critical Findings Section -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Hallazgos Técnicos y de Seguridad en el Código Fuente (`Elias040720/Chambi-motors`)</h2>
+            <p class="text-xs text-slate-400">Inspección directa de `Dockerfile`, `nginx.conf`, `src/store/workshop.tsx`, `src/lib/types.ts` y `src/components/*`.</p>
+          </div>
+          <span class="rounded-lg bg-rose-500/10 border border-rose-500/30 px-3 py-1 text-xs font-semibold text-rose-300">Auditoría Técnica Real</span>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div class="rounded-xl border border-rose-500/30 bg-slate-950/60 p-4">
+            <div class="flex items-center justify-between">
+              <span class="rounded bg-rose-500/20 px-2 py-0.5 text-xs font-bold text-rose-300">CRÍTICO · INFRAESTRUCTURA</span>
+              <span class="mono text-xs text-slate-400">Dockerfile &amp; nginx.conf</span>
+            </div>
+            <h3 class="mt-2 font-semibold text-white">1. Conflicto de Puerto Privilegiado (80) con Usuario No-Root y Nginx Desconectado</h3>
+            <p class="mt-1 text-xs leading-relaxed text-slate-300">
+              En <code class="text-amber-300">Dockerfile</code> se define <code class="text-amber-300">USER nextjs</code> (UID 1001) junto con <code class="text-amber-300">ENV PORT=80</code> y <code class="text-amber-300">CMD ["node", "server.js"]</code>. En kernels o runtimes sin <code class="text-slate-200">CAP_NET_BIND_SERVICE</code>, un usuario no-root no puede abrir puertos &lt;1024. Además, <code class="text-amber-300">nginx.conf</code> está configurado para archivos estáticos (<code class="text-slate-200">/usr/share/nginx/html</code>) y no participa en <code class="text-amber-300">docker-compose.yml</code>.
+            </p>
+            <div class="mt-3 rounded-lg bg-slate-900 p-2.5 text-xs text-emerald-300">
+              <strong>Remediación ISO 27001 (A.8.20 / A.8.21):</strong> Ejecutar Next.js standalone en puerto interno <code class="mono">3000</code> e integrar <code class="mono">nginx.conf</code> como Reverse Proxy perimetral con TLS 1.3, cabeceras CSP/HSTS y Rate Limiting.
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-rose-500/30 bg-slate-950/60 p-4">
+            <div class="flex items-center justify-between">
+              <span class="rounded bg-rose-500/20 px-2 py-0.5 text-xs font-bold text-rose-300">CRÍTICO · PRIVACIDAD / ACCESO</span>
+              <span class="mono text-xs text-slate-400">PlateSearch.tsx / workshop.tsx</span>
+            </div>
+            <h3 class="mt-2 font-semibold text-white">2. Exposición Pública de Propietario (PII), Fotos y Presupuesto solo por Placa</h3>
+            <p class="mt-1 text-xs leading-relaxed text-slate-300">
+              La función <code class="text-amber-300">findByPlate(raw)</code> permite que cualquier tercero que escriba una placa (ej. <code class="text-slate-200">ABC-123</code>) visualice el nombre del propietario/flota (<code class="text-slate-200">owner</code>), fotografías del vehículo (<code class="text-slate-200">ProgressPhoto[]</code>) y costos detallados (<code class="text-slate-200">QuoteLine[]</code>).
+            </p>
+            <div class="mt-3 rounded-lg bg-slate-900 p-2.5 text-xs text-emerald-300">
+              <strong>Remediación ISO 27001 (A.5.15 / A.8.11):</strong> Enmascarar datos sensibles en la búsqueda pública por placa y exigir el código de orden (<code class="mono">orderCode: OT-2481</code>) + PIN/Token para desbloquear el expediente completo.
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-amber-500/30 bg-slate-950/60 p-4">
+            <div class="flex items-center justify-between">
+              <span class="rounded bg-amber-500/20 px-2 py-0.5 text-xs font-bold text-amber-300">ALTO · CONTROL DE ACCESO</span>
+              <span class="mono text-xs text-slate-400">MechanicConsole.tsx / ClientDashboard.tsx</span>
+            </div>
+            <h3 class="mt-2 font-semibold text-white">3. Ausencia de Segregación de Roles (RBAC) y No-Repudio en Resoluciones</h3>
+            <p class="mt-1 text-xs leading-relaxed text-slate-300">
+              Las acciones del reducer (<code class="text-amber-300">startReview</code>, <code class="text-amber-300">requestPart</code>, <code class="text-amber-300">resolvePart</code>, <code class="text-amber-300">finish</code>) operan sobre un estado compartido en memoria sin validar identidad ni firmar criptográficamente quién aprobó un gasto de repuesto.
+            </p>
+            <div class="mt-3 rounded-lg bg-slate-900 p-2.5 text-xs text-emerald-300">
+              <strong>Remediación ISO 27001 (A.8.2 / A.8.15 / A.8.24):</strong> Separar consola técnica (JWT Rol <code class="mono">MECHANIC</code>) del portal de cliente (Token OT firmado) y registrar cada mutación en una tabla de auditoría append-only con HMAC-SHA256.
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-amber-500/30 bg-slate-950/60 p-4">
+            <div class="flex items-center justify-between">
+              <span class="rounded bg-amber-500/20 px-2 py-0.5 text-xs font-bold text-amber-300">ALTO · PROCESO OPERATIVO</span>
+              <span class="mono text-xs text-slate-400">src/lib/types.ts / status.ts</span>
+            </div>
+            <h3 class="mt-2 font-semibold text-white">4. Salto Directo sin Inspección cuando el Cliente Trae el Repuesto</h3>
+            <p class="mt-1 text-xs leading-relaxed text-slate-300">
+              Cuando el cliente selecciona <code class="text-amber-300">resolvePart("client")</code>, el estado salta inmediatamente a <code class="text-amber-300">"reparacion"</code> (68%). No existe validación física de que el repuesto entregado por el cliente sea compatible o nuevo, ni etapa de Control de Calidad (QA) antes de <code class="text-amber-300">"listo"</code>.
+            </p>
+            <div class="mt-3 rounded-lg bg-slate-900 p-2.5 text-xs text-emerald-300">
+              <strong>Remediación ISO 9001 (Cláusulas 8.5.3 y 8.6):</strong> Incorporar las etapas <code class="mono">recepcion_checkin</code>, <code class="mono">validacion_repuesto</code> y <code class="mono">control_calidad</code> en la máquina de estados.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Component & File Inventory -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Explorador Interactivo de Archivos del Repositorio</h2>
+            <p class="text-xs text-slate-400">Filtra por capa arquitectónica o busca cualquier componente, hook o archivo de configuración.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input id="componentSearch" type="text" placeholder="Buscar archivo o interfaz..." class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:border-amber-500 focus:outline-none" />
+            <select id="componentCategory" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-xs text-slate-200 focus:border-amber-500 focus:outline-none">
+              <option value="all">Todas las capas (34 archivos)</option>
+              <option value="store">Store &amp; Lib (Datos y Tipos)</option>
+              <option value="dual">Dual View (Mecánico ↔ Cliente)</option>
+              <option value="parts">Gestión de Repuestos (Parts)</option>
+              <option value="hero">Hero &amp; Búsqueda por Placa</option>
+              <option value="timeline">Timeline &amp; Confianza</option>
+              <option value="ui">Layout, Hooks &amp; UI</option>
+              <option value="infra">Docker, Nginx &amp; Config</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="border-y border-slate-800 bg-slate-950/80 text-slate-400 uppercase">
+              <tr>
+                <th class="px-3 py-2.5">Ruta en Repositorio</th>
+                <th class="px-3 py-2.5">Capa</th>
+                <th class="px-3 py-2.5">Elementos / Interfaces Clave</th>
+                <th class="px-3 py-2.5">Impacto ISO 27001 / ISO 9001</th>
+              </tr>
+            </thead>
+            <tbody id="componentTableBody" class="divide-y divide-slate-800/70"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: SGSI ISO 27001 & SoA ==================== -->
+    <section id="tab-iso" class="tab-panel hidden space-y-6">
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Declaración de Aplicabilidad (SoA) — ISO/IEC 27001:2022 + Multi-Norma ISO</h2>
+            <p class="text-xs text-slate-400">Filtra los controles normativos exigidos para documentar y asegurar Chambi Motors en Antigravity.</p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" data-soa-filter="all" class="soa-filter-btn rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950">Todos</button>
+            <button type="button" data-soa-filter="A.5" class="soa-filter-btn rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700">A.5 Organizacionales</button>
+            <button type="button" data-soa-filter="A.8" class="soa-filter-btn rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700">A.8 Tecnológicos</button>
+            <button type="button" data-soa-filter="ISO-9001" class="soa-filter-btn rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700">ISO 9001 / 12207 / 25010</button>
+          </div>
+        </div>
+
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="border-b border-slate-800 bg-slate-950/80 text-slate-400 uppercase">
+              <tr>
+                <th class="px-3 py-2.5">Control / Cláusula</th>
+                <th class="px-3 py-2.5">Norma</th>
+                <th class="px-3 py-2.5">Objetivo de Control</th>
+                <th class="px-3 py-2.5">Estado en Repo (As-Is)</th>
+                <th class="px-3 py-2.5">Implementación Documentada (To-Be)</th>
+              </tr>
+            </thead>
+            <tbody id="soaTableBody" class="divide-y divide-slate-800/70"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Interactive Risk Assessment Matrix -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <h2 class="text-lg font-bold text-white">Matriz Interactiva de Riesgos de Seguridad de la Información (Cláusula 6.1.2 ISO 27001)</h2>
+        <p class="mt-1 text-xs text-slate-400">Haz clic en cualquier escenario de riesgo para inspeccionar el activo afectado, la vulnerabilidad en el código actual y el control técnico de tratamiento.</p>
+
+        <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div id="riskListContainer" class="space-y-2 lg:col-span-1"></div>
+          <div id="riskDetailCard" class="rounded-xl border border-slate-800 bg-slate-950/80 p-5 lg:col-span-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: FLUJOS MEJORADOS (SIMULADOR) ==================== -->
+    <section id="tab-flujos" class="tab-panel hidden space-y-6">
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Simulador Interactivo del Flujo de Trabajo Mejorado (4 Etapas As-Is → 8 Etapas To-Be)</h2>
+            <p class="text-xs text-slate-400">Inspecciona cómo evolucionamos la máquina de estados de <code class="text-amber-300">src/store/workshop.tsx</code> para cumplir con ISO 9001:2015 e ISO/IEC 27001:2022.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-medium text-slate-400">Modalidad de Repuesto:</span>
+            <button id="btnModeChambi" type="button" class="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950">
+              Lo gestiona Chambi (mode: "chambi")
+            </button>
+            <button id="btnModeClient" type="button" class="rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700">
+              Cliente trae repuesto (mode: "client")
+            </button>
+          </div>
+        </div>
+
+        <!-- Step Selector Bar -->
+        <div id="workflowStepper" class="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8"></div>
+
+        <!-- Active Stage Inspection Panel -->
+        <div id="workflowStageDetail" class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: DIAGRAMAS DE PROCESOS ==================== -->
+    <section id="tab-diagramas" class="tab-panel hidden space-y-6">
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Catálogo Visual de Diagramas de Flujo y Procesos (7 Diagramas Maestros)</h2>
+            <p class="text-xs text-slate-400">Selecciona un proceso para visualizar su diagrama estructurado o copiar su código fuente Mermaid para Markdown/HTML.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnCopyMermaid" type="button" class="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-300 hover:bg-amber-500/20">
+              Copiar Código Mermaid de este Diagrama
+            </button>
+          </div>
+        </div>
+
+        <!-- Diagram Selector Pills -->
+        <div id="diagramSelector" class="mt-4 flex flex-wrap gap-2"></div>
+
+        <!-- Visual Diagram Canvas + Mermaid Code Drawer -->
+        <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-12">
+          <div class="rounded-xl border border-slate-800 bg-slate-950/90 p-5 lg:col-span-7">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+              <div>
+                <h3 id="diagramTitle" class="text-sm font-bold text-white"></h3>
+                <p id="diagramSubtitle" class="text-xs text-slate-400"></p>
+              </div>
+              <span id="diagramIsoTag" class="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-xs font-semibold text-emerald-300"></span>
+            </div>
+            <div id="diagramVisualContainer" class="mt-4 space-y-3"></div>
+          </div>
+
+          <div class="rounded-xl border border-slate-800 bg-slate-950/90 p-5 lg:col-span-5 flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Código Fuente Mermaid (.md &amp; .html)</span>
+              <span class="mono text-[11px] text-slate-400">Mermaid v11 Ready</span>
+            </div>
+            <pre id="diagramMermaidCode" class="mono mt-3 flex-1 overflow-x-auto rounded-lg bg-slate-900 p-3.5 text-[11px] leading-relaxed text-slate-200"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: MEGAPROMPT ANTIGRAVITY ==================== -->
+    <section id="tab-megaprompt" class="tab-panel hidden space-y-6">
+      <!-- Improvements to User Instructions -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+        <h2 class="text-lg font-bold text-white">Cómo Mejoramos tus Indicaciones Originales para Antigravity</h2>
+        <p class="mt-1 text-xs text-slate-400">Transformamos tu solicitud en una especificación de ingeniería a prueba de fallos para agentes autónomos.</p>
+
+        <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+            <span class="text-xs font-bold text-amber-400">1. Anclaje al Código Real</span>
+            <p class="mt-1.5 text-xs text-slate-300">Obliga a Antigravity a leer los 23 componentes, <code class="text-amber-300">workshop.tsx</code>, <code class="text-amber-300">types.ts</code>, <code class="text-amber-300">Dockerfile</code> y <code class="text-amber-300">nginx.conf</code> antes de redactar, prohibiendo plantillas genéricas.</p>
+          </div>
+          <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+            <span class="text-xs font-bold text-emerald-400">2. Rigor ISO/IEC 27001:2022</span>
+            <p class="mt-1.5 text-xs text-slate-300">Exige Cláusulas 4 a 10 del SGSI, Matriz de Riesgos (ISO 27005) y Declaración de Aplicabilidad (SoA) con controles exactos del Anexo A (<code class="text-emerald-300">A.5.15</code>, <code class="text-emerald-300">A.8.11</code>, <code class="text-emerald-300">A.8.15</code>, <code class="text-emerald-300">A.8.20</code>, <code class="text-emerald-300">A.8.24</code>).</p>
+          </div>
+          <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+            <span class="text-xs font-bold text-sky-400">3. Paridad 1:1 (.md y .html)</span>
+            <p class="mt-1.5 text-xs text-slate-300">Instruye a crear un generador determinista (<code class="text-sky-300">scripts/generate-iso-docs.mjs</code>) que produce 10 archivos en <code class="text-sky-300">docs/md/</code>, 10 en <code class="text-sky-300">docs/html/</code> y el portal <code class="text-sky-300">docs/index.html</code> sin truncamientos.</p>
+          </div>
+          <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+            <span class="text-xs font-bold text-purple-400">4. 8 Diagramas Verificados</span>
+            <p class="mt-1.5 text-xs text-slate-300">Especifica diagramas de flujo BPMN/Swimlanes, máquina de estados de 8 etapas, secuencia WebSocket, control de acceso por placa, C4, ER y DevSecOps renderizados con Mermaid v11.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Megaprompt Customizer & Viewer -->
+      <div class="rounded-2xl border border-amber-500/30 bg-slate-900/80 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white">Megaprompt Maestro para Antigravity</h2>
+            <p class="text-xs text-slate-400">Personaliza los módulos opcionales de ejecución y copia el prompt completo para pegarlo en Antigravity.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnCopyMasterPrompt" type="button" class="rounded-lg bg-amber-500 px-4 py-2 text-xs font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400">
+              Copiar Megaprompt Completo
+            </button>
+            <button id="btnCopyPhase2Prompt" type="button" class="rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-700">
+              Copiar Prompt Fase 2 (Refactorizar Código)
+            </button>
+          </div>
+        </div>
+
+        <!-- Prompt Toggle Options -->
+        <div class="mt-4 flex flex-wrap gap-4 rounded-xl border border-slate-800 bg-slate-950/70 p-3.5 text-xs">
+          <label class="inline-flex cursor-pointer items-center gap-2 text-slate-200">
+            <input id="optIncludeScript" type="checkbox" checked class="h-4 w-4 rounded border-slate-700 text-amber-500 focus:ring-0" />
+            <span>Incluir script automatizado <code class="text-amber-300">scripts/generate-iso-docs.mjs</code> (Evita truncamiento)</span>
+          </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-slate-200">
+            <input id="optIncludeReadme" type="checkbox" checked class="h-4 w-4 rounded border-slate-700 text-amber-500 focus:ring-0" />
+            <span>Actualizar <code class="text-amber-300">README.md</code> raíz con índice ISO y guía Docker</span>
+          </label>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-slate-200">
+            <input id="optIncludeCodeFixes" type="checkbox" class="h-4 w-4 rounded border-slate-700 text-amber-500 focus:ring-0" />
+            <span>Aplicar también mejoras en código (<code class="text-amber-300">Dockerfile</code> puerto 3000 + nuevos estados en <code class="text-amber-300">types.ts</code>)</span>
+          </label>
+        </div>
+
+        <pre id="masterPromptOutput" class="mono mt-4 max-h-[540px] overflow-y-auto rounded-xl border border-slate-800 bg-slate-950 p-4 text-xs leading-relaxed text-slate-200 whitespace-pre-wrap"></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ==================== DATASET: REPOSITORY FILES ====================
+    const REPO_FILES = [
+      { path: "src/lib/types.ts", layer: "store", elements: "Vehicle, VehicleStatus, PartRequest, LiveEvent, ProgressPhoto, QuoteLine, TimelineStage", impact: "ISO 9001 8.5 / ISO 27001 A.8.15: Ampliar VehicleStatus de 4 a 8 estados y añadir metadatos de firma/hash." },
+      { path: "src/store/workshop.tsx", layer: "store", elements: "useReducer (select, startReview, requestPart, startRepair, finish, resolvePart, tick, reset)", impact: "ISO 27001 A.5.15 / A.8.15: Evolucionar a store con validación de rol RBAC y registro inmutable de auditoría." },
+      { path: "src/lib/status.ts", layer: "store", elements: "STATUS_META, StatusMeta (colores RGB, iconos, pulso)", impact: "ISO 9001 8.5.2: Añadir tokens visuales para recepcion_checkin, validacion_repuesto y control_calidad." },
+      { path: "src/lib/data.ts", layer: "store", elements: "DEMO_PLATE (ABC-123), seedMap(), vehículos semilla (Toyota Hiace, Kia Rio)", impact: "ISO 27001 A.8.11: Datos de prueba desidentificados y separación de entorno demo vs producción." },
+      { path: "src/lib/site.ts", layer: "store", elements: "SITE, whatsappUrl, NAV_LINKS", impact: "ISO 27001 A.5.14: Canal seguro de notificación externa." },
+      { path: "src/components/dual/DualViewSection.tsx", layer: "dual", elements: "Contenedor paralelo MechanicConsole + SyncBridge + ClientDashboard", impact: "ISO 27001 A.5.15: Demostración de segregación de vistas entre operador técnico y cliente." },
+      { path: "src/components/dual/MechanicConsole.tsx", layer: "dual", elements: "Controles de avance de OT, solicitud de repuesto y cierre técnico", impact: "ISO 27001 A.8.2: Requiere autenticación fuerte de mecánico asignado." },
+      { path: "src/components/dual/ClientDashboard.tsx", layer: "dual", elements: "Vista en vivo del propietario, fotos, timeline de eventos y aprobación", impact: "ISO 27001 A.8.3: Acceso restringido mediante token de Orden de Trabajo (OT)." },
+      { path: "src/components/dual/SyncBridge.tsx", layer: "dual", elements: "Indicador visual de pulso WebSocket (syncTick)", impact: "ISO/IEC 25010 Eficiencia: Telemetría de latencia y estado de conexión en tiempo real." },
+      { path: "src/components/parts/PartsSection.tsx", layer: "parts", elements: "Sección interactiva de gestión transparente de repuestos", impact: "ISO 9001 8.4: Transparencia en abastecimiento y trazabilidad de piezas." },
+      { path: "src/components/parts/PartRequestCard.tsx", layer: "parts", elements: "Tarjeta de cotización QuoteLine[], urgencia y botones client vs chambi", impact: "ISO 27001 A.8.24: Firma digital de aceptación de presupuesto y SLA." },
+      { path: "src/components/parts/StatusMorphOverlay.tsx", layer: "parts", elements: "Transición animada de cambio de estado al resolver repuesto", impact: "ISO/IEC 25010 Usabilidad: Retroalimentación inmediata de confirmación." },
+      { path: "src/components/parts/VoiceNote.tsx", layer: "parts", elements: "Reproductor de nota de voz del mecánico (voiceNoteSeconds)", impact: "ISO 27001 A.8.24: Integridad SHA-256 del archivo de audio adjunto a la OT." },
+      { path: "src/components/hero/Hero.tsx", layer: "hero", elements: "Portada principal scrollytelling de Chambi Motors", impact: "ISO/IEC 25010 Usabilidad y Accesibilidad." },
+      { path: "src/components/hero/PlateSearch.tsx", layer: "hero", elements: "Buscador interactivo por número de placa", impact: "ISO 27001 A.8.11 / A.8.20: Requiere Rate Limiting y segundo factor (Código OT / PIN) para no filtrar PII." },
+      { path: "src/components/hero/VehicleResult.tsx", layer: "hero", elements: "Tarjeta de resultado rápido de búsqueda por placa", impact: "ISO 27001 A.8.11: Enmascarar nombre completo del propietario en consultas no autenticadas." },
+      { path: "src/components/hero/LogoStage.tsx", layer: "hero", elements: "Escenario animado de marca con GSAP", impact: "Identidad visual corporativa." },
+      { path: "src/components/hero/SparkField.tsx", layer: "hero", elements: "Efecto visual de partículas/chispas de taller", impact: "Optimización GPU / requestAnimationFrame." },
+      { path: "src/components/timeline/TimelineSection.tsx", layer: "timeline", elements: "Recorrido por las etapas del servicio con PhoneFrame", impact: "ISO 9001 8.5.1: Comunicación clara de las etapas del servicio al cliente." },
+      { path: "src/components/timeline/PhoneFrame.tsx", layer: "timeline", elements: "Marco móvil interactivo con notificaciones simuladas", impact: "Vista previa de notificaciones push/WhatsApp." },
+      { path: "src/components/timeline/StageScreens.tsx", layer: "timeline", elements: "Pantallas internas por etapa de servicio", impact: "Trazabilidad visual de hitos." },
+      { path: "src/components/timeline/MobileStageCard.tsx", layer: "timeline", elements: "Tarjetas adaptativas para vista móvil", impact: "Diseño responsivo." },
+      { path: "src/components/trust/StatsSection.tsx", layer: "timeline", elements: "Indicadores de confianza, tiempos y satisfacción", impact: "ISO 9001 9.1.3: Indicadores clave de desempeño (KPIs) de calidad." },
+      { path: "src/components/layout/Header.tsx", layer: "ui", elements: "Barra de navegación superior y acceso rápido", impact: "Navegabilidad consistente." },
+      { path: "src/components/layout/Footer.tsx", layer: "ui", elements: "Pie de página institucional y enlaces de contacto", impact: "Transparencia y avisos de privacidad." },
+      { path: "src/components/shared/VehicleSwitcher.tsx", layer: "ui", elements: "Selector de unidad activa en taller", impact: "Cambio de contexto entre vehículos de flota." },
+      { path: "src/components/ui/StatusBadge.tsx", layer: "ui", elements: "Insignia semántica de estado con pulso", impact: "Claridad visual del estado de la OT." },
+      { path: "src/components/ui/ProgressBar.tsx", layer: "ui", elements: "Barra de progreso porcentual (0% - 100%)", impact: "Métrica cuantitativa de avance de la orden." },
+      { path: "Dockerfile", layer: "infra", elements: "Build multi-stage node:20-alpine, USER nextjs (1001), PORT=80", impact: "ISO 27001 A.8.20 / A.8.26: Cambiar PORT=80 a PORT=3000 para evitar fallo en puerto privilegiado sin root." },
+      { path: "docker-compose.yml", layer: "infra", elements: "Servicio chambi-motors-web (3000:80)", impact: "ISO 27001 A.8.21: Añadir contenedor nginx-proxy y red interna aislada." },
+      { path: "nginx.conf", layer: "infra", elements: "Configuración SPA estática huérfana en raíz", impact: "ISO 27001 A.8.20 / A.8.24: Reconfigurar como Reverse Proxy hacia Next.js standalone con TLS, CSP, HSTS y Rate Limit." }
+    ];
+
+    // ==================== DATASET: ISO 27001 SoA CONTROLS ====================
+    const SOA_CONTROLS = [
+      { code: "A.5.15", domain: "A.5", norm: "ISO/IEC 27001:2022", title: "Control de acceso", asIs: "Acceso abierto tanto a MechanicConsole como a ClientDashboard en la misma vista.", toBe: "Política RBAC/ABAC: autenticación JWT para mecánicos y token firmado por Orden de Trabajo (OT) para clientes." },
+      { code: "A.5.19", domain: "A.5", norm: "ISO/IEC 27001:2022", title: "Seguridad en las relaciones con proveedores", asIs: "Cotizaciones de repuestos sin validación formal de proveedor ni trazabilidad de lote.", toBe: "Registro de proveedor homologado, número de serie/lote y certificado de garantía cuando mode='chambi'." },
+      { code: "A.5.33", domain: "A.5", norm: "ISO/IEC 27001:2022", title: "Protección de los registros", asIs: "Los eventos LiveEvent[] se pierden al recargar el navegador (reset).", toBe: "Almacenamiento persistente e inmutable de expedientes de OT, fotos y aprobaciones por mínimo 5 años." },
+      { code: "A.8.2", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Derechos de acceso privilegiados", asIs: "Cualquier usuario puede disparar startReview, requestPart, startRepair y finish.", toBe: "Restricción exclusiva de endpoints de mutación de taller a cuentas con rol MECHANIC o WORKSHOP_LEAD." },
+      { code: "A.8.3", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Restricción de acceso a la información", asIs: "findByPlate() devuelve el objeto Vehicle completo sin verificar propiedad.", toBe: "Segregación de payload: endpoint público devuelve resumen anónimo; endpoint privado requiere PIN de cliente." },
+      { code: "A.8.11", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Enmascaramiento de datos", asIs: "Nombre completo del propietario (owner) y montos (QuoteLine[]) visibles al buscar placa.", toBe: "Enmascaramiento automático (ej. 'Transportes L*** A***') y ocultamiento de importes en vista sin autenticar." },
+      { code: "A.8.15", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Registro de eventos (Logging)", asIs: "LiveEvent solo guarda hora HH:MM en memoria sin IP ni firma.", toBe: "Bitácora de auditoría append-only con actor_id, rol, IP, timestamp UTC y hash encadenado HMAC-SHA256." },
+      { code: "A.8.20", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Seguridad en redes", asIs: "Contenedor expone servidor Node en puerto 80; sin limitación de peticiones.", toBe: "Red interna Docker aislada y limit_req_zone en Nginx contra ataques de enumeración de placas." },
+      { code: "A.8.21", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Seguridad de los servicios de red", asIs: "nginx.conf está desconectado del Dockerfile y carece de cabeceras de seguridad.", toBe: "Integración de Nginx como Reverse Proxy con TLS 1.3, HSTS, CSP, X-Frame-Options y X-Content-Type-Options." },
+      { code: "A.8.24", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Uso de la criptografía", asIs: "Evidencias fotográficas (ProgressPhoto) y resoluciones de repuestos sin firma digital.", toBe: "Hash SHA-256 calculado para cada foto/audio subido y firma digital en cada aprobación de presupuesto." },
+      { code: "A.8.25 / A.8.28", domain: "A.8", norm: "ISO/IEC 27001:2022", title: "Ciclo de vida de desarrollo seguro y Codificación segura", asIs: "TypeScript strict activado, pero sin validación runtime ni escaneo de contenedores.", toBe: "Validación de esquemas con Zod, análisis SAST en CI/CD y escaneo de imagen Alpine con Trivy." },
+      { code: "Cláusula 8.5.3", domain: "ISO-9001", norm: "ISO 9001:2015", title: "Propiedad perteneciente a los clientes", asIs: "Cuando el cliente aporta el repuesto (mode='client'), pasa directo a reparación.", toBe: "Subproceso obligatorio de recepción e inspección técnica del repuesto del cliente antes de instalarlo." },
+      { code: "Cláusula 8.6", domain: "ISO-9001", norm: "ISO 9001:2015", title: "Liberación de los productos y servicios", asIs: "El mecánico marca 'listo' directamente desde 'reparacion'.", toBe: "Etapa obligatoria de Control de Calidad (QA) y prueba de ruta firmada antes de notificar 'Vehículo Listo'." },
+      { code: "ISO/IEC 25010", domain: "ISO-9001", norm: "ISO/IEC 25010:2023", title: "Calidad de Producto Software (Seguridad, Fiabilidad, Usabilidad)", asIs: "Alta usabilidad visual (GSAP/Lenis), pero baja persistencia y tolerancia a fallos.", toBe: "Persistencia ACID en PostgreSQL, reconexión automática WebSocket y cumplimiento WCAG 2.1 AA." }
+    ];
+
+    // ==================== DATASET: RISK MATRIX ====================
+    const RISKS = [
+      {
+        id: "R-01",
+        title: "Enumeración de Placas y Fuga de PII / Costos",
+        level: "CRÍTICO (20/25)",
+        badgeClass: "bg-rose-500/20 text-rose-300 border-rose-500/40",
+        asset: "Datos de Propietarios/Flotas (owner), Fotos (ProgressPhoto) y Cotizaciones (QuoteLine[])",
+        vulnerability: "El componente PlateSearch.tsx e invocación findByPlate() no exigen código de Orden de Trabajo (OT) ni PIN, ni cuentan con Rate Limiting.",
+        impact: "Exposición de datos personales y empresariales de flotas, espionaje de precios y violación de privacidad.",
+        controls: "ISO 27001 A.5.15 (Control de Acceso), A.8.11 (Enmascaramiento de Datos) y A.8.20 (Rate Limiting en Nginx).",
+        mitigation: "1) Enmascarar propietario y ocultar fotos/precios en consulta pública solo por placa. 2) Solicitar Código OT (ej. OT-2481) + PIN de 4 dígitos enviado por WhatsApp para ver el expediente completo."
+      },
+      {
+        id: "R-02",
+        title: "Repudio en Aprobación de Presupuesto de Repuestos",
+        level: "ALTO (16/25)",
+        badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+        asset: "Solicitudes de Repuestos (PartRequest) y Resoluciones (PartResolutionMode)",
+        vulnerability: "La acción resolvePart(mode) solo modifica una variable en memoria RAM de React sin respaldo criptográfico ni registro de identidad del aprobador.",
+        impact: "Disputas comerciales o legales donde el cliente desconoce haber autorizado la compra de un repuesto costoso o el plazo de entrega.",
+        controls: "ISO 27001 A.8.15 (Logging de Auditoría), A.8.17 (Sincronización NTP) y A.8.24 (Criptografía / No-Repudio).",
+        mitigation: "Registrar cada ejecución de resolvePart en tabla inmutable audit_logs con timestamp NTP, IP, token de sesión del cliente, snapshot del QuoteLine[] y firma HMAC-SHA256."
+      },
+      {
+        id: "R-03",
+        title: "Fallo de Arranque o Escalada en Contenedor Docker",
+        level: "ALTO (15/25)",
+        badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+        asset: "Disponibilidad del Servidor Web (Dockerfile / docker-compose.yml)",
+        vulnerability: "El Dockerfile asigna USER nextjs (UID 1001) y expone PORT=80, mientras que nginx.conf está desconectado de la arquitectura.",
+        impact: "Caída del contenedor en plataformas con políticas de seguridad restrictivas (EACCES en puerto <1024) y exposición directa de Node.js sin WAF.",
+        controls: "ISO 27001 A.8.20 (Seguridad de Redes), A.8.21 (Servicios de Red) y A.8.26 (Seguridad de Aplicaciones).",
+        mitigation: "Configurar PORT=3000 en Dockerfile para el usuario nextjs y añadir un servicio nginx-proxy en docker-compose.yml que reciba tráfico en 80/443 y haga proxy_pass a http://chambi-motors:3000."
+      },
+      {
+        id: "R-04",
+        title: "Instalación de Repuesto Externo Defectuoso o Incompatible",
+        level: "ALTO (15/25)",
+        badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+        asset: "Seguridad Mecánica del Vehículo y Reputación Técnica de Chambi Motors",
+        vulnerability: "En workshop.tsx, cuando el cliente elige mode='client', el estado cambia instantáneamente a 'reparacion' (68%) sin etapa de recepción ni verificación.",
+        impact: "Retrasos en bahía mecánica, reclamos de garantía improcedentes sobre piezas compradas por el cliente o riesgos de seguridad vial.",
+        controls: "ISO 9001:2015 Cláusula 8.5.3 (Propiedad del Cliente) e ISO 27001 A.8.15 (Trazabilidad).",
+        mitigation: "Insertar el estado obligatorio 'validacion_repuesto' donde el mecánico registra foto del repuesto recibido, valida compatibilidad OEM y emite conformidad o rechazo fundado."
+      },
+      {
+        id: "R-05",
+        title: "Alteración o Sustitución de Evidencias Fotográficas y Notas de Voz",
+        level: "MEDIO-ALTO (12/25)",
+        badgeClass: "bg-sky-500/20 text-sky-300 border-sky-500/40",
+        asset: "Fotografías de Diagnóstico (ProgressPhoto[]) y Notas de Voz (VoiceNote)",
+        vulnerability: "Las rutas de imágenes y audios carecen de huella criptográfica (checksum) y control de integridad.",
+        impact: "Pérdida de confianza del cliente si se cuestiona la autenticidad o fecha real de una fotografía de falla mecánica.",
+        controls: "ISO 27001 A.8.24 (Criptografía) y A.5.33 (Protección de Registros).",
+        mitigation: "Generar hash SHA-256 al momento de subir cada ProgressPhoto y VoiceNote, almacenándolo junto al evento en la bitácora de la Orden de Trabajo."
+      }
+    ];
+
+    // ==================== DATASET: 8-STAGE WORKFLOW SIMULATOR ====================
+    const WORKFLOW_STAGES = [
+      {
+        step: 1,
+        key: "recepcion_checkin",
+        name: "1. Recepción y Check-in",
+        progress: 15,
+        isNew: true,
+        asIsComparison: "No existe en el código actual (el vehículo inicia directamente en 'diagnostico' al 20%).",
+        description: "Ingreso físico de la unidad al taller, toma de kilometraje, nivel de combustible, 4 fotografías perimetrales con hash SHA-256 y emisión de Orden de Trabajo (OT) con PIN seguro para el cliente.",
+        iso9001: "Cláusula 8.5.1 y 8.5.3: Registro de estado inicial de la propiedad del cliente antes de intervenir.",
+        iso27001: "Control A.5.15 y A.8.15: Generación de credencial única (orderCode + PIN) y sellado criptográfico de fotos de ingreso."
+      },
+      {
+        step: 2,
+        key: "diagnostico",
+        name: "2. Diagnóstico Técnico",
+        progress: 35,
+        isNew: false,
+        asIsComparison: "Existe en workshop.tsx (acción startReview, 20% → 35%), pero sin autenticación de mecánico ni hash de evidencias.",
+        description: "El mecánico asignado (ej. Henry Chambi) inspecciona el vehículo, sube fotografías con coordenadas de foco/zoom (ProgressPhoto) y graba una nota de voz explicativa (VoiceNote).",
+        iso9001: "Cláusula 8.5.2: Identificación y trazabilidad del diagnóstico técnico por especialista asignado.",
+        iso27001: "Control A.8.2 y A.8.24: Acción firmada por token JWT con rol MECHANIC y huella SHA-256 de foto y audio."
+      },
+      {
+        step: 3,
+        key: "cotizacion_emitida",
+        name: "3. Emisión de Cotización y SLA",
+        progress: 45,
+        isNew: true,
+        asIsComparison: "En el código actual está mezclado dentro de requestPart() sin separar la elaboración del presupuesto de la espera.",
+        description: "Estructuración formal del PartRequest con nivel de urgencia (alta/media/baja), desglose de costos (QuoteLine[]) y comparativa transparente de tiempos (clientDeadline vs chambiEta).",
+        iso9001: "Cláusula 8.2.2 y 8.2.3: Determinación y revisión de los requisitos y costos del servicio antes de comprometer recursos.",
+        iso27001: "Control A.8.15: Registro inmutable de la oferta económica emitida para prevenir modificaciones posteriores no autorizadas."
+      },
+      {
+        step: 4,
+        key: "esperando_repuesto",
+        name: "4. Decisión del Cliente (Repuesto)",
+        progress: 52,
+        isNew: false,
+        asIsComparison: "Existe en workshop.tsx (resolvePart con modo 'client' o 'chambi'), pero salta directo a reparación sin validar la recepción física.",
+        description: "El cliente escucha la nota de voz en ClientDashboard, revisa el presupuesto y decide con un clic si Chambi Motors gestiona el repuesto o si él mismo lo llevará al taller.",
+        iso9001: "Cláusula 8.2.1: Comunicación interactiva con el cliente y confirmación formal de la modalidad de suministro.",
+        iso27001: "Control A.8.24: Firma de no-repudio de la decisión del cliente (modo elegido, hora exacta NTP e identificador de sesión)."
+      },
+      {
+        step: 5,
+        key: "validacion_repuesto",
+        name: "5. Recepción y Validación de Pieza",
+        progress: 62,
+        isNew: true,
+        asIsComparison: "No existe en el código actual (brecha crítica cuando el cliente trae un repuesto incorrecto o usado).",
+        description: "Inspección técnica del repuesto antes del montaje. Si lo trajo el cliente, se verifica referencia OEM y estado físico; si lo proveyó Chambi, se vincula lote y certificado de garantía.",
+        iso9001: "Cláusula 8.4 y 8.5.3: Verificación de productos suministrados externamente o por el cliente; emisión de alerta si es No Conforme.",
+        iso27001: "Control A.5.19 y A.8.15: Trazabilidad de origen de pieza (OEM/Alternativo) y deslinde documental de garantía."
+      },
+      {
+        step: 6,
+        key: "reparacion",
+        name: "6. Reparación en Bahía",
+        progress: 82,
+        isNew: false,
+        asIsComparison: "Existe en workshop.tsx (startRepair, 68% → 72%), pero sin requerir foto de la pieza nueva ya instalada.",
+        description: "Ejecución del desmontaje, instalación del repuesto validado, ajustes de torque y carga obligatoria de fotografía de evidencia de la pieza nueva montada en el vehículo.",
+        iso9001: "Cláusula 8.5.1: Control de la producción y provisión del servicio bajo condiciones controladas y evidenciadas.",
+        iso27001: "Control A.8.15: Bitácora cronológica de hitos técnicos en LiveEvent[] sincronizada por WebSocket."
+      },
+      {
+        step: 7,
+        key: "control_calidad",
+        name: "7. Control de Calidad (QA)",
+        progress: 94,
+        isNew: true,
+        asIsComparison: "No existe en el código actual (la acción finish() pasa directamente de reparación a listo 100%).",
+        description: "Verificación independiente por Jefe de Taller / QA: checklist de torque de ruedas/componentes, niveles de fluidos, escaneo electrónico OBD-II sin fallas y prueba de ruta.",
+        iso9001: "Cláusula 8.6 (Liberación de los productos y servicios): Evidencia de conformidad con los criterios de aceptación y autorizador de liberación.",
+        iso27001: "Control A.5.3 (Segregación de funciones): El supervisor que libera el control de calidad queda registrado en auditoría."
+      },
+      {
+        step: 8,
+        key: "listo",
+        name: "8. Listo, Entrega y Garantía",
+        progress: 100,
+        isNew: false,
+        asIsComparison: "Existe como estado final 'listo' (100%), ahora ampliado con cierre formal de entrega y certificado de garantía.",
+        description: "Notificación en vivo al propietario/flota, liquidación transparente según cotización aprobada, firma digital del acta de conformidad y activación de garantía digital.",
+        iso9001: "Cláusula 8.5.5 (Actividades posteriores a la entrega): Gestión de garantía y preservación del historial de la unidad.",
+        iso27001: "Control A.5.33: Cierre criptográfico del expediente de la Orden de Trabajo (OT) para archivo histórico inmutable."
+      }
+    ];
+
+    // ==================== DATASET: 7 PROCESS DIAGRAMS ====================
+    const DIAGRAMS = [
+      {
+        id: "d1",
+        title: "1. Flujo Maestro End-to-End del Taller (Swimlanes ISO 9001 & 27001)",
+        subtitle: "Interacción completa entre Cliente/Flota, Mecánico, Core Chambi Motors y Control de Calidad (QA).",
+        isoTag: "ISO 9001 Cláusula 8 + ISO 27001 A.8.15",
+        steps: [
+          { lane: "CLIENTE", title: "1. Ingreso y Recepción de Token OT", desc: "Entrega el vehículo en taller y recibe Código de Orden (OT-2481) + PIN de seguimiento seguro." },
+          { lane: "MECÁNICO", title: "2. Check-in y Diagnóstico Multimedia", desc: "Registra inventario, captura ProgressPhoto con hash SHA-256 y graba VoiceNote explicativa." },
+          { lane: "SISTEMA", title: "3. Sincronización en Vivo (SyncBridge)", desc: "Registra evento en bitácora ISO 27001 (A.8.15) y notifica en tiempo real al ClientDashboard." },
+          { lane: "CLIENTE", title: "4. Resolución de Repuesto (PartResolutionMode)", desc: "Revisa evidencias y QuoteLine[]; elige 'Chambi lo gestiona' (chambi) o 'Yo traigo el repuesto' (client) con firma de no-repudio." },
+          { lane: "MECÁNICO", title: "5. Validación Técnica de Repuesto e Instalación", desc: "Verifica compatibilidad física/OEM de la pieza recibida, ejecuta la reparación y sube foto de pieza instalada." },
+          { lane: "CONTROL QA", title: "6. Protocolo QA y Prueba de Ruta (ISO 9001 8.6)", desc: "Jefe de taller valida checklist de seguridad, fluidos y escáner antes de liberar a estado LISTO (100%)." },
+          { lane: "SISTEMA / CLIENTE", title: "7. Entrega Formal y Certificado de Garantía", desc: "Firma de conformidad de salida, cierre criptográfico del expediente OT y activación de garantía." }
+        ],
+        mermaid: `flowchart TD
+    subgraph CLIENTE["Cliente / Propietario de Flota"]
+        C1([Ingreso de Vehículo al Taller]) --> C2["Recibe Orden OT + PIN Seguro"]
+        C3["Consulta Seguimiento: Placa + PIN"] --> C4{"¿Requiere Repuesto?"}
+        C4 -- "Sí" --> C5["Revisa Foto + VoiceNote + QuoteLine"]
+        C5 --> C6{"Decisión PartResolutionMode"}
+        C6 -- "mode: client" --> C7["Entrega Repuesto Físico en Taller"]
+        C6 -- "mode: chambi" --> C8["Aprueba Cotización con Token Firmado"]
+        C9["Recibe Alerta Vehículo LISTO 100%"] --> C10([Firma Conformidad y Retira con Garantía])
+    end
+
+    subgraph MECANICO["Consola Mecánico (MechanicConsole)"]
+        M1["Check-in: Inventario y Fotos SHA-256"] --> M2["Diagnóstico: startReview()"]
+        M2 --> M3["Sube ProgressPhoto + VoiceNote"]
+        M3 --> M4{"¿Requiere Pieza?"}
+        M4 -- "Sí" --> M5["Crea PartRequest + Urgencia + QuoteLine"]
+        M4 -- "No" --> M8["Inicia Reparación: startRepair()"]
+        M6["Inspección Técnica de Repuesto"] --> M7{"¿Pieza Conforme?"}
+        M7 -- "No" --> M5
+        M7 -- "Sí" --> M8["Reparación en Bahía + Foto Montaje"]
+        M8 --> M9["Solicita Pase a Control QA"]
+    end
+
+    subgraph QA["Control de Calidad (ISO 9001 8.6)"]
+        Q1["Checklist Torque, Fluidos y Ruta"] --> Q2{"¿Aprueba QA?"}
+        Q2 -- "No" --> M8
+        Q2 -- "Sí" --> Q3["Libera Vehículo: finish() -> LISTO"]
+    end
+
+    C1 --> M1 --> C2
+    M3 --> C3
+    M5 --> C4
+    C7 --> M6
+    C8 --> M6
+    M9 --> Q1
+    Q3 --> C9`
+      },
+      {
+        id: "d2",
+        title: "2. Máquina de Estados Extendida del Vehículo (As-Is vs. To-Be)",
+        subtitle: "Evolución de VehicleStatus en src/lib/types.ts y src/store/workshop.tsx con estados de control y excepción.",
+        isoTag: "ISO/IEC 12207 + ISO 9001",
+        steps: [
+          { lane: "ESTADO 1", title: "recepcion_checkin (0% → 15%) [NUEVO]", desc: "Apertura de OT, fotos perimetrales e inventario físico firmado." },
+          { lane: "ESTADO 2", title: "diagnostico (15% → 35%)", desc: "Inspección por mecánico asignado, carga de ProgressPhoto[] y VoiceNote." },
+          { lane: "ESTADO 3", title: "esperando_repuesto (35% → 52%)", desc: "PartRequest activo esperando resolución del cliente ('client' | 'chambi') dentro del SLA." },
+          { lane: "EXCEPCIÓN", title: "ot_pausada / entregado_sin_reparar [NUEVO]", desc: "Manejo controlado cuando el cliente posterga o declina el presupuesto." },
+          { lane: "ESTADO 4", title: "validacion_repuesto (52% → 62%) [NUEVO]", desc: "Verificación técnica obligatoria de la pieza antes de tocar la bahía de reparación." },
+          { lane: "ESTADO 5", title: "reparacion (62% → 85%)", desc: "Montaje mecánico y evidencia fotográfica de componentes sustituidos." },
+          { lane: "ESTADO 6", title: "control_calidad (85% → 95%) [NUEVO]", desc: "Pruebas de ruta y validación cruzada por Jefe de Taller." },
+          { lane: "ESTADO 7-8", title: "listo (100%) → entregado", desc: "Unidad disponible para recojo, acta de entrega y certificado de garantía activo." }
+        ],
+        mermaid: `stateDiagram-v2
+    [*] --> recepcion_checkin : Ingreso + Apertura OT
+    recepcion_checkin --> diagnostico : startReview() [35%]
+    diagnostico --> esperando_repuesto : requestPart() [45%]
+    diagnostico --> reparacion : startRepair() [62%]
+    esperando_repuesto --> ot_pausada : Rechazo / Vencimiento SLA
+    ot_pausada --> esperando_repuesto : Reactivación Cliente
+    esperando_repuesto --> validacion_repuesto : resolvePart(mode) + Ingreso Pieza
+    validacion_repuesto --> esperando_repuesto : Pieza No Conforme
+    validacion_repuesto --> reparacion : Pieza Conforme [68%]
+    reparacion --> control_calidad : Fin Montaje Mecánico [85%]
+    control_calidad --> reparacion : Observación en QA
+    control_calidad --> listo : finish() Aprobado QA [100%]
+    listo --> entregado : Acta de Entrega + Garantía
+    entregado --> [*]`
+      },
+      {
+        id: "d3",
+        title: "3. Subproceso de Cotización y Resolución de Repuestos (PartRequest)",
+        subtitle: "Flujo detallado de decisión bilateral entre Chambi Motors y el propietario/flota con control de calidad de piezas.",
+        isoTag: "ISO 9001 Cláusulas 8.4 y 8.5.3",
+        steps: [
+          { lane: "DETECCIÓN", title: "1. Identificación de Pieza Requerida", desc: "El mecánico documenta la pieza (ej. Kit de embrague o Pastillas cerámicas) con especificación técnica OEM." },
+          { lane: "COTIZACIÓN", title: "2. Emisión de QuoteLine[] y SLAs", desc: "Se publica el desglose económico y se comparan tiempos: clientDeadline vs chambiEta." },
+          { lane: "RUTA A (CHAMBI)", title: "3A. Suministro por Chambi Motors (mode: 'chambi')", desc: "Compra a proveedor homologado, recepción en almacén con lote y garantía integral cubierta por el taller." },
+          { lane: "RUTA B (CLIENTE)", title: "3B. Suministro por el Cliente (mode: 'client')", desc: "El cliente entrega el repuesto en mostrador; el mecánico realiza inspección técnica de compatibilidad." },
+          { lane: "DECISIÓN QA", title: "4. Dictamen de Conformidad del Repuesto", desc: "Si es compatible pasa a reparación dejando constancia de pieza externa; si no es compatible se notifica No Conformidad." }
+        ],
+        mermaid: `flowchart LR
+    A([Falla Detectada]) --> B["Crea PartRequest en MechanicConsole"]
+    B --> C["Adjunta ProgressPhoto + VoiceNote + QuoteLine[]"]
+    C --> D{"Decisión Cliente en PartRequestCard"}
+    D -- "mode: chambi" --> E["Compra a Proveedor Homologado"]
+    E --> F["Ingreso a Almacén con Serie/Lote"]
+    F --> G["Garantía Integral Chambi + Pase a Reparación"]
+    D -- "mode: client" --> H["Cliente Entrega Pieza antes de clientDeadline"]
+    H --> I["Inspección Técnica de Compatibilidad OEM"]
+    I --> J{"¿Pieza Conforme?"}
+    J -- "No" --> K["Acta de No Conformidad + Alerta a Cliente"]
+    K --> D
+    J -- "Sí" --> L["Registro de Pieza Externa + Pase a Reparación"]`
+      },
+      {
+        id: "d4",
+        title: "4. Diagrama de Secuencia de Sincronización en Tiempo Real (SyncBridge)",
+        subtitle: "Intercambio de eventos autenticados entre MechanicConsole, API/WebSocket, Bitácora ISO 27001 y ClientDashboard.",
+        isoTag: "ISO/IEC 27001 A.8.15 / A.8.24",
+        steps: [
+          { lane: "PASO 1", title: "Mecánico emite requestPart()", desc: "MechanicConsole envía petición autenticada con JWT (Rol: MECHANIC) y hash de foto/audio." },
+          { lane: "PASO 2", title: "Validación y Sellado en Bitácora (A.8.15)", desc: "El servidor valida permisos RBAC, esquema Zod y escribe registro inmutable en audit_logs con firma HMAC." },
+          { lane: "PASO 3", title: "Broadcast en Vivo por SyncBridge", desc: "Incrementa syncTick y empuja el evento en tiempo real al ClientDashboard suscrito a la Orden de Trabajo." },
+          { lane: "PASO 4", title: "Cliente ejecuta resolvePart(mode)", desc: "ClientDashboard envía la resolución firmada con el OT-Token del propietario." },
+          { lane: "PASO 5", title: "Confirmación Bilateral Instantánea", desc: "Se audita la aprobación del cliente y ambas pantallas actualizan estado y barra de progreso en <200ms." }
+        ],
+        mermaid: `sequenceDiagram
+    autonumber
+    actor Mec as Mecánico (MechanicConsole)
+    participant API as Core API / SyncBridge
+    participant Audit as Bitácora ISO 27001 (A.8.15)
+    actor Cli as Cliente (ClientDashboard)
+
+    Mec->>API: POST /api/ot/{plate}/request-part (JWT MECHANIC)
+    API->>Audit: INSERT AuditLog (action=REQUEST_PART, sha256, ntp_time)
+    API--)Cli: WebSocket Push: EVENT_PART_REQUESTED (syncTick++)
+    Cli->>API: POST /api/ot/{plate}/resolve-part (mode="chambi", OT-Token)
+    API->>Audit: INSERT AuditLog (action=RESOLVE_PART, actor=client, hmac)
+    API--)Mec: WebSocket Push: EVENT_PART_RESOLVED (syncTick++)
+    API-->>Cli: 200 OK (Nuevo Estado + LiveEvent Confirmado)`
+      },
+      {
+        id: "d5",
+        title: "5. Flujo de Seguridad y Enmascaramiento en Búsqueda por Placa (PlateSearch)",
+        subtitle: "Protección contra enumeración de placas y fuga de datos personales (PII) bajo ISO/IEC 27001 A.5.15 y A.8.11.",
+        isoTag: "ISO/IEC 27001 A.5.15 / A.8.11 / A.8.20",
+        steps: [
+          { lane: "CAPA 1", title: "Rate Limiting Perimetral en Nginx (A.8.20)", desc: "Bloquea barridos automatizados de placas con limit_req_zone (máx. 10 consultas/minuto por IP)." },
+          { lane: "CAPA 2", title: "Vista Pública Enmascarada (A.8.11)", desc: "Si solo se ingresa la placa (ABC-123), muestra estado general y % de avance, pero enmascara propietario ('T*** L** A***') y oculta fotos/montos." },
+          { lane: "CAPA 3", title: "Desbloqueo con Código OT + PIN (A.5.15)", desc: "El propietario ingresa el código de orden (OT-2481) o abre su enlace firmado de WhatsApp para acceder al ClientDashboard completo." },
+          { lane: "CAPA 4", title: "Monitoreo de Intentos Fallidos (A.8.15)", desc: "Registra intentos de acceso con PIN inválido en la bitácora de seguridad para detección de intrusiones." }
+        ],
+        mermaid: `flowchart TD
+    U([Usuario consulta placa en PlateSearch.tsx]) --> RL{"¿Cumple Rate Limit Nginx?"}
+    RL -- "No (>10 req/min)" --> B["429 Too Many Requests + Alerta SIEM"]
+    RL -- "Sí" --> E{"¿Existe OT Activa para la Placa?"}
+    E -- "No" --> N["Respuesta Genérica sin filtrar histórico"]
+    E -- "Sí" --> Auth{"¿Presenta Código OT + PIN / Token?"}
+    Auth -- "No (Consulta Pública)" --> Mask["Vista Enmascarada ISO A.8.11:\nMuestra Estado y %, Oculta Propietario, Fotos y Precios"]
+    Auth -- "Sí" --> Val{"¿Token / PIN Válido?"}
+    Val -- "No" --> Log["Registra Intento Fallido en AuditLog A.8.15"]
+    Val -- "Sí" --> Full["Acceso Completo a ClientDashboard y Resoluciones"]`
+      },
+      {
+        id: "d6",
+        title: "6. Arquitectura C4 de Contenedores y Red Segura (To-Be)",
+        subtitle: "Integración de nginx.conf como Reverse Proxy WAF delante del contenedor Next.js 15 Standalone y persistencia cifrada.",
+        isoTag: "ISO/IEC 27001 A.8.20 / A.8.21 / A.8.24",
+        steps: [
+          { lane: "PERÍMETRO", title: "Nginx Reverse Proxy & WAF (Puertos 80/443)", desc: "Terminación TLS 1.3, cabeceras HSTS, CSP, X-Frame-Options, caché de estáticos y limitación de tasa." },
+          { lane: "APLICACIÓN", title: "Contenedor chambi-motors-web (Puerto Interno 3000)", desc: "Next.js 15 Standalone ejecutándose con usuario sin privilegios USER nextjs (UID 1001) en red aislada." },
+          { lane: "DATOS ACID", title: "PostgreSQL 16 (Órdenes OT y Bitácora ISO 27001)", desc: "Almacenamiento relacional cifrado en reposo para vehículos, cotizaciones y tabla append-only audit_logs." },
+          { lane: "MULTIMEDIA", title: "Object Storage S3 / MinIO (Evidencias Taller)", desc: "Repositorio de ProgressPhoto y VoiceNote con verificación de hash SHA-256 y URLs pre-firmadas temporales." }
+        ],
+        mermaid: `flowchart TB
+    Cli["Cliente / Flota (Navegador Móvil/Web)"] -->|HTTPS TLS 1.3| Nginx
+    Mec["Mecánico / Taller (Consola Autenticada)"] -->|HTTPS TLS 1.3 + JWT| Nginx
+    subgraph DockerNet["Red Docker Aislada (chambi-net)"]
+        Nginx["Nginx Reverse Proxy & WAF\n(nginx.conf activo + CSP/HSTS/RateLimit)"]
+        Next["chambi-motors-web:3000\nNext.js 15 Standalone (USER nextjs UID 1001)"]
+        DB[("PostgreSQL 16\nOTs + AuditLogs A.8.15")]
+        S3[("Object Storage S3/MinIO\nFotos y VoiceNotes SHA-256")]
+        Nginx -->|proxy_pass :3000| Next
+        Next --> DB
+        Next --> S3
+    end`
+      },
+      {
+        id: "d7",
+        title: "7. Pipeline DevSecOps y Ciclo de Construcción Segura (SDLC)",
+        subtitle: "Flujo automatizado de verificación de calidad y seguridad desde GitHub hasta el despliegue en producción.",
+        isoTag: "ISO/IEC 27001 A.8.25 / A.8.28 / A.8.8",
+        steps: [
+          { lane: "ETAPA 1", title: "Control de Código y Tipado Estricto", desc: "Verificación de TypeScript (strict: true), linter y generación automática de documentación ISO (.md y .html)." },
+          { lane: "ETAPA 2", title: "Auditoría de Dependencias y SAST", desc: "Ejecución de npm audit y análisis estático para detectar vulnerabilidades en paquetes de terceros." },
+          { lane: "ETAPA 3", title: "Construcción Multi-Stage Endurecida", desc: "Compilación en node:20-alpine separando etapas deps, builder y runner sin herramientas de desarrollo en producción." },
+          { lane: "ETAPA 4", title: "Escaneo de Imagen y Despliegue Orquestado", desc: "Escaneo con Trivy, validación de usuario no-root UID 1001 en puerto 3000 y levantamiento con Nginx." }
+        ],
+        mermaid: `flowchart LR
+    A([Git Push a Chambi-motors]) --> B["TypeScript Strict + Linter"]
+    B --> C["SAST + npm audit (ISO A.8.8)"]
+    C --> D["Generación Docs: scripts/generate-iso-docs.mjs"]
+    D --> E["Docker Multi-Stage Build (node:20-alpine)"]
+    E --> F["Escaneo de Contenedor Trivy (USER nextjs:3000)"]
+    F --> G([Despliegue Seguro: nginx-proxy + chambi-motors-web])`
+      }
+    ];
+
+    // ==================== MASTER MEGAPROMPT BUILDER ====================
+    function buildMasterMegaprompt() {
+      const incScript = document.getElementById("optIncludeScript").checked;
+      const incReadme = document.getElementById("optIncludeReadme").checked;
+      const incFixes = document.getElementById("optIncludeCodeFixes").checked;
+
+      let prompt = `# ROL Y MISIÓN PRINCIPAL DE ANTIGRAVITY
+
+Actúa como un Arquitecto Principal de Software, Auditor Líder ISO/IEC 27001:2022 e Ingeniero de Procesos ISO 9001:2015. Estás operando directamente sobre el repositorio "Chambi-motors" (Next.js 15 App Router con output "standalone", React 19, TypeScript, Tailwind CSS v4, GSAP 3.15, Framer Motion, Lenis, Docker y Nginx).
+
+Tu objetivo es analizar el código fuente real del repositorio, mejorar sus flujos de trabajo operativos y de seguridad, e implementar una Suite Documental Completa bajo normas ISO (con énfasis central en ISO/IEC 27001:2022 e ISO/IEC 27002:2022, complementada con ISO 9001:2015, ISO/IEC 12207:2017, ISO/IEC 25010:2023 e ISO/IEC/IEEE 29148:2018).
+
+TODA LA DOCUMENTACIÓN DEBE GENERARSE EN PARIDAD EXACTA 1:1 EN DOS FORMATOS:
+1. Formato Markdown (.md) en el directorio "docs/md/" (con tablas nativas y todos los diagramas en bloques \`\`\`mermaid).
+2. Formato HTML5 Interactivo (.html) en el directorio "docs/html/" más un Portal Maestro en "docs/index.html" (autocontenido, con estética industrial oscura de Chambi Motors, navegación lateral entre documentos, buscador instantáneo, selector de modo oscuro/claro imprimible A4 y renderizado visual en vivo de todos los diagramas usando mermaid.js v11).
+
+======================================================================
+FASE 1: INSPECCIÓN OBLIGATORIA DEL REPOSITORIO (GROUNDING ESTRICTO)
+======================================================================
+Antes de generar cualquier archivo, inspecciona el código real para fundamentar cada tabla y diagrama en la implementación verdadera (cero texto genérico o placeholders):
+- Configuración e Infraestructura: package.json, next.config.mjs, tsconfig.json, Dockerfile, docker-compose.yml y nginx.conf.
+- Modelo de Datos y Estado: src/lib/types.ts (Vehicle, VehicleStatus, VehicleKind, Urgency, PartResolutionMode, EventTone, Mechanic, QuoteLine, PartRequest, LiveEvent, ProgressPhoto, TimelineStage), src/lib/status.ts (STATUS_META), src/lib/data.ts, src/lib/site.ts, src/lib/gsap.ts, src/lib/utils.ts y src/store/workshop.tsx (acciones select, startReview, requestPart, startRepair, finish, resolvePart, tick, reset).
+- Los 23 Componentes en src/components/:
+  * dual/: DualViewSection.tsx, MechanicConsole.tsx, ClientDashboard.tsx, SyncBridge.tsx
+  * hero/: Hero.tsx, LogoStage.tsx, PlateSearch.tsx, SparkField.tsx, VehicleResult.tsx
+  * parts/: PartsSection.tsx, PartRequestCard.tsx, StatusMorphOverlay.tsx, VoiceNote.tsx
+  * timeline/: TimelineSection.tsx, PhoneFrame.tsx, StageScreens.tsx, MobileStageCard.tsx
+  * trust/: StatsSection.tsx | layout/: Header.tsx, Footer.tsx | shared/: VehicleSwitcher.tsx | providers/: SmoothScrollProvider.tsx | ui/: FitBox.tsx, Logo.tsx, ProgressBar.tsx, SectionHeading.tsx, StatusBadge.tsx | hooks/: useFitScale.ts.
+
+======================================================================
+FASE 2: ESTRUCTURA DE ARCHIVOS DOCUMENTALES A GENERAR (.MD Y .HTML)
+======================================================================
+Crea la siguiente estructura de directorios y archivos completos:
+- docs/index.html (Portal Maestro Interactivo con visor integrado, buscador, índice normativo y galería de diagramas)
+- docs/md/00-indice-general-gob-iso.md        y docs/html/00-indice-general-gob-iso.html
+- docs/md/01-arquitectura-software-iso12207.md y docs/html/01-arquitectura-software-iso12207.html
+- docs/md/02-requisitos-srs-iso29148.md        y docs/html/02-requisitos-srs-iso29148.html
+- docs/md/03-sgsi-seguridad-iso27001.md        y docs/html/03-sgsi-seguridad-iso27001.html
+- docs/md/04-declaracion-aplicabilidad-soa.md  y docs/html/04-declaracion-aplicabilidad-soa.html
+- docs/md/05-procesos-flujos-mejorados-iso9001.md y docs/html/05-procesos-flujos-mejorados-iso9001.html
+- docs/md/06-catalogo-diagramas-procesos.md    y docs/html/06-catalogo-diagramas-procesos.html
+- docs/md/07-calidad-software-iso25010.md      y docs/html/07-calidad-software-iso25010.html
+- docs/md/08-devsecops-contenedores-seguros.md y docs/html/08-devsecops-contenedores-seguros.html
+- docs/md/09-plan-continuidad-auditoria-bcp.md y docs/html/09-plan-continuidad-auditoria-bcp.html
+
+======================================================================
+FASE 3: REDISEÑO DE FLUJOS DE TRABAJO Y DIAGRAMAS OBLIGATORIOS
+======================================================================
+1. MEJORA DE FLUJOS DE TRABAJO (As-Is vs. To-Be en Documento 05):
+   Documenta el flujo actual de 4 estados ("diagnostico", "esperando_repuesto", "reparacion", "listo") y diseña al detalle el nuevo Flujo de Trabajo Mejorado de 8 Etapas bajo ISO 9001:2015 e ISO/IEC 27001:2022:
+   - Etapa 1: recepcion_checkin (0%-15%) -> Inventario físico, kilometraje, fotos perimetrales con hash SHA-256 y generación de Código OT + PIN de cliente.
+   - Etapa 2: diagnostico (15%-35%) -> Mecánico autenticado sube ProgressPhoto con foco/zoom y graba VoiceNote firmada.
+   - Etapa 3: cotizacion_emitida (35%-45%) -> Emisión de PartRequest con QuoteLine[] y SLAs (clientDeadline vs chambiEta).
+   - Etapa 4: esperando_repuesto (45%-52%) -> Decisión bilateral PartResolutionMode ("chambi" vs "client") con registro de no-repudio.
+   - Etapa 5: validacion_repuesto (52%-62%) [NUEVO SUBPROCESO ISO 9001 8.5.3] -> Inspección técnica obligatoria del repuesto (especialmente cuando mode="client") antes de instalarlo, con manejo de No Conformidades.
+   - Etapa 6: reparacion (62%-85%) -> Trabajo en bahía y fotografía obligatoria del repuesto nuevo instalado.
+   - Etapa 7: control_calidad (85%-95%) [NUEVO SUBPROCESO ISO 9001 8.6] -> Checklist de torque, fluidos, escáner OBD-II y prueba de ruta aprobada por Jefe de Taller.
+   - Etapa 8: listo y entregado (95%-100%) -> Liquidación, acta de conformidad digital y emisión de certificado de garantía.
+   - Incluye también flujos de excepción: cotización rechazada/pausada, vencimiento de SLA, hallazgo mecánico adicional y reingreso por garantía.
+
+2. SEGURIDAD ISO/IEC 27001:2022 Y CONTROLES ANEXO A (Documentos 03, 04 y 08):
+   - Inventario de activos de información, Matriz de Riesgos (Probabilidad x Impacto, Riesgo Inherente y Residual) y Declaración de Aplicabilidad (SoA) completa.
+   - Documenta la remediación de los hallazgos reales del repositorio:
+     a) Enmascaramiento de datos (A.8.11) y control de acceso (A.5.15) en PlateSearch.tsx / findByPlate para no exponer propietario ni precios sin Código OT + PIN.
+     b) Segregación de funciones y RBAC (A.8.2) entre MechanicConsole.tsx y ClientDashboard.tsx.
+     c) Bitácora de auditoría inmutable append-only (A.8.15), sincronización NTP (A.8.17) y firma HMAC/SHA-256 (A.8.24) para LiveEvent[], ProgressPhoto[], VoiceNote y resolvePart().
+     d) Corrección del Dockerfile (cambiar PORT=80 a PORT=3000 para el usuario no-root USER nextjs UID 1001) e integración real de nginx.conf en docker-compose.yml como Reverse Proxy con TLS 1.3, HSTS, CSP y Rate Limiting (A.8.20 / A.8.21).
+
+3. CATÁLOGO DE 8 DIAGRAMAS MERMAID OBLIGATORIOS (Documento 06 y distribuidos en los módulos):
+   - Diagrama 1: Flujo Maestro End-to-End del Taller con carriles (Swimlanes: Cliente, Mecánico, Sistema SyncBridge, Control de Calidad QA).
+   - Diagrama 2: Máquina de Estados completa (stateDiagram-v2) comparando el flujo As-Is vs. el flujo To-Be de 8 estados y excepciones.
+   - Diagrama 3: Diagrama de Flujo del Subproceso de Cotización, Abastecimiento y Validación Técnica de Repuestos (PartRequest y PartResolutionMode).
+   - Diagrama 4: Diagrama de Secuencia UML (sequenceDiagram) de sincronización en tiempo real entre MechanicConsole, API/WebSocket, Bitácora ISO 27001 y ClientDashboard.
+   - Diagrama 5: Diagrama de Flujo de Seguridad y Control de Acceso en Búsqueda por Placa (Rate Limit + Enmascaramiento A.8.11 + Validación de OT-Token).
+   - Diagrama 6: Diagrama de Arquitectura C4 (Contexto y Contenedores: Nginx WAF + Next.js 15 Standalone + PostgreSQL + Object Storage S3/MinIO).
+   - Diagrama 7: Diagrama Entidad-Relación (erDiagram) del modelo de base de datos relacional To-Be derivado de src/lib/types.ts.
+   - Diagrama 8: Diagrama de Flujo del Pipeline CI/CD y DevSecOps Contenerizado.`;
+
+      if (incScript) {
+        prompt += `\n\n======================================================================
+FASE 4: EJECUCIÓN DETERMINISTA SIN TRUNCAMIENTO
+======================================================================
+- Para garantizar que los 10 archivos .md, los 10 archivos .html y el portal docs/index.html se creen completos, extensos y con paridad 1:1, escribe y ejecuta un script generador en "scripts/generate-iso-docs.mjs".
+- Verifica por terminal que los 21 archivos en "docs/" hayan sido creados exitosamente y que todos los bloques Mermaid tengan sintaxis válida.`;
+      }
+
+      if (incReadme) {
+        prompt += `\n- Crea o actualiza el archivo "README.md" en la raíz del proyecto con la descripción arquitectónica de Chambi Motors, instrucciones de despliegue Docker y enlaces directos a "docs/index.html" y "docs/md/00-indice-general-gob-iso.md".`;
+      }
+
+      if (incFixes) {
+        prompt += `\n\n======================================================================
+FASE 5 (OPCIONAL ACTIVA): REFACTORIZACIÓN DE CÓDIGO E INFRAESTRUCTURA
+======================================================================
+- Actualiza "Dockerfile" y "docker-compose.yml" para usar el puerto interno no privilegiado 3000 con USER nextjs (UID 1001) e integra "nginx.conf" como Reverse Proxy seguro con cabeceras de seguridad HTTP y Rate Limiting.
+- Extiende "src/lib/types.ts", "src/lib/status.ts" y "src/store/workshop.tsx" para soportar las nuevas etapas documentadas en el flujo mejorado.`;
+      }
+
+      return prompt;
+    }
+
+    const PHASE_2_PROMPT = `Ahora que la Suite Documental ISO/IEC 27001:2022 e ISO 9001:2015 ha sido generada en docs/md/ y docs/html/, ejecuta la Fase de Implementación Técnica sobre el código de Chambi-motors:
+1. En src/lib/types.ts y src/lib/status.ts: Manteniendo compatibilidad visual, incorpora soporte para las etapas de validación de repuesto e inspección de calidad (QA) y metadatos de trazabilidad (hash SHA-256 y actor verificado en LiveEvent).
+2. En src/components/hero/PlateSearch.tsx y VehicleResult.tsx: Implementa el modo de vista pública con enmascaramiento parcial del nombre del propietario (Control ISO 27001 A.8.11) y opción de desbloqueo con código de Orden de Trabajo (ej. OT-2481).
+3. En Dockerfile, docker-compose.yml y nginx.conf: Corrige el puerto interno del contenedor Next.js a 3000 (para USER nextjs UID 1001) y configura nginx.conf como Reverse Proxy activo con cabeceras de seguridad (X-Frame-Options, X-Content-Type-Options, Referrer-Policy) y limitación de tasa.`;
+
+    // ==================== UI RENDER FUNCTIONS ====================
+    function showToast(msg) {
+      const toast = document.getElementById("toastContainer");
+      const text = document.getElementById("toastMessage");
+      text.textContent = msg;
+      toast.classList.remove("hidden");
+      toast.classList.add("flex");
+      if (window._toastTimer) clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add("hidden");
+        toast.classList.remove("flex");
+      }, 2800);
+    }
+
+    function copyTextToClipboard(text, label) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(label || "Copiado al portapapeles");
+        }).catch(() => {
+          fallbackCopy(text, label);
+        });
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast(label || "Copiado al portapapeles");
+      } catch (e) {
+        showToast("No se pudo copiar automáticamente");
+      }
+      document.body.removeChild(ta);
+    }
+
+    function renderComponentTable() {
+      const query = (document.getElementById("componentSearch").value || "").toLowerCase();
+      const cat = document.getElementById("componentCategory").value;
+      const tbody = document.getElementById("componentTableBody");
+
+      const filtered = REPO_FILES.filter(item => {
+        const matchesCat = cat === "all" || item.layer === cat;
+        const matchesQuery = !query ||
+          item.path.toLowerCase().includes(query) ||
+          item.elements.toLowerCase().includes(query) ||
+          item.impact.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="px-3 py-2.5 mono font-medium text-amber-300">${item.path}</td>
+          <td class="px-3 py-2.5"><span class="rounded bg-slate-800 px-2 py-0.5 text-[11px] font-medium text-slate-300">${item.layer.toUpperCase()}</span></td>
+          <td class="px-3 py-2.5 text-slate-300">${item.elements}</td>
+          <td class="px-3 py-2.5 text-slate-400">${item.impact}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderSoaTable(filterDomain) {
+      const tbody = document.getElementById("soaTableBody");
+      const filtered = SOA_CONTROLS.filter(c => filterDomain === "all" || c.domain === filterDomain);
+      tbody.innerHTML = filtered.map(c => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="px-3 py-3 mono font-bold text-amber-300">${c.code}</td>
+          <td class="px-3 py-3"><span class="rounded-full border border-slate-700 bg-slate-800 px-2.5 py-0.5 text-[11px] text-slate-300">${c.norm}</span></td>
+          <td class="px-3 py-3 font-medium text-white">${c.title}</td>
+          <td class="px-3 py-3 text-rose-300/90">${c.asIs}</td>
+          <td class="px-3 py-3 text-emerald-300/95">${c.toBe}</td>
+        </tr>
+      `).join("");
+    }
+
+    let activeRiskId = "R-01";
+    function renderRisks() {
+      const listEl = document.getElementById("riskListContainer");
+      const detailEl = document.getElementById("riskDetailCard");
+
+      listEl.innerHTML = RISKS.map(r => {
+        const isSelected = r.id === activeRiskId;
+        return `
+          <button type="button" data-risk-id="${r.id}" class="risk-item-btn w-full text-left rounded-xl border p-3.5 transition ${isSelected ? 'border-amber-500 bg-amber-500/10' : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'}">
+            <div class="flex items-center justify-between">
+              <span class="mono text-xs font-bold text-amber-400">${r.id}</span>
+              <span class="rounded border px-2 py-0.5 text-[10px] font-bold ${r.badgeClass}">${r.level}</span>
+            </div>
+            <p class="mt-1.5 text-xs font-semibold text-white">${r.title}</p>
+          </button>
+        `;
+      }).join("");
+
+      const current = RISKS.find(r => r.id === activeRiskId) || RISKS[0];
+      detailEl.innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <span class="mono text-xs font-bold text-amber-400">${current.id} · ESCENARIO DE RIESGO IDENTIFICADO</span>
+            <h3 class="mt-1 text-base font-bold text-white">${current.title}</h3>
+          </div>
+          <span class="rounded-lg border px-3 py-1 text-xs font-bold ${current.badgeClass}">${current.level}</span>
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 text-xs">
+          <div class="rounded-lg border border-slate-800 bg-slate-900/70 p-3">
+            <p class="font-semibold text-slate-400 uppercase">Activo de Información Afectado</p>
+            <p class="mt-1 text-slate-100">${current.asset}</p>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-900/70 p-3">
+            <p class="font-semibold text-slate-400 uppercase">Controles ISO Aplicables</p>
+            <p class="mt-1 text-amber-300 font-medium">${current.controls}</p>
+          </div>
+        </div>
+        <div class="mt-3 rounded-lg border border-rose-500/20 bg-rose-950/20 p-3 text-xs">
+          <p class="font-semibold text-rose-300 uppercase">Vulnerabilidad en el Repositorio Actual (As-Is)</p>
+          <p class="mt-1 text-slate-200 leading-relaxed">${current.vulnerability}</p>
+          <p class="mt-2 text-slate-400"><strong>Impacto de Negocio:</strong> ${current.impact}</p>
+        </div>
+        <div class="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-3 text-xs">
+          <p class="font-semibold text-emerald-300 uppercase">Plan de Tratamiento y Mitigación Técnica (To-Be)</p>
+          <p class="mt-1 text-slate-100 leading-relaxed">${current.mitigation}</p>
+        </div>
+      `;
+
+      document.querySelectorAll(".risk-item-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeRiskId = btn.getAttribute("data-risk-id");
+          renderRisks();
+        });
+      });
+    }
+
+    let activeWorkflowStep = 1;
+    let activePartMode = "chambi";
+
+    function renderWorkflowSimulator() {
+      const stepper = document.getElementById("workflowStepper");
+      const detail = document.getElementById("workflowStageDetail");
+
+      stepper.innerHTML = WORKFLOW_STAGES.map(s => {
+        const isCurrent = s.step === activeWorkflowStep;
+        return `
+          <button type="button" data-wf-step="${s.step}" class="wf-step-btn flex flex-col justify-between rounded-xl border p-3 text-left transition ${isCurrent ? 'border-amber-500 bg-amber-500/15 shadow-lg shadow-amber-500/10' : 'border-slate-800 bg-slate-950/70 hover:border-slate-700'}">
+            <div class="flex items-center justify-between w-full">
+              <span class="mono text-[11px] font-bold ${isCurrent ? 'text-amber-300' : 'text-slate-400'}">ETAPA 0${s.step}</span>
+              ${s.isNew ? '<span class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300">NUEVA ISO</span>' : '<span class="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-400">MEJORADA</span>'}
+            </div>
+            <p class="mt-2 text-xs font-semibold text-white leading-snug">${s.name}</p>
+            <div class="mt-2 w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-amber-400 h-full" style="width: ${s.progress}%"></div>
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      const st = WORKFLOW_STAGES.find(s => s.step === activeWorkflowStep) || WORKFLOW_STAGES[0];
+      const modeSpecificNote = activePartMode === "client"
+        ? "Modo Activo: 'client' (El cliente suministra el repuesto) -> Exige inspección física de compatibilidad OEM en Etapa 5 y registra exención de garantía sobre la pieza externa."
+        : "Modo Activo: 'chambi' (Chambi Motors suministra el repuesto) -> Vincula orden de compra a proveedor homologado, lote de almacén y garantía integral del taller.";
+
+      detail.innerHTML = `
+        <div class="rounded-xl border border-slate-800 bg-slate-950/80 p-4 lg:col-span-2 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+            <div>
+              <span class="mono text-xs text-amber-400">ESTADO: "${st.key}" · AVANCE: ${st.progress}%</span>
+              <h3 class="text-base font-bold text-white mt-0.5">${st.name}</h3>
+            </div>
+            <div class="flex gap-2">
+              <button type="button" id="btnPrevWf" class="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1 text-xs font-medium text-slate-200 hover:bg-slate-700">← Anterior</button>
+              <button type="button" id="btnNextWf" class="rounded-lg bg-amber-500 px-3 py-1 text-xs font-bold text-slate-950 hover:bg-amber-400">Siguiente →</button>
+            </div>
+          </div>
+
+          <p class="text-xs leading-relaxed text-slate-200">${st.description}</p>
+
+          <div class="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+            <strong>Impacto de Modalidad de Repuesto (${activePartMode.toUpperCase()}):</strong> ${modeSpecificNote}
+          </div>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 text-xs">
+            <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+              <p class="font-semibold text-rose-300">Estado Actual en Repo (As-Is)</p>
+              <p class="mt-1 text-slate-300">${st.asIsComparison}</p>
+            </div>
+            <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
+              <p class="font-semibold text-sky-300">Requisito de Calidad ISO 9001:2015</p>
+              <p class="mt-1 text-slate-300">${st.iso9001}</p>
+            </div>
+          </div>
+          <div class="rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-3 text-xs">
+            <p class="font-semibold text-emerald-300">Control de Seguridad ISO/IEC 27001:2022 Aplicado</p>
+            <p class="mt-1 text-slate-200">${st.iso27001}</p>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-slate-800 bg-slate-950/90 p-4 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Evento de Auditoría Generado (ISO A.8.15)</span>
+            <p class="text-[11px] text-slate-400 mt-0.5">Payload JSON inmutable sincronizado por SyncBridge:</p>
+            <pre class="mono mt-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-[11px] leading-relaxed text-emerald-300">{
+  "orderCode": "OT-2481",
+  "plate": "ABC-123",
+  "status": "${st.key}",
+  "progress": ${st.progress},
+  "partResolutionMode": "${activePartMode}",
+  "actorRole": "${st.step === 4 ? 'CLIENT_OWNER' : (st.step === 7 ? 'QA_SUPERVISOR' : 'MECHANIC')}",
+  "ntpTimestamp": "2026-10-17T07:00:00Z",
+  "evidenceSha256": "e3b0c44298fc1c149afbf4c8996fb924...",
+  "hmacSignature": "verified_iso27001_a815"
+}</pre>
+          </div>
+          <div class="mt-4 border-t border-slate-800 pt-3 text-[11px] text-slate-400">
+            Este payload reemplaza el estado efímero en memoria de <code class="text-slate-200">src/store/workshop.tsx</code> por un registro auditable extremo a extremo.
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll(".wf-step-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeWorkflowStep = parseInt(btn.getAttribute("data-wf-step"), 10);
+          renderWorkflowSimulator();
+        });
+      });
+
+      document.getElementById("btnPrevWf").addEventListener("click", () => {
+        activeWorkflowStep = activeWorkflowStep > 1 ? activeWorkflowStep - 1 : WORKFLOW_STAGES.length;
+        renderWorkflowSimulator();
+      });
+      document.getElementById("btnNextWf").addEventListener("click", () => {
+        activeWorkflowStep = activeWorkflowStep < WORKFLOW_STAGES.length ? activeWorkflowStep + 1 : 1;
+        renderWorkflowSimulator();
+      });
+    }
+
+    let activeDiagramId = "d1";
+    function renderDiagrams() {
+      const selector = document.getElementById("diagramSelector");
+      selector.innerHTML = DIAGRAMS.map(d => {
+        const isCurrent = d.id === activeDiagramId;
+        return `
+          <button type="button" data-diag-id="${d.id}" class="diag-pill-btn rounded-lg border px-3 py-1.5 text-xs font-medium transition ${isCurrent ? 'border-amber-500 bg-amber-500 text-slate-950 font-bold' : 'border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700'}">
+            ${d.title.split("(")[0].trim()}
+          </button>
+        `;
+      }).join("");
+
+      const current = DIAGRAMS.find(d => d.id === activeDiagramId) || DIAGRAMS[0];
+      document.getElementById("diagramTitle").textContent = current.title;
+      document.getElementById("diagramSubtitle").textContent = current.subtitle;
+      document.getElementById("diagramIsoTag").textContent = current.isoTag;
+      document.getElementById("diagramMermaidCode").textContent = current.mermaid;
+
+      const visualContainer = document.getElementById("diagramVisualContainer");
+      visualContainer.innerHTML = current.steps.map((st, idx) => `
+        <div class="relative flex items-start gap-3 rounded-xl border border-slate-800/90 bg-slate-900/70 p-3.5">
+          <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 border border-amber-500/40 mono text-xs font-bold text-amber-300">
+            ${idx + 1}
+          </div>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="rounded bg-slate-800 px-2 py-0.5 mono text-[10px] font-semibold text-sky-300">${st.lane}</span>
+              <h4 class="text-xs font-bold text-white">${st.title}</h4>
+            </div>
+            <p class="mt-1 text-xs text-slate-300 leading-relaxed">${st.desc}</p>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".diag-pill-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeDiagramId = btn.getAttribute("data-diag-id");
+          renderDiagrams();
+        });
+      });
+    }
+
+    function updateMasterPromptView() {
+      const output = document.getElementById("masterPromptOutput");
+      output.textContent = buildMasterMegaprompt();
+    }
+
+    // ==================== INITIALIZATION & EVENT LISTENERS ====================
+    window.addEventListener("DOMContentLoaded", () => {
+      // Tab switching
+      const tabs = document.querySelectorAll(".nav-tab");
+      const panels = document.querySelectorAll(".tab-panel");
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          const target = tab.getAttribute("data-tab");
+          tabs.forEach(t => {
+            t.className = "nav-tab rounded-lg px-3.5 py-2 text-xs font-medium text-slate-400 border border-transparent hover:bg-slate-800/60 hover:text-slate-200 transition";
+          });
+          tab.className = "nav-tab rounded-lg bg-amber-500/15 px-3.5 py-2 text-xs font-semibold text-amber-300 border border-amber-500/30 transition";
+
+          panels.forEach(p => p.classList.add("hidden"));
+          document.getElementById("tab-" + target).classList.remove("hidden");
+        });
+      });
+
+      // Component inventory search/filter
+      document.getElementById("componentSearch").addEventListener("input", renderComponentTable);
+      document.getElementById("componentCategory").addEventListener("change", renderComponentTable);
+      renderComponentTable();
+
+      // SoA Filters
+      document.querySelectorAll(".soa-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".soa-filter-btn").forEach(b => {
+            b.className = "soa-filter-btn rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700";
+          });
+          btn.className = "soa-filter-btn rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950";
+          renderSoaTable(btn.getAttribute("data-soa-filter"));
+        });
+      });
+      renderSoaTable("all");
+
+      // Risk Matrix
+      renderRisks();
+
+      // Workflow Simulator
+      const btnChambi = document.getElementById("btnModeChambi");
+      const btnClient = document.getElementById("btnModeClient");
+      btnChambi.addEventListener("click", () => {
+        activePartMode = "chambi";
+        btnChambi.className = "rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950";
+        btnClient.className = "rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700";
+        renderWorkflowSimulator();
+      });
+      btnClient.addEventListener("click", () => {
+        activePartMode = "client";
+        btnClient.className = "rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-slate-950";
+        btnChambi.className = "rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-700";
+        renderWorkflowSimulator();
+      });
+      renderWorkflowSimulator();
+
+      // Diagrams
+      renderDiagrams();
+      document.getElementById("btnCopyMermaid").addEventListener("click", () => {
+        const current = DIAGRAMS.find(d => d.id === activeDiagramId) || DIAGRAMS[0];
+        copyTextToClipboard(current.mermaid, "Código Mermaid copiado al portapapeles");
+      });
+
+      // Megaprompt Options & Copy buttons
+      ["optIncludeScript", "optIncludeReadme", "optIncludeCodeFixes"].forEach(id => {
+        document.getElementById(id).addEventListener("change", updateMasterPromptView);
+      });
+      updateMasterPromptView();
+
+      document.getElementById("btnCopyQuickPrompt").addEventListener("click", () => {
+        copyTextToClipboard(buildMasterMegaprompt(), "Megaprompt Maestro copiado para Antigravity");
+      });
+      document.getElementById("btnCopyMasterPrompt").addEventListener("click", () => {
+        copyTextToClipboard(buildMasterMegaprompt(), "Megaprompt Maestro copiado para Antigravity");
+      });
+      document.getElementById("btnCopyPhase2Prompt").addEventListener("click", () => {
+        copyTextToClipboard(PHASE_2_PROMPT, "Prompt de Fase 2 (Refactorización) copiado");
+      });
+    });
+  </script>
+</body>
+</html>
