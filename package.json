@@ -1,32 +1,43 @@
 {
-  "name": "chambi-motors",
-  "version": "1.0.0",
+  "name": "chambi-motors-platform",
+  "version": "2.0.0",
   "private": true,
-  "description": "Landing scrollytelling de CHAMBI MOTORS: seguimiento en vivo y gestión de repuestos para talleres mecánicos.",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22.13 <25"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "dev": "pnpm --filter @chambi/web dev",
+    "mobile": "pnpm --filter @chambi/mobile start",
+    "build": "pnpm --filter @chambi/web build",
+    "typecheck": "pnpm -r typecheck && tsc -p tsconfig.tools.json",
+    "lint": "eslint apps packages tests scripts --max-warnings 0",
+    "format:check": "prettier --check apps/mobile/app apps/mobile/app.config.ts apps/mobile/components apps/mobile/lib apps/web/src/app/api apps/web/src/app/admin apps/web/src/app/seguimiento apps/web/src/app/t \"apps/web/src/lib/{auth,db,db-config,http,limits,media,orders,provider-url,public-order,verification}.ts\" packages/domain/src scripts tests",
+    "test": "vitest run",
+    "test:e2e": "tsx scripts/test-e2e.ts",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "test:rls": "tsx scripts/test-rls.ts",
+    "pilot:check": "tsx scripts/pilot-check.ts",
+    "pilot:migrate": "tsx scripts/pilot-run.ts migrate",
+    "pilot:rls": "tsx scripts/pilot-run.ts rls",
+    "pilot:build": "tsx scripts/pilot-run.ts build",
+    "pilot:start": "tsx scripts/pilot-run.ts start"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
-    "framer-motion": "^14.2.0",
-    "gsap": "^3.15.0",
-    "lenis": "^1.3.26",
-    "lucide-react": "^1.57.0",
-    "next": "^15.5.28",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^26.6.5",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "postcss": "^8.5.30",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.18.0",
+    "@types/pg": "^8.15.5",
+    "eslint": "^9.39.0",
+    "prettier": "^3.9.10",
+    "sharp": "0.35.5",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^3.2.4"
   }
 }

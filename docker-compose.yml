@@ -1,13 +1,18 @@
 services:
-  chambi-motors:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: chambi-motors-web
-    restart: unless-stopped
-    ports:
-      - "3000:80"
+  database:
+    image: postgres:17-alpine
     environment:
-      - NODE_ENV=production
-      - PORT=80
-      - HOSTNAME=0.0.0.0
+      POSTGRES_DB: chambi
+      POSTGRES_USER: chambi
+      POSTGRES_PASSWORD: chambi_local_dev
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - chambi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chambi -d chambi"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  chambi_pgdata:

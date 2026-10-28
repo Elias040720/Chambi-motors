@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "CHAMBI MOTORS",
+    "slug": "chambi-motors",
+    "scheme": "chambimotors",
+    "version": "1.0.0",
+    "runtimeVersion": { "policy": "appVersion" },
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "pe.chambimotors.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Tomar fotos de ingreso y avance del vehículo.",
+        "UIFileSharingEnabled": false,
+        "LSSupportsOpeningDocumentsInPlace": false,
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "pe.chambimotors.app",
+      "allowBackup": false,
+      "permissions": ["CAMERA", "READ_MEDIA_IMAGES"]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Selecciona evidencia del servicio.",
+          "cameraPermission": "Toma evidencia del vehículo.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-sqlite"
+    ]
+  }
+}

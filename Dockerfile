@@ -1,53 +1,18 @@
-# Etapa 1: Base de Node.js Alpine
-FROM node:20-alpine AS base
-
-# Etapa 2: Dependencias (deps)
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:22-alpine AS app
 WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN npm ci
-
-# Etapa 3: Compilación del proyecto (builder)
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/mobile/package.json ./apps/mobile/package.json
+COPY packages/domain/package.json ./packages/domain/package.json
+RUN pnpm install --frozen-lockfile
 COPY . .
-
-ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN npm run build
-
-# Etapa 4: Servidor ligero de producción (runner)
-FROM base AS runner
-WORKDIR /app
-
+RUN pnpm --filter @chambi/web build
+RUN chown -R node:node /app/apps/web/.next
+USER node
+WORKDIR /app/apps/web
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=80
-ENV HOSTNAME="0.0.0.0"
-
-# Habilitar enlace al puerto 80 para usuarios no privilegiados mediante setcap
-RUN apk add --no-cache libcap && \
-    setcap 'cap_net_bind_service=+ep' /usr/local/bin/node
-
-# Crear usuario y grupo seguro no privilegiado
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
-
-# Copiar archivos públicos y estáticos
-COPY --from=builder /app/public ./public
-RUN mkdir .next && chown nextjs:nodejs .next
-
-# Copiar artefactos standalone de Next.js
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-# Exponer el puerto 80 para Azure App Service y mapeo estándar
-EXPOSE 80
-
-# Iniciar servidor en primer plano (el contenedor se mantiene encendido permanentemente)
-CMD ["node", "server.js"]
+ENV PORT=3000
+EXPOSE 3000
+CMD ["node", "node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0"]

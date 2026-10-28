@@ -1,0 +1,11 @@
+agentes/
+.agents/
+.codex/
+.universal-agents/
+**/node_modules/
+**/.next/
+**/.expo*/
+**/dist/
+.data/
+test-results/
+playwright-report/
