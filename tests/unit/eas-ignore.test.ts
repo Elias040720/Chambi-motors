@@ -9,6 +9,9 @@ it("EAS ignore rules exclude secrets, agent sources and local artifacts while re
     execFileSync("git", ["init", "-q", dir]);
     writeFileSync(join(dir, ".gitignore"), readFileSync(".easignore"));
     const ignored = [
+      "nested/.git",
+      "credentials.json",
+      "apps/mobile/pilot.jks",
       ".env.local",
       ".env.pilot.local",
       "apps/mobile/.env",

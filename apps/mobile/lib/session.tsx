@@ -1,9 +1,14 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import * as SecureStore from "expo-secure-store";
+import Constants from "expo-constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { clearLocal } from "./storage";
+import { assertApiEnabled, isDevicePilot } from "./build-config";
 
-export const base = (process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000").replace(/\/$/, "");
+export const pilotOffline = isDevicePilot(Constants.expoConfig?.extra);
+export const base = pilotOffline
+  ? ""
+  : (process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000").replace(/\/$/, "");
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -27,6 +32,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState("");
   const [booting, setBooting] = useState(true);
   useEffect(() => {
+    if (pilotOffline) {
+      setBooting(false);
+      return;
+    }
     void SecureStore.getItemAsync("admin-token")
       .then((value) => {
         if (value) setToken(value);
@@ -35,6 +44,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       .finally(() => setBooting(false));
   }, []);
   async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+    assertApiEnabled(pilotOffline);
     if (!__DEV__ && !base.startsWith("https://"))
       throw new ApiError("Configura una URL HTTPS del taller para usar esta compilación.", 0);
     const controller = new AbortController();

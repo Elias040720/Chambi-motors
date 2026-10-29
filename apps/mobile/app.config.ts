@@ -46,7 +46,8 @@ export default ({ config }: Pick<ConfigContext, "config">): ExpoConfig => {
     extra: {
       ...config.extra,
       appVariant: build.variant,
-      ...(build.projectId ? { eas: { projectId: build.projectId } } : {}),
+      pilotOffline: build.pilotOffline,
+      ...(build.projectId ? { eas: { ...config.extra?.eas, projectId: build.projectId } } : {}),
     },
   };
 };

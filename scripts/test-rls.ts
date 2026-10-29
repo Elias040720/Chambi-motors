@@ -1,36 +1,22 @@
 import "./env";
-import { Pool } from "pg";
+import { Pool, type PoolClient } from "pg";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { databaseConnection } from "../apps/web/src/lib/db-config";
+import { applicationTables, inspectPilotDatabase } from "./lib/pilot-inspection";
 const pool = new Pool(databaseConnection());
-const applicationTables = [
-  "admin_profiles",
-  "customers",
-  "vehicles",
-  "work_orders",
-  "work_order_tasks",
-  "quotes",
-  "quote_lines",
-  "quote_decisions",
-  "part_requests",
-  "part_receipts",
-  "media_assets",
-  "work_order_events",
-  "access_grants",
-  "notification_outbox",
-  "audit_events",
-  "eta_revisions",
-  "admin_sessions",
-  "api_idempotency",
-  "work_order_blockers",
-  "inspections",
-  "business_settings",
-  "request_limits",
-  "verification_challenges",
-  "schema_migrations",
-];
+async function fixtureAdmin(client: PoolClient) {
+  const existing = await client.query(
+    "select p.id,u.email from public.admin_profiles p join auth.users u on u.id=p.id limit 1",
+  );
+  if (existing.rows[0]) return existing.rows[0] as { id: string; email: string };
+  const id = randomUUID(),
+    email = `rls-${id}@example.test`;
+  await client.query("insert into auth.users(id,email) values($1,$2)", [id, email]);
+  await client.query("insert into public.admin_profiles(id) values($1)", [id]);
+  return { id, email };
+}
 async function main() {
   const client = await pool.connect();
   let createdServiceRole = false;
@@ -50,7 +36,8 @@ async function main() {
     await client.query(
       await readFile(resolve("supabase/migrations/202610270007_backend_writes_only.sql"), "utf8"),
     );
-    const admin = randomUUID(),
+    const owner = await fixtureAdmin(client);
+    const admin = owner.id,
       outsider = randomUUID(),
       cust = randomUUID(),
       otherCustomer = randomUUID(),
@@ -58,13 +45,37 @@ async function main() {
       order = randomUUID(),
       quote = randomUUID(),
       line = randomUUID();
-    await client.query("insert into auth.users(id,email) values($1,$2),($3,$4)", [
-      admin,
-      `rls-${admin}@example.test`,
+    await client.query("insert into auth.users(id,email) values($1,$2)", [
       outsider,
       `rls-${outsider}@example.test`,
     ]);
-    await client.query("insert into admin_profiles(id) values($1)", [admin]);
+    if ((await fixtureAdmin(client)).id !== admin)
+      throw new Error("Existing administrator must be preserved by RLS fixtures");
+    await client.query("savepoint inspection_fixture");
+    const storage = await client.query("select to_regclass('storage.buckets') as relation");
+    if (!storage.rows[0]?.relation) {
+      const host = new URL(process.env.DATABASE_URL ?? "").hostname;
+      if (!["localhost", "127.0.0.1", "[::1]"].includes(host))
+        throw new Error(
+          "Storage inspection fixtures require local stub or existing Supabase Storage",
+        );
+      await client.query("create schema if not exists storage");
+      await client.query(
+        "create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[])",
+      );
+    }
+    const inspectionBucket = `pilot-rls-${randomUUID()}`;
+    await client.query(
+      "insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values($1,$1,false,8388608,array['image/webp'])",
+      [inspectionBucket],
+    );
+    const inspection = await inspectPilotDatabase((sql, values) => client.query(sql, values), {
+      ADMIN_EMAIL: owner.email,
+      SUPABASE_MEDIA_BUCKET: inspectionBucket,
+    });
+    if (inspection.length !== 5 || inspection.some((row) => row.status !== "PASS"))
+      throw new Error("Metadata inspection SQL failed with synthetic transactional fixtures");
+    await client.query("rollback to savepoint inspection_fixture");
     await client.query(
       "insert into customers(id,name,phone) values($1,'RLS test','999123456'),($2,'RLS other','999123457')",
       [cust, otherCustomer],

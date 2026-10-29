@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { evaluatePilotConfig } from "../../scripts/lib/pilot-config";
+import { evaluatePilotConfig, pilotEnvironment } from "../../scripts/lib/pilot-config";
 const ready = {
   APP_ENV: "pilot",
   NODE_ENV: "production",
@@ -20,8 +20,48 @@ const ready = {
   OTP_PROVIDER: "",
 };
 describe("offline pilot readiness gates", () => {
+  it("does not borrow another project's database, service key or OTP settings from the shell", () => {
+    const values = { ...ready } as Record<string, string>;
+    delete values.DATABASE_URL;
+    delete values.SUPABASE_SERVICE_ROLE_KEY;
+    delete values.OTP_PROVIDER;
+    const env = pilotEnvironment(values, {
+      ...ready,
+      PATH: "runtime-path",
+      OTP_PROVIDER: "twilio",
+      TWILIO_AUTH_TOKEN: "other-project-secret",
+      NODE_TLS_REJECT_UNAUTHORIZED: "0",
+    });
+    expect(env.DATABASE_URL).toBeUndefined();
+    expect(env.SUPABASE_SERVICE_ROLE_KEY).toBeUndefined();
+    expect(env.OTP_PROVIDER).toBeUndefined();
+    expect(env.TWILIO_AUTH_TOKEN).toBeUndefined();
+    expect(env.PATH).toBe("runtime-path");
+    expect(env.NODE_TLS_REJECT_UNAUTHORIZED).toBe("0");
+    expect(evaluatePilotConfig(env, "database").some((r) => r.status === "BLOCKED")).toBe(true);
+  });
   it("accepts complete isolated configuration without claiming live connectivity", () => {
     expect(evaluatePilotConfig(ready).every((r) => r.status === "PASS")).toBe(true);
+  });
+  it("does not block backend preparation on an unavailable EAS account", () => {
+    const backend = { ...ready, EAS_PROJECT_ID: "", EXPO_PUBLIC_API_URL: "" };
+    expect(evaluatePilotConfig(backend, "server").every((r) => r.status === "PASS")).toBe(true);
+    expect(evaluatePilotConfig(backend).some((r) => r.status === "BLOCKED")).toBe(true);
+  });
+  it("allows database inspection before the web host or EAS project exists", () => {
+    const database = {
+      ...ready,
+      NEXT_PUBLIC_APP_URL: "",
+      EXPO_PUBLIC_API_URL: "",
+      EAS_PROJECT_ID: "",
+    };
+    expect(evaluatePilotConfig(database, "database").every((r) => r.status === "PASS")).toBe(true);
+    expect(
+      evaluatePilotConfig(
+        { ...database, DATABASE_URL: ready.DATABASE_URL + "?sslmode=disable" },
+        "database",
+      ).some((r) => r.status === "BLOCKED"),
+    ).toBe(true);
   });
   it.each([
     { LOCAL_AUTH_STUB: "true" },

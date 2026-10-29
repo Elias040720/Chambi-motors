@@ -26,6 +26,7 @@ export default function Layout() {
         <Stack.Screen name="orders/[id]" options={{ title: "Orden de trabajo" }} />
         <Stack.Screen name="customers" options={{ title: "Clientes y vehículos" }} />
         <Stack.Screen name="settings" options={{ title: "Ajustes del taller" }} />
+        <Stack.Screen name="diagnostics" options={{ title: "Diagnóstico del dispositivo" }} />
       </Stack>
     </SessionProvider>
   );

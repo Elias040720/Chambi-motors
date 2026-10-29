@@ -4,7 +4,9 @@
     "slug": "chambi-motors",
     "scheme": "chambimotors",
     "version": "1.0.0",
-    "runtimeVersion": { "policy": "appVersion" },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "ios": {
@@ -34,6 +36,12 @@
         }
       ],
       "expo-sqlite"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c35b4c0d-d784-4f44-8c6b-b9c509eca16c"
+      }
+    },
+    "owner": "movaeduca"
   }
 }

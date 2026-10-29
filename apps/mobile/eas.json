@@ -37,6 +37,21 @@
         "simulator": false
       }
     },
+    "pilot": {
+      "extends": "preview",
+      "node": "22.23.2",
+      "pnpm": "11.25.0",
+      "developmentClient": false,
+      "credentialsSource": "remote",
+      "env": {
+        "APP_VARIANT": "pilot",
+        "EXPO_PUBLIC_PILOT_OFFLINE": "true"
+      },
+      "android": {
+        "buildType": "apk",
+        "resourceClass": "medium"
+      }
+    },
     "production": {
       "environment": "production",
       "env": {

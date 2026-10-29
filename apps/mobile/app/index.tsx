@@ -13,7 +13,7 @@ import {
   Title,
   styles,
 } from "../components/ui";
-import { useSession } from "../lib/session";
+import { pilotOffline, useSession } from "../lib/session";
 import { useApiQuery } from "../lib/query";
 import type { Config, Order } from "../lib/types";
 import { date, statusNames } from "../lib/types";
@@ -31,6 +31,7 @@ export default function Home() {
   );
 }
 function Login() {
+  const router = useRouter();
   const { login, request } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,6 +69,21 @@ function Login() {
       setBusy(false);
     }
   }
+  if (pilotOffline)
+    return (
+      <Screen>
+        <Title>Piloto del dispositivo</Title>
+        <Notice text="Servidor pendiente · Solo pruebas del dispositivo" />
+        <Copy>
+          Este APK no inicia sesión ni consulta o envía datos del taller. Puedes comprobar el
+          almacenamiento del teléfono con registros sintéticos.
+        </Copy>
+        <Action
+          title="Abrir diagnóstico del dispositivo"
+          onPress={() => router.push("/diagnostics")}
+        />
+      </Screen>
+    );
   return (
     <Screen>
       <Title>Acceso del taller</Title>

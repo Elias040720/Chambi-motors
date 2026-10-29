@@ -31,6 +31,15 @@ import { useApiQuery } from "../../lib/query";
 import { discardPhoto, keepPhoto, readLocal, removeLocal, saveLocal } from "../../lib/storage";
 import type { Config, Detail, PhotoDraft } from "../../lib/types";
 import { date, nextStatuses, statusNames } from "../../lib/types";
+import {
+  recoverNotes,
+  editNotesDraft,
+  refreshNotesDraft,
+  notesConflict,
+  recoveryReady,
+  replaceDraftPhoto,
+  type NotesDraft,
+} from "../../lib/drafts";
 
 type Pending = { endpoint: "actions" | "transition"; body: Record<string, unknown> };
 type QueuedPhoto = {
@@ -67,61 +76,85 @@ export default function OrderDetail() {
   const [link, setLink] = useState<{ url: string; expiresAt?: string }>();
   const [shareDays, setShareDays] = useState("7");
   const [reason, setReason] = useState("");
-  const [internalNotes, setInternalNotes] = useState("");
-  const [publicNotes, setPublicNotes] = useState("");
+  const [notes, setNotes] = useState<NotesDraft>({
+    internal: "",
+    public: "",
+    baseVersion: null,
+    dirty: false,
+  });
+  const internalNotes = notes.internal;
+  const publicNotes = notes.public;
   const [notesLoaded, setNotesLoaded] = useState(false);
+  const [queueLoaded, setQueueLoaded] = useState(false);
+  const [recoveryError, setRecoveryError] = useState(false);
+  const [recoveryAttempt, setRecoveryAttempt] = useState(0);
   const notesReady = useRef(false);
-  const latestNotes = useRef({ internal: "", public: "" });
+  const latestNotes = useRef(notes);
   const [etaFrom, setEtaFrom] = useState("");
   const [etaTo, setEtaTo] = useState("");
   const [confidence, setConfidence] = useState("tentativa");
   const [blockKind, setBlockKind] = useState("pausado");
   const uploadController = useRef<AbortController>(null);
   const notesKey = `draft:notes:${id}`;
-  latestNotes.current = { internal: internalNotes, public: publicNotes };
+  latestNotes.current = notes;
   notesReady.current = notesLoaded;
   useEffect(
     () => () => {
-      if (notesReady.current) void saveLocal(notesKey, latestNotes.current);
+      if (notesReady.current && latestNotes.current.dirty)
+        void saveLocal(notesKey, latestNotes.current).catch(() => {});
     },
     [notesKey],
   );
   useEffect(() => {
-    void readLocal<Pending>(`pending:${id}`)
-      .then((saved) => {
-        if (saved) setPending(saved.value);
+    let current = true;
+    setQueueLoaded(false);
+    void Promise.all([readLocal<Pending>(`pending:${id}`), readLocal<QueuedPhoto>(`photo:${id}`)])
+      .then(([savedPending, savedPhoto]) => {
+        if (!current) return;
+        setPending(savedPending?.value);
+        setPhoto(savedPhoto?.value);
+        setQueueLoaded(true);
       })
-      .catch(() => setMessage("No se pudo recuperar la cola local de esta orden."));
-    void readLocal<QueuedPhoto>(`photo:${id}`)
-      .then((saved) => {
-        if (saved) setPhoto(saved.value);
-      })
-      .catch(() => setMessage("No se pudo recuperar la foto pendiente."));
-  }, [id]);
+      .catch(() => {
+        if (current) setRecoveryError(true);
+      });
+    return () => {
+      current = false;
+    };
+  }, [id, recoveryAttempt]);
   useEffect(() => {
     if (!query.data || notesLoaded) return;
-    void readLocal<{ internal: string; public: string }>(notesKey)
+    let current = true;
+    void readLocal<NotesDraft>(notesKey)
       .then((saved) => {
-        setInternalNotes(saved?.value.internal ?? query.data!.workOrder.internal_notes ?? "");
-        setPublicNotes(saved?.value.public ?? query.data!.workOrder.public_notes ?? "");
+        if (!current) return;
+        setNotes(recoverNotes(saved?.value, query.data!.workOrder));
         setNotesLoaded(true);
       })
       .catch(() => {
-        setInternalNotes(query.data!.workOrder.internal_notes ?? "");
-        setPublicNotes(query.data!.workOrder.public_notes ?? "");
-        setNotesLoaded(true);
-        setMessage("No se pudo recuperar el borrador de notas.");
+        if (current) setRecoveryError(true);
       });
-  }, [query.data, notesLoaded, notesKey]);
+    return () => {
+      current = false;
+    };
+  }, [query.data, notesLoaded, notesKey, recoveryAttempt]);
   useEffect(() => {
-    if (!notesLoaded) return;
+    if (notesLoaded && query.data)
+      setNotes((previous) => refreshNotesDraft(previous, query.data.workOrder));
+  }, [query.data, notesLoaded]);
+  useEffect(() => {
+    if (!notesLoaded || !notes.dirty) return;
     const timer = setTimeout(() => {
-      void saveLocal(notesKey, { internal: internalNotes, public: publicNotes }).catch(() =>
+      if (!latestNotes.current.dirty) return;
+      void saveLocal(notesKey, notes).catch(() =>
         setMessage("No se pudo guardar el borrador local de notas."),
       );
     }, 250);
     return () => clearTimeout(timer);
-  }, [internalNotes, publicNotes, notesLoaded, notesKey]);
+  }, [notes, notesLoaded, notesKey]);
+  function editNotes(field: "internal" | "public", value: string) {
+    setNotes((previous) => editNotesDraft(previous, field, value));
+  }
   async function refresh() {
     await client.invalidateQueries({ queryKey: [`detail:${id}`] });
     await client.invalidateQueries({ queryKey: ["orders"] });
@@ -139,7 +172,11 @@ export default function OrderDetail() {
       setPending(undefined);
       await removeLocal(`pending:${id}`);
       setMessage("Cambio confirmado en el servidor.");
-      if (operation.body.action === "note") await removeLocal(notesKey);
+      if (operation.body.action === "note") {
+        latestNotes.current = { ...latestNotes.current, dirty: false };
+        setNotes(latestNotes.current);
+        await removeLocal(notesKey);
+      }
       await refresh();
     } catch (error) {
       if (error instanceof ApiError && error.status > 0 && error.status < 500) {
@@ -153,6 +190,13 @@ export default function OrderDetail() {
     }
   }
   const perform: Perform = (action, fields, confirmation) => {
+    if (!recoveryReady(queueLoaded, notesLoaded, recoveryError)) return;
+    if (action === "note" && notesConflict(notes, query.data!.workOrder.version)) {
+      setMessage(
+        "Las notas parten de otra versión. Conserva el borrador o descártalo explícitamente para usar las notas actuales.",
+      );
+      return;
+    }
     if (pending) {
       setMessage(
         "Primero confirma o descarta la operación pendiente. No se enviarán otras acciones encima.",
@@ -164,7 +208,7 @@ export default function OrderDetail() {
       body: {
         action,
         ...fields,
-        expectedVersion: query.data?.workOrder.version,
+        expectedVersion: action === "note" ? notes.baseVersion : query.data?.workOrder.version,
         idempotencyKey: Crypto.randomUUID(),
       },
     };
@@ -227,8 +271,12 @@ export default function OrderDetail() {
       }
       const durable = await keepPhoto(asset.uri, mime);
       const queued = { photo: durable, key: Crypto.randomUUID(), category, caption, visible };
-      await saveLocal(`photo:${id}`, queued);
-      discardPhoto(photo?.photo);
+      await replaceDraftPhoto(
+        photo?.photo,
+        durable,
+        () => saveLocal(`photo:${id}`, queued),
+        discardPhoto,
+      );
       setPhoto(queued);
       setMessage("Foto guardada en el teléfono. Falta enviarla al taller.");
     } catch {
@@ -334,6 +382,29 @@ export default function OrderDetail() {
     );
   const data = query.data;
   const order = data.workOrder;
+  if (!recoveryReady(queueLoaded, notesLoaded, recoveryError))
+    return (
+      <Screen>
+        <Title>Recuperando datos locales</Title>
+        {recoveryError ? (
+          <>
+            <Notice
+              error
+              text="No se pudo recuperar la cola o el borrador. Los cambios están bloqueados para conservarlos."
+            />
+            <Action
+              title="Reintentar recuperación"
+              onPress={() => {
+                setRecoveryError(false);
+                setRecoveryAttempt((attempt) => attempt + 1);
+              }}
+            />
+          </>
+        ) : (
+          <Busy />
+        )}
+      </Screen>
+    );
   const closed = ["entregado", "cancelado"].includes(order.status);
   const disabled = busy || query.isError || closed || !!pending;
   return (
@@ -505,6 +576,43 @@ export default function OrderDetail() {
           </Card>
           <Card>
             <Heading>Notas separadas</Heading>
+            {notesConflict(notes, order.version) && (
+              <>
+                <Notice
+                  error
+                  text="El borrador de notas pertenece a otra versión (o es anterior al control de versiones). Se conserva, pero no se enviará sobre cambios más recientes."
+                />
+                <Action
+                  title="Descartar borrador y cargar notas actuales"
+                  secondary
+                  disabled={busy || !!pending}
+                  onPress={() =>
+                    Alert.alert(
+                      "Descartar borrador de notas",
+                      "Se perderá el texto local. Se cargarán las notas de la versión consultada del servidor.",
+                      [
+                        { text: "Volver", style: "cancel" },
+                        {
+                          text: "Descartar",
+                          style: "destructive",
+                          onPress: () => {
+                            void removeLocal(notesKey)
+                              .then(() => {
+                                const clean = recoverNotes(undefined, order);
+                                latestNotes.current = clean;
+                                setNotes(clean);
+                              })
+                              .catch(() =>
+                                setMessage("No se pudo eliminar el borrador; se conserva."),
+                              );
+                          },
+                        },
+                      ],
+                    )
+                  }
+                />
+              </>
+            )}
             <Copy muted>
               Se conserva un borrador local. Las notas no se publican hasta confirmar en el
               servidor.
@@ -512,18 +620,20 @@ export default function OrderDetail() {
             <Field
               label="Nota interna del taller"
               value={internalNotes}
-              onChangeText={setInternalNotes}
+              editable={!busy && !pending}
+              onChangeText={(value) => editNotes("internal", value)}
               multiline
             />
             <Field
               label="Nota visible para el cliente"
               value={publicNotes}
-              onChangeText={setPublicNotes}
+              editable={!busy && !pending}
+              onChangeText={(value) => editNotes("public", value)}
               multiline
             />
             <Action
               title="Guardar notas en el servidor"
-              disabled={disabled}
+              disabled={disabled || !notes.dirty || notesConflict(notes, order.version)}
               onPress={() =>
                 perform(
                   "note",

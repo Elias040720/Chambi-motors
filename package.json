@@ -20,6 +20,7 @@
     "pilot:check": "tsx scripts/pilot-check.ts",
     "pilot:migrate": "tsx scripts/pilot-run.ts migrate",
     "pilot:rls": "tsx scripts/pilot-run.ts rls",
+    "pilot:inspect": "tsx scripts/pilot-run.ts inspect",
     "pilot:build": "tsx scripts/pilot-run.ts build",
     "pilot:start": "tsx scripts/pilot-run.ts start"
   },
