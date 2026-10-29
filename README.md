@@ -31,7 +31,7 @@ El teléfono y la computadora deben poder comunicarse. Abre el proyecto con una 
 
 Para probar el enlace en dos dispositivos, configura también `NEXT_PUBLIC_APP_URL` en `.env.local` con esa misma URL LAN accesible y abre el panel usando esa URL. Ese valor determina el destino de los enlaces y el origen web autorizado. Reinicia el servidor después de cambiarlo. El firewall de la computadora debe permitir el puerto únicamente en la red privada de prueba.
 
-Para compilar localmente Android se necesita Android SDK/emulador o dispositivo: `pnpm --filter @chambi/mobile android`. iOS Simulator exige macOS/Xcode. Los perfiles de EAS están en `apps/mobile/eas.json`; el propietario debe vincular su proyecto Expo, configurar `projectId`, credenciales y firma antes de usar EAS Build/Update. No se crearon cuentas ni binarios firmados. Ver [guía móvil](apps/mobile/README.md) para uso y aceptación en dispositivo.
+El primer APK privado ya está firmado y generado en EAS; no necesita Metro. [Descargar APK 1.0.0 / código 1](https://expo.dev/artifacts/eas/wpV-iCbZKB-9TlYgnp17FfZmF5j3iCVPw8rCKNq0RGQ.apk). El propietario confirmó instalación y PASS de SQLite/SecureStore en Android. Este APK es diagnóstico offline, no un taller conectado. La compilación local requiere SDK y margen de disco; el emulador existente rechazó arrancar por espacio insuficiente. iOS Simulator requiere macOS. Los perfiles y el proyecto real están en `apps/mobile/eas.json` y `app.json`; no hace falta volver a vincularlos.
 
 ## Recorrido del taller
 
@@ -62,7 +62,7 @@ RLS usa fixtures transaccionales que se revierten. E2E necesita el PostgreSQL lo
 
 ## Conectar servicios en pruebas dedicadas
 
-Estas tareas requieren cuentas y secretos del propietario. El código de integración está preparado; no se contactaron proveedores desde pruebas.
+Las pruebas funcionales de Supabase y OTP real siguen pendientes. La CLI Supabase existente sí permite consultar la cuenta: hay una organización y dos proyectos ajenos al piloto. No se creó Chambi porque el plan/costo gratuito no está confirmado; no se modificó ninguno de esos proyectos. EAS sí se utilizó para la compilación privada autorizada.
 
 - Supabase: proyecto PostgreSQL con migraciones aplicadas sin stub; URL, anon key y conexión DB del servidor. Desactiva el registro abierto, crea una única cuenta en Auth y provisiona su UUID en `admin_profiles`. El índice de la tabla admite un solo administrador. Configura `ADMIN_EMAIL` y `NEXT_PUBLIC_APP_URL` HTTPS; agrega `/admin/recover` a las URL de recuperación permitidas. El login verifica el usuario con Auth y su perfil antes de emitir una sesión opaca del servidor de una hora.
 - Storage: crea un bucket privado, configura `SUPABASE_MEDIA_BUCKET`, la service role solo en servidor y `MEDIA_SIGNING_SECRET` aleatorio de al menos 32 caracteres. Nunca pongas service role en Expo ni en variables públicas. Las imágenes se recomprimen y se retiran metadatos; el servidor entrega las fotos permitidas mediante URLs firmadas por cinco minutos y una cookie de orden vigente.
@@ -70,15 +70,26 @@ Estas tareas requieren cuentas y secretos del propietario. El código de integra
 - Contacto real, horario, textos de privacidad, plazos de retención y plantillas se configuran desde Ajustes. La retención configurable expresa la política operativa; no hay borrado automático de historiales append-only. La exportación/eliminación de datos debe definirse y ejecutarse conforme al procedimiento del taller antes de operar con información real.
 - El proxy de producción debe redactar `/t/*`, cookies y autorizaciones en sus registros, limitar cuerpos y terminar TLS. Solo activa `TRUST_PROXY=true` cuando el proxy sustituya de forma confiable `x-forwarded-for`.
 
-No se hicieron push, merge, despliegues, publicaciones móviles ni envíos reales. Estado y verificaciones: [registro de ejecución](docs/EXECUTION_STATUS.md). Diseño/contratos: [arquitectura](docs/ARCHITECTURE.md). Controles y límites: [seguridad](docs/SECURITY.md).
+No hubo push, merge, PR, producción, Submit, OTA ni comunicaciones reales. Solo se generó el APK interno de diagnóstico autorizado. Estado y verificaciones: [registro de ejecución](docs/EXECUTION_STATUS.md). Diseño/contratos: [arquitectura](docs/ARCHITECTURE.md). Controles y límites: [seguridad](docs/SECURITY.md).
 
 ## Piloto controlado, solo sintético
+
+Build terminado `f031fc04-adef-4ebb-90db-a88fd4936a00`, fuente `0e18590`, Android `pe.chambimotors.app.pilot`, versión1.0.0/código1. APK 98.821.530 bytes, SHA-256 `dc3d8c1f0976c973ef3d77b91ba81b80582ee60ff8ce3d0747fba4534d226165`, firma v2 verificada. Cuenta Free: después del build, 1/15 Android usado, estimación0 centavos y sin add-ons. La prueba manual del propietario verificó arranque/acceso al diagnóstico y ambas comprobaciones nativas; no sustituye el flujo del negocio ni prueba reinicio completo.
+
+El proyecto EAS de pruebas es [@movaeduca/chambi-motors](https://expo.dev/accounts/movaeduca/projects/chambi-motors), UUID `c35b4c0d-d784-4f44-8c6b-b9c509eca16c`. El perfil Android `pilot` genera un APK interno release autónomo, con Node 22.23.2 y pnpm 11.25.0. `APP_VARIANT=pilot` y `EXPO_PUBLIC_PILOT_OFFLINE=true` habilitan exclusivamente la comprobación del dispositivo: no restauran sesión, no hacen solicitudes y no simulan un taller conectado. La pantalla muestra servidor pendiente y ofrece SQLite/SecureStore con datos sintéticos separados. Cada resultado empieza en NOT RUN y solo cambia a PASS tras comprobar operación y limpieza. No equivale a probar borradores del taller, cámara, ciclo completo o reinicio del sistema.
+
+El perfil `preview` conserva el piloto conectado y exige una API HTTPS real; Supabase por sí solo no sustituye las rutas de la API Next.js. Producción rechaza el modo diagnóstico offline. No hay EAS Submit ni publicación OTA. El build Android requiere confirmar primero plan Free, cuota disponible y resourceClass medium; no contratar planes ni aceptar cobros. La firma Android se conserva en EAS, nunca en el repositorio.
+
+Los borradores de ingreso esperan la recuperación antes de guardarse; las notas editadas conservan su versión base y requieren resolver el conflicto si la OT avanzó. Una lectura no crea por sí sola notas pendientes. Reemplazar una foto conserva la original hasta guardar la nueva referencia y bloquea cambios concurrentes del ingreso mientras dura la operación.
+
+`pnpm pilot:inspect .env.pilot.local` es una inspección de metadatos: transacción SQL READ ONLY y GET de configuración Auth, sin login, recuperación, correos, SMS ni objetos nuevos. Comprueba RLS, privilegios cliente de tabla/columna, migración 007, perfil y bucket. No prueba permisos HTTP funcionales ni sesiones. Las tareas `pilot:migrate`, `pilot:rls` y `pilot:inspect` no dependen de tener cuenta EAS o un host web; `pilot:build/start` verifican el servidor y `pilot:check` verifica la preparación completa. Las variables críticas deben estar explícitas en el archivo seleccionado: no se toman claves, DB ni OTP de otro proyecto desde la consola.
 
 La validación local no habilita datos de clientes. Crea un proyecto Supabase y un servidor HTTPS exclusivos de pruebas, sin copiar bases del taller. Copia `.env.pilot.example` a `.env.pilot.local` y completa sus valores fuera de Git. La comprobación offline valida configuración, no conectividad ni permisos remotos.
 
 ```powershell
 pnpm pilot:check .env.pilot.local
 pnpm pilot:migrate .env.pilot.local
+pnpm pilot:inspect .env.pilot.local
 pnpm pilot:rls .env.pilot.local
 pnpm pilot:build .env.pilot.local
 pnpm pilot:start .env.pilot.local
@@ -106,6 +117,6 @@ pnpm dlx eas-cli@26.0.0 build --profile development-simulator --platform ios
 pnpm dlx eas-cli@26.0.0 build --profile preview --platform all
 ```
 
-Son pasos pendientes del propietario; no se inició ningún trabajo EAS. Los builds pueden consumir recursos de la cuenta. `development` usa identificador `.dev` y `preview`, `.pilot`, ambos internos. iOS físico requiere firma de Apple y dispositivos registrados; el simulador necesita macOS. El piloto bloquea HTTP/ATS permisivo, no solicita micrófono y Android desactiva backups. Los manifests/configuración están comprobados, pero esos controles todavía requieren APK/IPA instalado.
+Son comandos de referencia: el primer build Android pilot ya se ejecutó y terminó; no es necesario repetirlo. Otros builds requieren comprobar cuota/costo y su autorización. `development` usa identificador `.dev` y `preview`, `.pilot`, ambos internos. iOS físico requiere firma de Apple y dispositivos registrados; el simulador necesita macOS. El piloto bloquea HTTP/ATS permisivo, no solicita micrófono y Android desactiva backups. El manifiesto del APK Android está comprobado y el propietario verificó SQLite/SecureStore; cámara/galería y el resto del negocio siguen pendientes. iOS no tiene IPA ejecutado.
 
 Antes de admitir clientes: instalar builds en Android/iPhone, comprobar cámara/galería y permiso denegado, SQLite/foto tras cierre y reinicio, SecureStore/logout, compartir/navegar en otro dispositivo, modo avión/reconexión, reintento y conflicto de versión. Repetir el flujo del taller en dos sesiones con datos inventados. Resolver los avisos pendientes del tooling y registrar Auth/Storage, TLS/proxy, backups/recuperación y política de retención. Solo entonces revisar los controles y autorizar datos reales. No hay autorización de producción.

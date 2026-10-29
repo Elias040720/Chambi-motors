@@ -45,11 +45,17 @@ El almacenamiento local de imágenes se limita a desarrollo. Producción requier
 
 ## Ajustes de validación para piloto
 
+Fase 2: ingreso/OT tienen barreras de recuperación; fallar la lectura no habilita sobrescribir una cola desconocida. Las notas locales incluyen `dirty` y `baseVersion`; el refresh solo actualiza notas limpias. La primera edición mantiene la versión del contenido mostrado, incluso si se adelanta al efecto de refresh. Los borradores heredados sin versión se conservan como conflictos. El reemplazo de foto persiste primero y elimina después; campos y navegación del ingreso se bloquean durante permisos/picker/guardado para no restaurar snapshots viejos.
+
+El perfil `pilot` genera release APK sin Metro y con modo offline diagnóstico explícito, separado del perfil conectado `preview`. No utiliza un endpoint inventado, no restaura bearer ni intenta tráfico. SQLite diagnóstica y clave SecureStore son distintas del almacenamiento del taller. La inspección Supabase preparada solo lee metadatos dentro de READ ONLY y consulta GET settings con la clave pública; la service role no se envía en esa consulta. Los gates por destino permiten comprobar DB sin EAS/host y servidor sin cuenta móvil.
+
 La migración 007 conserva SELECT sujeto a RLS y revoca DML de `authenticated`, `anon` y PUBLIC sobre las 24 tablas propias. Las escrituras pasan por la API de servidor y sus transiciones/idempotencia, evitando que un cliente Supabase con perfil admin salte QA o decisiones. No modifica tablas ajenas; provisiona privilegios de service_role solo si existe. La rama SQL del rol servidor se ejerce localmente con CRUD y privilegios sobre 24 tablas, dentro de una transacción revertida; la integración Supabase real sigue pendiente.
 
 Auth y Storage validan origen Supabase HTTPS sin usuario, ruta, query o fragmento; solo desarrollo acepta loopback HTTP. Fetch rechaza redirects antes de reenviar secretos. PostgreSQL comparte configuración de TLS verificado entre web y migrador; rechaza overrides SSL de URL. Aprobación pública usa `clock_timestamp()` tras locks y tras Verify, revalidando challenge y grant antes de persistir.
 
 La app usa variantes development/pilot/production con bundle, package y scheme distintos. Pilot/production exigen API HTTPS y ATS estricto; no hay permisos de micrófono ni backup Android. EAS define development client, simulador iOS y preview interno, sin iniciar distribución. El runner piloto carga un archivo explícito y valida controles antes de migrar/compilar/iniciar, sin sustituir el entorno local. E2E usa `.next-e2e` y tsconfig propio para aislar artefactos de build.
+
+El APK1 EAS procede de `0e18590`; contiene manifiesto Android, DEX y `assets/index.android.bundle`, sin Metro. Fuente/artefacto y pruebas quedan separados: el build pasó, la firma se verificó localmente y el propietario reportó las comprobaciones nativas en Android. El perfil posterior `pilot-simulator` hereda el modo diagnóstico y fuerza simulador iOS sin development client; solo se validó configuración y exportación JS, sin lanzar un build Apple ni generar certificados.
 
 ## Outbox y reversión
 

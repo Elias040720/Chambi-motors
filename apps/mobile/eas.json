@@ -52,6 +52,12 @@
         "resourceClass": "medium"
       }
     },
+    "pilot-simulator": {
+      "extends": "pilot",
+      "ios": {
+        "simulator": true
+      }
+    },
     "production": {
       "environment": "production",
       "env": {

@@ -9,6 +9,7 @@ next-env.d.ts
 .env
 .expo
 .data/
+supabase/.temp/
 apps/mobile/android
 apps/mobile/ios
 apps/mobile/dist/
