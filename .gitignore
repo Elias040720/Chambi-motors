@@ -17,3 +17,6 @@ test-results/
 playwright-report/
 .DS_Store
 .vercel
+__pycache__/
+*.py[cod]
+.universal-agents/

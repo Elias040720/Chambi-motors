@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-24T06:19:10.613232+00:00",
+  "canonical": "universal-agents/",
+  "algorithm": "SHA-256 over sorted UTF-8 lines of relative POSIX path, tab, file SHA-256, newline; includes manifest.json",
+  "hosts": {
+    "antigravity-cli": {
+      "listed_files": 40,
+      "physical_files_including_manifest": 41,
+      "bytes": 116270,
+      "tree_sha256": "bece6b2366c1ef1109b101021f699faf5b37dd59592c9f64c43e15185eb65532",
+      "manifest_sha256": "2c53ba9c8381637bab119008e16566bed0b0a44fddf1db51baa303f61a3b726e",
+      "source_digest": "2f5fa4dab1271018267483dbe6e71f3319646cab5448d0cb988d4e9164bb798d"
+    },
+    "antigravity-ide": {
+      "listed_files": 40,
+      "physical_files_including_manifest": 41,
+      "bytes": 116270,
+      "tree_sha256": "8eae0ecb407e40e57c9d24b44bca54392cd673dd9b35d96ce048f2f08a6fa25d",
+      "manifest_sha256": "63dd8bf79bf740e7081d4817d6cec625fc25fe6c51bc4fdb6d31612b80783fd9",
+      "source_digest": "2f5fa4dab1271018267483dbe6e71f3319646cab5448d0cb988d4e9164bb798d"
+    },
+    "claude-code": {
+      "listed_files": 39,
+      "physical_files_including_manifest": 40,
+      "bytes": 115577,
+      "tree_sha256": "c206f7df2e1583f35dfdbf27bed039a1c172c3de926a6316422a4656a8d5e460",
+      "manifest_sha256": "1cffea38c5b83de44703849cafd5d5571da7ca1f675e5f2a2638c183b48796dd",
+      "source_digest": "2f5fa4dab1271018267483dbe6e71f3319646cab5448d0cb988d4e9164bb798d"
+    },
+    "codex": {
+      "listed_files": 39,
+      "physical_files_including_manifest": 40,
+      "bytes": 115655,
+      "tree_sha256": "a073c37eb7aab27c46ff8cddd5c2ae423357adbf32a39ba2b4e47b612c375317",
+      "manifest_sha256": "b7e16a26d2bbcc3f90172ab5380cec763161976a1783274c34edc0d26e405acd",
+      "source_digest": "2f5fa4dab1271018267483dbe6e71f3319646cab5448d0cb988d4e9164bb798d"
+    },
+    "opencode": {
+      "listed_files": 39,
+      "physical_files_including_manifest": 40,
+      "bytes": 115585,
+      "tree_sha256": "01aea636455d2ba3b3ec3f8c72e50d769d3259ebdd107f5fec7992ee4829013d",
+      "manifest_sha256": "83e8104adc5f8ee6b2e4313d292967bd5907ff06ec82e4462830352dc86e6add",
+      "source_digest": "2f5fa4dab1271018267483dbe6e71f3319646cab5448d0cb988d4e9164bb798d"
+    }
+  }
+}

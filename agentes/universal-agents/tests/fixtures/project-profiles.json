@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {"id": "php-mysql-jquery", "stack": ["PHP", "MySQL", "jQuery"], "dependencies": "none installed"},
+    {"id": "react-typescript", "stack": ["React", "TypeScript"], "dependencies": "none installed"},
+    {"id": "python-package", "stack": ["Python"], "dependencies": "standard library only"},
+    {"id": "java-service", "stack": ["Java"], "dependencies": "none installed"},
+    {"id": "cli-tool", "stack": ["CLI", "Python stdlib"], "dependencies": "none installed"},
+    {"id": "empty-repository", "stack": [], "dependencies": "none", "context": "unknown until discovery"},
+    {"id": "monorepo", "stack": ["mixed", "multiple packages"], "dependencies": "none installed"},
+    {"id": "web-fullstack-sqlite", "stack": ["Python stdlib", "HTTP", "SQLite ephemeral", "HTML/JavaScript"], "dependencies": "standard library only"},
+    {"id": "mobile-flutter-offline", "stack": ["Flutter", "Dart", "mobile", "offline/retry"], "dependencies": "Flutter SDK only; not installed"}
+  ]
+}

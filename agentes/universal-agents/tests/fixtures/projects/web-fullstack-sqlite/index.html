@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventory Lite</title>
+<style>
+  body { font: 1rem/1.5 system-ui, sans-serif; margin: 0 auto; max-width: 52rem; padding: 1rem; color: #172033 }
+  label, input, button { display: block; margin-block: .5rem; }
+  input, button { font: inherit; min-height: 2.75rem; padding-inline: .75rem; }
+  :focus-visible { outline: 3px solid #155eef; outline-offset: 2px; }
+  .error { color: #b42318; }
+</style>
+<main>
+  <h1>Inventory Lite</h1>
+  <form id="form">
+    <label for="name">Product name</label><input id="name" name="name" maxlength="100" required>
+    <label for="quantity">Quantity</label><input id="quantity" name="quantity" type="number" min="0" max="100000" value="0" required>
+    <button>Add product</button>
+  </form>
+  <p id="status" role="status" aria-live="polite">Loading inventory…</p>
+  <ul id="items" aria-label="Inventory items"></ul>
+</main>
+<script>
+const statusNode = document.querySelector('#status');
+const list = document.querySelector('#items');
+async function refresh() {
+  statusNode.className = '';
+  statusNode.textContent = 'Loading inventory…';
+  try {
+    const response = await fetch('/api/items');
+    if (!response.ok) throw new Error('Inventory could not be loaded.');
+    const data = await response.json();
+    list.replaceChildren(...data.items.map(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name}: ${item.quantity}`;
+      return li;
+    }));
+    statusNode.textContent = data.items.length ? `${data.items.length} products` : 'No products yet';
+  } catch (_) {
+    statusNode.className = 'error';
+    statusNode.textContent = 'Could not load inventory. Check the connection and retry.';
+  }
+}
+document.querySelector('#form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const formElement = event.currentTarget;
+  statusNode.className = '';
+  statusNode.textContent = 'Saving…';
+  const form = new FormData(formElement);
+  try {
+    const response = await fetch('/api/items', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.get('name'), quantity: Number(form.get('quantity')) }) });
+    if (!response.ok) throw new Error('Product could not be saved.');
+    formElement.reset();
+    await refresh();
+  } catch (_) {
+    statusNode.className = 'error';
+    statusNode.textContent = 'Could not save product. Check the values and retry.';
+  }
+});
+refresh();
+</script>

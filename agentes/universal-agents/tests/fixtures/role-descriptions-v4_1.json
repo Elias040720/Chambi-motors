@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "baseline_source_digest": "4b3763c09129a0fe8c78ce6892aec254549dbed7343647185a10a0b8e4b18534",
+  "baseline_zip_sha256": "333b49e45b6e2921a4767ca1e8ec9b369b902f15665cb37c06b0595454c5fe0e",
+  "baseline_package_path": "agentes/archive/builds/previous/codex-4b3763c09129/",
+  "descriptions": {
+    "architect": "Compara opciones de arquitectura y contratos usando evidencia del repositorio, sin imponer patrones. Activar ante cambios estructurales o límites entre componentes.",
+    "implementer": "Implementa el cambio autorizado más pequeño que cumpla aceptación y convenciones del repositorio. No amplía el alcance por inferencia.",
+    "debugger": "Reproduce un fallo, prueba hipótesis y separa causa confirmada de sospecha. Activar ante comportamiento incorrecto o error reproducible.",
+    "api-engineer": "Diseña o modifica contratos y endpoints de API compatibles con el stack existente. Activar ante evidencia explícita de API o contrato público.",
+    "db-engineer": "Analiza persistencia, consultas e integridad; prepara migraciones seguras cuando hay evidencia explícita de datos o esquema.",
+    "performance-engineer": "Investiga y optimiza una hipótesis de rendimiento con medición comparable y criterio de regresión.",
+    "qa-strategist": "Convierte riesgos y aceptación en una estrategia de pruebas proporcionada; distingue pruebas necesarias de pruebas ejecutadas.",
+    "test-engineer": "Añade y ejecuta pruebas apropiadas al contrato del proyecto; informa comandos y resultados observados con alcance exacto.",
+    "code-reviewer": "Busca defectos concretos en un diff con hallazgos priorizados y referencias de líneas. Activar para revisión solicitada o control independiente disponible.",
+    "security-check": "Realiza una revisión ligera y contextual de cambios sensibles: límites, autorización, validación, secretos y controles adyacentes.",
+    "security-auditor": "Conduce una auditoría de seguridad profunda, explícitamente acotada, con modelo de amenazas y validación de candidatos.",
+    "design-director": "Define dirección visual basada en producto, marca, audiencia y restricciones antes de implementar UI.",
+    "ui-engineer": "Implementa interfaz en el stack y sistema visual existentes con estados completos, responsive y accesibilidad básica.",
+    "ux-reviewer": "Evalúa usabilidad, accesibilidad y estados de una experiencia con escenarios de usuario y evidencia observable.",
+    "motion-reviewer": "Revisa animaciones por propósito, timing, accesibilidad, rendimiento y reduced motion.",
+    "docs-release": "Prepara documentación, changelog, integridad y pasos de release/rollback sin publicar por cuenta propia.",
+    "agent-evaluator": "Evalúa activación, comportamiento y coste de skills/agentes con fixtures versionados y métricas honestas.",
+    "tech-lead": "Clasifica, coordina y cierra trabajo de software con el mínimo routing suficiente, respetando autorización y evidencia.",
+    "request-analyst": "Convierte una solicitud compleja en un brief fiel y compacto, preservando negaciones, prioridades, permisos y criterios.",
+    "prompt-refiner": "Reestructura prompts complejos con fidelidad semántica verificable, manteniendo texto original y límites de autorización.",
+    "repo-explorer": "Explora de forma focalizada un repositorio para identificar stack, convenciones, rutas, cambios y verificaciones sin escribir.",
+    "planner": "Prepara un plan corto y con dependencias, riesgos y condiciones observables para tareas multi-etapa.",
+    "context-curator": "Reduce contexto a fuentes relevantes y mantiene continuidad mediante decisiones, límites y evidencia mínima."
+  }
+}

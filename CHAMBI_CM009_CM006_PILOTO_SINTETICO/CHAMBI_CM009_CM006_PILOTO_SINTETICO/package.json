@@ -1,0 +1,10 @@
+{
+  "name": "chambi-cm009-cm006-synthetic-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Modelo aislado y pruebas sintéticas de acceso y diagnóstico, sin integración real",
+  "scripts": {
+    "test": "node tests/reference-model.test.mjs"
+  }
+}
