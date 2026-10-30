@@ -72,6 +72,8 @@ Las pruebas funcionales de Supabase y OTP real siguen pendientes. La CLI Supabas
 
 No hubo push, merge, PR, producción, Submit, OTA ni comunicaciones reales. Solo se generó el APK interno de diagnóstico autorizado. Estado y verificaciones: [registro de ejecución](docs/EXECUTION_STATUS.md). Diseño/contratos: [arquitectura](docs/ARCHITECTURE.md). Controles y límites: [seguridad](docs/SECURITY.md).
 
+El contraste con el Plan maestro 2.0 y el backlog basado en evidencia están en la [auditoría base](docs/audits/CHAMBI_BASELINE_2026-10.md), la [matriz CM-001..030](docs/product/CHAMBI_GAP_MATRIX.md) y el [backlog de implementación](docs/product/CHAMBI_IMPLEMENTATION_BACKLOG.md). La clasificación distingue código local probado de servicios remotos y hardware aún pendientes.
+
 ## Piloto controlado, solo sintético
 
 Build terminado `f031fc04-adef-4ebb-90db-a88fd4936a00`, fuente `0e18590`, Android `pe.chambimotors.app.pilot`, versión1.0.0/código1. APK 98.821.530 bytes, SHA-256 `dc3d8c1f0976c973ef3d77b91ba81b80582ee60ff8ce3d0747fba4534d226165`, firma v2 verificada. Cuenta Free: después del build, 1/15 Android usado, estimación0 centavos y sin add-ons. La prueba manual del propietario verificó arranque/acceso al diagnóstico y ambas comprobaciones nativas; no sustituye el flujo del negocio ni prueba reinicio completo.

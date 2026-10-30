@@ -1,5 +1,15 @@
 # Estado de ejecución · 29-10-2026
 
+## Plan maestro 2.0 · auditoría incremental
+
+El snapshot se auditó el 29-10-2026 sobre `fa077de` en `feat/chambi-motors-platform-v1`; no se reinició ni modificó lógica de producto. La matriz CM-001..030 y el plan de cortes están documentados en [auditoría base](audits/CHAMBI_BASELINE_2026-10.md), [gap matrix](product/CHAMBI_GAP_MATRIX.md) y [backlog](product/CHAMBI_IMPLEMENTATION_BACKLOG.md).
+
+- PASS actual: `pnpm test` 114/114 en 11 archivos; `pnpm test:rls`; `pnpm test:e2e` 10/10 con migraciones y Chromium. Los E2E usaron base desechable.
+- PASS preservación: no hay modificaciones versionadas; `agentes/` y `.universal-agents/operations/` permanecen sin seguimiento y sin tocar. HEAD sigue en `fa077de`; sin push/merge/PR.
+- Brechas de producto P0: diagnóstico preliminar/confirmado no modelado como historial separado; recuperación del enlace de cliente por placa + OTP no está implementada; Auth/Storage de Supabase remoto y API HTTPS de pruebas pendientes; iOS y flujo de negocio Android conectado pendientes.
+- No se inició una implementación de CM-006/009: el modelo y el canal de contacto requieren cerrar los criterios de diseño que constan en el backlog. Se avanzó con auditoría/documentación y pruebas de base sin cambiar contratos.
+- El proceso de validación de `pnpm` comprobó el lockfile y reconstruyó enlaces de `node_modules`; no produjo cambios versionados.
+
 ## Fase 2 · 29-10-2026 · Primer APK entregado
 
 Base conservada `40dd37a`; cambios de código verificados en commit local `0e18590`. Rama `feat/chambi-motors-platform-v1`; sin push/merge/PR. Originales agentes, log y journal intactos. Brief íntegro adjunto de esta conversación permanece fuera del repositorio; no se copian transcripciones privadas.
