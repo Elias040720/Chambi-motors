@@ -29,12 +29,24 @@ async function fixture(request: APIRequestContext) {
   const created = await request.post("/api/v1/admin/work-orders", { data: input });
   expect(created.status()).toBe(201);
   const order = (await created.json()).workOrder;
+  const contact = await request.post(`/api/v1/admin/work-orders/${order.id}/contacts`, {
+    data: {
+      name: "Contacto sintético autorizado",
+      phone: "+51988123456",
+      relationType: "client",
+      canViewProgress: true,
+      canApproveQuote: true,
+      verifiedInPerson: true,
+      verificationNote: "Verificación presencial sintética para pruebas de orden",
+    },
+  });
+  expect(contact.status(), await contact.text()).toBe(201);
   const details = await (await request.get(`/api/v1/admin/work-orders/${order.id}`)).json();
   expect(details.workOrder.vin).toBe("TESTVIN001");
   expect(details.workOrder.mileage).toBe(40000);
   const repeat = await request.post("/api/v1/admin/work-orders", { data: input });
   expect((await repeat.json()).workOrder.id).toBe(order.id);
-  return order as { id: string; version: number; status: string; code: string };
+  return details.workOrder as { id: string; version: number; status: string; code: string };
 }
 test("tasks, immutable quote decisions, physical parts, QA rework and delivery persist", async ({
   request,

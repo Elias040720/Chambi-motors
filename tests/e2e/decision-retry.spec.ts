@@ -23,8 +23,23 @@ test("a lost approval response retries the same decision and cannot change its i
   const id = created.workOrder.id;
   expect(
     (
+      await request.post(`/api/v1/admin/work-orders/${id}/contacts`, {
+        data: {
+          name: "Contacto sintético autorizado",
+          phone: "+51955123456",
+          relationType: "client",
+          canViewProgress: true,
+          canApproveQuote: true,
+          verifiedInPerson: true,
+          verificationNote: "Verificación presencial sintética para reintento OTP",
+        },
+      })
+    ).status(),
+  ).toBe(201);
+  expect(
+    (
       await request.post(`/api/v1/admin/work-orders/${id}/transition`, {
-        data: { status: "diagnostico", expectedVersion: 1, idempotencyKey: randomUUID() },
+        data: { status: "diagnostico", expectedVersion: 2, idempotencyKey: randomUUID() },
       })
     ).status(),
   ).toBe(200);
@@ -41,7 +56,7 @@ test("a lost approval response retries the same decision and cannot change its i
               unitPrice: 50,
             },
           ],
-          expectedVersion: 2,
+          expectedVersion: 3,
           idempotencyKey: randomUUID(),
         },
       })

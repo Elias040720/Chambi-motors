@@ -19,11 +19,17 @@ export async function publicGrant(orderId?: string): Promise<{
   work_order_id: string;
   contact_id: string | null;
   expires_at: Date;
+  remote_approval_authorized: boolean;
 }> {
   const token = (await cookies()).get("cm_view")?.value;
   if (!token || token.length > 100) throw new DomainError("Enlace no válido o vencido", 404);
   const r = await db.query(
-    `select g.id,g.work_order_id,g.contact_id,g.expires_at from access_grants g
+    `select g.id,g.work_order_id,g.contact_id,g.expires_at,
+       exists(select 1 from work_order_contacts a where a.id=g.contact_id
+         and a.work_order_id=g.work_order_id and a.relation_type='client'
+         and a.can_view_progress and a.can_approve_quote and a.verified_at<=now()
+         and a.revoked_at is null) remote_approval_authorized
+ from access_grants g
  where token_hash=$1 and expires_at>now() and revoked_at is null
  and (contact_id is null or exists(select 1 from work_order_contacts c where c.id=g.contact_id and c.work_order_id=g.work_order_id and c.revoked_at is null and c.verified_at<=now() and c.can_view_progress))
  and ($2::uuid is null or g.work_order_id=$2)`,
@@ -82,6 +88,6 @@ export async function getPublicOrder(orderId?: string) {
         }
       : null,
     business: s.rows[0],
-    remoteApprovalEnabled: remoteApprovalEnabled(),
+    remoteApprovalEnabled: remoteApprovalEnabled() && grant.remote_approval_authorized,
   };
 }

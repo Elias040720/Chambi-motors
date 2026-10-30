@@ -25,6 +25,8 @@ export async function POST(request: Request) {
     if (!p.success) throw new DomainError("Datos de confirmación no válidos", 400);
     const a = p.data,
       g = await publicGrant();
+    if (!g.contact_id)
+      throw new DomainError("Vuelve a solicitar el enlace con un contacto verificado", 403);
     if (!(await allowRequest("otp-check", g.id, 10, 900)))
       throw new DomainError("Demasiados intentos", 429);
     // Attempts are persisted outside the mutation transaction, including failed checks.
@@ -65,13 +67,6 @@ export async function POST(request: Request) {
               403,
             );
           verifiedPhone = authorization.rows[0].phone_e164;
-        }
-        if (!testOtpEnabled() && !verifiedPhone) {
-          const customer = await c.query(
-            "select c.phone from customers c join work_orders w on w.customer_id=c.id where w.id=$1",
-            [g.work_order_id],
-          );
-          verifiedPhone = customer.rows[0]?.phone;
         }
         const valid = testOtpEnabled()
           ? ch.code_hash && timingSafeEqual(ch.code_hash, otpHash(ch.id, a.code))

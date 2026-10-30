@@ -21,18 +21,17 @@ export async function POST(request: Request) {
       .safeParse(await request.json().catch(() => null));
     if (!p.success) throw new DomainError("Presupuesto no válido", 400);
     const g = await publicGrant();
-    let verifiedPhone: string | undefined;
-    if (g.contact_id) {
-      const authorization = await db.query(
-        `select phone_e164 from work_order_contacts
-         where id=$1 and work_order_id=$2 and relation_type='client'
-           and can_approve_quote and can_view_progress and verified_at<=now() and revoked_at is null`,
-        [g.contact_id, g.work_order_id],
-      );
-      if (!authorization.rowCount)
-        throw new DomainError("Este contacto no está autorizado para aprobar presupuestos", 403);
-      verifiedPhone = authorization.rows[0].phone_e164;
-    }
+    if (!g.contact_id)
+      throw new DomainError("Vuelve a solicitar el enlace con un contacto verificado", 403);
+    const authorization = await db.query(
+      `select phone_e164 from work_order_contacts
+       where id=$1 and work_order_id=$2 and relation_type='client'
+         and can_approve_quote and can_view_progress and verified_at<=now() and revoked_at is null`,
+      [g.contact_id, g.work_order_id],
+    );
+    if (!authorization.rowCount)
+      throw new DomainError("Este contacto no está autorizado para aprobar presupuestos", 403);
+    const verifiedPhone = authorization.rows[0].phone_e164 as string;
     if (!(await allowRequest("otp", g.id, 3, 900)))
       throw new DomainError("Espera antes de solicitar otro código", 429);
     const q = await db.query(
@@ -44,13 +43,6 @@ export async function POST(request: Request) {
       test = testOtpEnabled(),
       code = test ? newOtp() : null;
     if (!test) {
-      if (!verifiedPhone) {
-        const contact = await db.query(
-          "select c.phone from customers c join work_orders w on w.customer_id=c.id where w.id=$1",
-          [g.work_order_id],
-        );
-        verifiedPhone = contact.rows[0]?.phone;
-      }
       if (!(await twilioVerify(verifiedPhone ?? "")))
         throw new DomainError("No pudimos enviar el código. Coordina con el taller.", 503);
     }

@@ -3,6 +3,9 @@ import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { Pool } from "pg";
 import { request as playwrightRequest } from "@playwright/test";
+import { randomBytes } from "node:crypto";
+import { tokenHash } from "../../apps/web/src/lib/auth";
+import { otpHash } from "../../apps/web/src/lib/verification";
 
 const password = "cm-local-password-2026";
 
@@ -627,6 +630,121 @@ test("quote OTP requires explicit client authority and rejects representatives",
   } finally {
     await client.dispose();
     await rep.dispose();
+    await request.delete("/api/v1/admin/session");
+  }
+});
+
+test("legacy grants may read their order but cannot approve; contacts rotate every duplicate grant", async ({
+  request,
+}) => {
+  const databaseUrl = new URL(process.env.DATABASE_URL!);
+  if (!databaseUrl.pathname.startsWith("/cm_test_"))
+    throw new Error("Legacy grant fixture requires the disposable E2E database");
+  expect((await request.post("/api/v1/admin/session", { data: { password } })).status()).toBe(200);
+  const order = await createOrder(request, "LEG-811A");
+  const otherOrder = await createOrder(request, "LEG-822B");
+  const pool = new Pool({ connectionString: databaseUrl.toString(), max: 1 });
+  const clients = await Promise.all([
+    playwrightRequest.newContext({ baseURL: "http://localhost:3100" }),
+    playwrightRequest.newContext({ baseURL: "http://localhost:3100" }),
+  ]);
+  try {
+    await request.post(`/api/v1/admin/work-orders/${order.id}/transition`, {
+      data: { status: "diagnostico", expectedVersion: 1, idempotencyKey: randomUUID() },
+    });
+    const detail = await (await request.get(`/api/v1/admin/work-orders/${order.id}`)).json();
+    const createdQuote = await request.post(`/api/v1/admin/work-orders/${order.id}/actions`, {
+      data: {
+        action: "quote.create",
+        lines: [
+          { description: "Repuesto sintético", kind: "repuesto", quantity: 1, unitPrice: 40 },
+        ],
+        expectedVersion: detail.workOrder.version,
+        idempotencyKey: randomUUID(),
+      },
+    });
+    expect(createdQuote.status()).toBe(200);
+    const quoteId = (await (await request.get(`/api/v1/admin/work-orders/${order.id}`)).json())
+      .quotes[0].id as string;
+
+    const tokens = [randomBytes(32).toString("base64url"), randomBytes(32).toString("base64url")];
+    const grantIds: string[] = [];
+    for (const token of tokens) {
+      const grant = await pool.query(
+        `insert into access_grants(work_order_id,token_hash,expires_at)
+         values($1,$2,now()+interval '7 days') returning id`,
+        [order.id, tokenHash(token)],
+      );
+      grantIds.push(grant.rows[0].id as string);
+    }
+    for (let i = 0; i < clients.length; i++) {
+      await clients[i].get(`/t/${tokens[i]}`);
+      const legacyPortal = await clients[i].get(`/api/v1/public?orderId=${order.id}`);
+      expect(legacyPortal.status()).toBe(200);
+      expect((await legacyPortal.json()).remoteApprovalEnabled).toBe(false);
+      expect((await clients[i].get(`/api/v1/public?orderId=${otherOrder.id}`)).status()).toBe(404);
+      const challengeRequest = await clients[i].post("/api/v1/public/verification", {
+        data: { quoteId },
+      });
+      expect(challengeRequest.status()).toBe(403);
+    }
+
+    const challengeId = randomUUID();
+    const code = "456123";
+    await pool.query(
+      `insert into verification_challenges(id,grant_id,quote_id,code_hash)
+       values($1,$2,$3,$4)`,
+      [challengeId, grantIds[0], quoteId, otpHash(challengeId, code)],
+    );
+    const decision = await clients[0].post("/api/v1/public/decision", {
+      data: {
+        quoteId,
+        challengeId,
+        code,
+        decision: "aprobado",
+        expectedVersion: 3,
+        idempotencyKey: randomUUID(),
+      },
+    });
+    expect(decision.status()).toBe(403);
+    expect(
+      (await (await request.get(`/api/v1/admin/work-orders/${order.id}`)).json()).quotes[0],
+    ).toMatchObject({ status: "pendiente" });
+
+    const { response: contactResponse } = await registerContact(request, order.id, {
+      canApproveQuote: true,
+    });
+    expect(contactResponse.status()).toBe(201);
+    const share = await request.post(`/api/v1/admin/work-orders/${order.id}/share`, {
+      data: { days: 7 },
+    });
+    expect(share.status()).toBe(200);
+    for (let i = 0; i < clients.length; i++) {
+      expect((await clients[i].get(`/api/v1/public?orderId=${order.id}`)).status()).toBe(404);
+      const staleApproval = await clients[i].post("/api/v1/public/verification", {
+        data: { quoteId },
+      });
+      expect(staleApproval.status()).toBe(404);
+    }
+    const audit = await pool.query(
+      "select count(*)::int count from audit_events where entity_id=$1 and action='link_rotated'",
+      [order.id],
+    );
+    expect(audit.rows[0].count).toBe(1);
+
+    const replacement = await playwrightRequest.newContext({ baseURL: "http://localhost:3100" });
+    try {
+      const url = (await share.json()).url as string;
+      await replacement.get(url);
+      expect((await replacement.get(`/api/v1/public?orderId=${order.id}`)).status()).toBe(200);
+      const otp = await replacement.post("/api/v1/public/verification", { data: { quoteId } });
+      expect(otp.status()).toBe(200);
+    } finally {
+      await replacement.dispose();
+    }
+  } finally {
+    await Promise.all(clients.map((client) => client.dispose()));
+    await pool.end();
     await request.delete("/api/v1/admin/session");
   }
 });

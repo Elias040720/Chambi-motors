@@ -46,8 +46,23 @@ for (const expiry of ["challenge", "grant"] as const) {
       const id = w.workOrder.id;
       expect(
         (
+          await request.post(`/api/v1/admin/work-orders/${id}/contacts`, {
+            data: {
+              name: "Contacto sintético autorizado",
+              phone: "+51944224466",
+              relationType: "client",
+              canViewProgress: true,
+              canApproveQuote: true,
+              verifiedInPerson: true,
+              verificationNote: "Verificación presencial sintética para prueba de expiración",
+            },
+          })
+        ).status(),
+      ).toBe(201);
+      expect(
+        (
           await request.post(`/api/v1/admin/work-orders/${id}/transition`, {
-            data: { status: "diagnostico", expectedVersion: 1, idempotencyKey: randomUUID() },
+            data: { status: "diagnostico", expectedVersion: 2, idempotencyKey: randomUUID() },
           })
         ).status(),
       ).toBe(200);
@@ -59,7 +74,7 @@ for (const expiry of ["challenge", "grant"] as const) {
               lines: [
                 { description: "Revisión general", kind: "trabajo", quantity: 1, unitPrice: 50 },
               ],
-              expectedVersion: 2,
+              expectedVersion: 3,
               idempotencyKey: randomUUID(),
             },
           })
@@ -89,7 +104,7 @@ for (const expiry of ["challenge", "grant"] as const) {
             challengeId: challenge.challengeId,
             code: challenge.testCode,
             decision: "aprobado",
-            expectedVersion: 3,
+            expectedVersion: detail.workOrder.version,
             idempotencyKey: randomUUID(),
           },
         });
