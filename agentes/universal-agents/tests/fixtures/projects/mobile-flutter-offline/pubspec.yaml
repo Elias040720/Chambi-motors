@@ -1,0 +1,13 @@
+name: ua_mobile_offline_fixture
+description: Minimal Flutter mobile QA fixture for offline and retry behavior.
+publish_to: none
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true

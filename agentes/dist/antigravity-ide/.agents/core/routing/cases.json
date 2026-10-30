@@ -1,0 +1,1368 @@
+{
+  "base_request": {
+    "request_id": "fixture",
+    "verbatim": "Explain this file",
+    "intent": "Answer a question",
+    "task_type": "answer",
+    "scope": [],
+    "constraints": [],
+    "acceptance": [
+      "Accurate answer"
+    ],
+    "unknowns": [],
+    "permission_boundary": "read-only",
+    "risk": "low",
+    "signals": {
+      "domains": [],
+      "impacts": [],
+      "stages": [],
+      "context": {
+        "status": "known",
+        "breadth": "narrow",
+        "evidence_paths": [
+          "README.md"
+        ]
+      },
+      "controls": []
+    }
+  },
+  "cases": [
+    {
+      "id": "simple_answer_direct",
+      "overrides": {
+        "verbatim": "Explain this function",
+        "intent": "Explain behavior"
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "small_readme_change",
+      "overrides": {
+        "verbatim": "Fix a typo in README.md",
+        "intent": "Correct a typo",
+        "task_type": "implement",
+        "scope": [
+          "README.md"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "documentation",
+              "evidence_paths": [
+                "README.md"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "README.md"
+              ]
+            }
+          ],
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "readme_and_contributing_no_api_db",
+      "overrides": {
+        "verbatim": "Edit README.md and CONTRIBUTING.md for the new setup steps",
+        "intent": "Update two documentation files",
+        "task_type": "implement",
+        "scope": [
+          "README.md",
+          "CONTRIBUTING.md"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "documentation",
+              "evidence_paths": [
+                "README.md",
+                "CONTRIBUTING.md"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "README.md",
+                "CONTRIBUTING.md"
+              ]
+            }
+          ],
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "large_single_file_refactor",
+      "overrides": {
+        "verbatim": "Refactor this file across its call sites and preserve behavior",
+        "intent": "Structural refactor",
+        "task_type": "implement",
+        "scope": [
+          "src/large_module.py"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "general",
+              "evidence_paths": [
+                "src/large_module.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "cross_component",
+              "evidence_paths": [
+                "src/large_module.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Map callers",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Refactor",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Verify behavior",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "context": {
+            "status": "known",
+            "breadth": "broad",
+            "evidence_paths": [
+              "src/large_module.py",
+              "tests/"
+            ]
+          },
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner",
+          "context-curator"
+        ],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "pure_ui_change",
+      "overrides": {
+        "verbatim": "Build the profile settings UI and check keyboard access",
+        "intent": "Implement a UI view",
+        "task_type": "implement",
+        "scope": [
+          "src/profile.tsx"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "ui",
+              "evidence_paths": [
+                "src/profile.tsx"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "src/profile.tsx"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Implement view",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Check UI states",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": [
+            {
+              "value": "visual_review",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "accessibility",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner",
+          "ui-engineer",
+          "ux-reviewer"
+        ],
+        "deferred": [],
+        "pending": [
+          "tests",
+          "visual_review"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "readonly_review_no_independent_reviewer",
+      "overrides": {
+        "verbatim": "Review these changes and report findings only",
+        "intent": "Review without edits",
+        "task_type": "review",
+        "scope": [
+          "src/auth.py"
+        ],
+        "permission_boundary": "read-only",
+        "signals": {
+          "domains": [
+            {
+              "value": "security",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "security_sensitive",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [
+          "code-reviewer",
+          "security-check"
+        ],
+        "deferred": [],
+        "pending": [
+          "independent_review",
+          "security_check"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "unknown_context_diagnosis",
+      "overrides": {
+        "verbatim": "Diagnose why the command fails",
+        "intent": "Find the command failure cause",
+        "task_type": "diagnose",
+        "scope": [],
+        "permission_boundary": "read-only",
+        "signals": {
+          "context": {
+            "status": "unknown",
+            "breadth": "narrow",
+            "evidence_paths": []
+          },
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "repo-explorer",
+          "debugger"
+        ],
+        "deferred": [],
+        "pending": [
+          "diagnosis"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "multi_stage_feature",
+      "overrides": {
+        "verbatim": "Implement the new import flow",
+        "intent": "Implement a multi-stage feature",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "general",
+              "evidence_paths": [
+                "src/importer.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "cross_component",
+              "evidence_paths": [
+                "src/importer.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Inspect current flow",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Implement",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Verify",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner"
+        ],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "high_risk_missing_essential_tools",
+      "overrides": {
+        "verbatim": "Implement access control changes",
+        "intent": "Change authorization rules",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "risk": "high",
+        "project_profile": {
+          "missing_tools": [
+            "pytest",
+            "sast-runner"
+          ],
+          "essential_tools": [
+            "pytest"
+          ]
+        },
+        "signals": {
+          "domains": [
+            {
+              "value": "security",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "security_sensitive",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Review threat",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Implement control",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Test",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "context": {
+            "status": "unknown",
+            "breadth": "narrow",
+            "evidence_paths": []
+          },
+          "controls": [
+            {
+              "value": "tests",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "security_check",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "repo-explorer",
+          "planner",
+          "test-engineer",
+          "security-check",
+          "qa-strategist"
+        ],
+        "deferred": [],
+        "pending": [
+          "security_check",
+          "tests",
+          "tool:pytest",
+          "tool:sast-runner"
+        ],
+        "conflicts": [],
+        "tool_gaps": [
+          "pytest",
+          "sast-runner"
+        ],
+        "essential_tool_gaps": [
+          "pytest"
+        ],
+        "blocking_conditions": [
+          "essential_tool_unavailable:pytest"
+        ]
+      }
+    },
+    {
+      "id": "read_only_boundary_blocks_write",
+      "overrides": {
+        "verbatim": "Implement a label update",
+        "intent": "Update a label",
+        "task_type": "implement",
+        "permission_boundary": "read-only"
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "write_task_conflicts_with_read_only_boundary"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "approval_boundary_does_not_grant_authority",
+      "overrides": {
+        "verbatim": "Implement a deployment change",
+        "intent": "Prepare deployment change",
+        "task_type": "implement",
+        "permission_boundary": "needs-approval"
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "workspace_write_still_host_owned",
+      "overrides": {
+        "verbatim": "Implement one local change",
+        "intent": "Make local change",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write"
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "review_type_edit_conflict",
+      "overrides": {
+        "verbatim": "Review and edit this file",
+        "intent": "Review and edit file",
+        "task_type": "review",
+        "permission_boundary": "read-only"
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "task_type_conflicts_with_edit_request"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "constraint_no_edit_conflicts_with_implement",
+      "overrides": {
+        "verbatim": "Update the endpoint",
+        "intent": "Update endpoint",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "constraints": [
+          "Do not edit files"
+        ]
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "write_task_conflicts_with_no_edit_instruction",
+          "verbatim_edit_request_conflicts_with_no_edit_constraint"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "answer_type_implementation_conflict",
+      "overrides": {
+        "verbatim": "Write the migration",
+        "intent": "Explain migration",
+        "task_type": "answer",
+        "permission_boundary": "read-only"
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "task_type_conflicts_with_edit_request"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "instruction_conflict_preserves_boundary",
+      "overrides": {
+        "verbatim": "Review this and change the implementation",
+        "intent": "Review requested change",
+        "task_type": "review",
+        "permission_boundary": "workspace-write",
+        "constraints": [
+          "No file edits are authorized"
+        ]
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "verbatim_edit_request_conflicts_with_no_edit_constraint",
+          "task_type_conflicts_with_edit_request",
+          "review_task_must_remain_read_only"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "analysis_only_conflicts_with_write",
+      "overrides": {
+        "verbatim": "Implement the fix",
+        "intent": "Fix defect",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "constraints": [
+          "Only analyze; no writing or editing"
+        ]
+      },
+      "expected": {
+        "route_kind": "blocked",
+        "direct_action": false,
+        "selected": [
+          "request-analyst"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [
+          "write_task_conflicts_with_no_edit_instruction",
+          "verbatim_edit_request_conflicts_with_no_edit_constraint"
+        ],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "high_risk_local_change",
+      "overrides": {
+        "verbatim": "Implement a credential validation fix",
+        "intent": "Fix credential validation",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "risk": "critical",
+        "signals": {
+          "domains": [
+            {
+              "value": "security",
+              "evidence_paths": [
+                "src/credentials.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "security_sensitive",
+              "evidence_paths": [
+                "src/credentials.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Inspect",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Change",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Verify",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner",
+          "test-engineer",
+          "security-check"
+        ],
+        "deferred": [],
+        "pending": [
+          "security_check",
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "light_security_check_not_deep_audit",
+      "overrides": {
+        "verbatim": "Make a small input validation fix",
+        "intent": "Fix input validation",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "risk": "medium",
+        "signals": {
+          "domains": [
+            {
+              "value": "security",
+              "evidence_paths": [
+                "src/input.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "src/input.py"
+              ]
+            }
+          ],
+          "controls": [
+            {
+              "value": "security_check",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "stages": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [
+          "security-check"
+        ],
+        "deferred": [],
+        "pending": [
+          "security_check",
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "explicit_deep_security_audit",
+      "overrides": {
+        "verbatim": "Audit the authentication flow deeply",
+        "intent": "Perform scoped deep security audit",
+        "task_type": "review",
+        "permission_boundary": "read-only",
+        "risk": "high",
+        "signals": {
+          "domains": [
+            {
+              "value": "security",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "security_sensitive",
+              "evidence_paths": [
+                "src/auth.py"
+              ]
+            }
+          ],
+          "controls": [
+            {
+              "value": "security_check",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "security_audit",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "stages": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [
+          "code-reviewer",
+          "security-check",
+          "security-auditor"
+        ],
+        "deferred": [],
+        "pending": [
+          "independent_review",
+          "security_audit",
+          "security_check"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "api_candidate_requires_explicit_domain_evidence",
+      "overrides": {
+        "verbatim": "Implement route response validation",
+        "intent": "Update an API contract",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "api",
+              "evidence_paths": [
+                "src/api/routes.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "public_contract",
+              "evidence_paths": [
+                "src/api/routes.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Inspect contract",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Change",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Verify",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner",
+          "api-engineer"
+        ],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "database_candidate_requires_domain_evidence",
+      "overrides": {
+        "verbatim": "Plan a data migration",
+        "intent": "Change database schema safely",
+        "task_type": "plan",
+        "permission_boundary": "read-only",
+        "signals": {
+          "domains": [
+            {
+              "value": "database",
+              "evidence_paths": [
+                "migrations/004.sql"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "data_migration",
+              "evidence_paths": [
+                "migrations/004.sql"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Expand",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Migrate",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Contract",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": [
+            {
+              "value": "rollback",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "tests",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ]
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner",
+          "db-engineer",
+          "test-engineer",
+          "qa-strategist"
+        ],
+        "deferred": [],
+        "pending": [
+          "rollback",
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "two_unrelated_files_are_not_domain_signal",
+      "overrides": {
+        "verbatim": "Update the project license and contribution guide",
+        "intent": "Edit two administrative docs",
+        "task_type": "implement",
+        "scope": [
+          "LICENSE",
+          "CONTRIBUTING.md"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "documentation",
+              "evidence_paths": [
+                "LICENSE",
+                "CONTRIBUTING.md"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "LICENSE",
+                "CONTRIBUTING.md"
+              ]
+            }
+          ],
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "broad_context_selects_curator",
+      "overrides": {
+        "verbatim": "Summarize this large repo for a handoff",
+        "intent": "Create a concise technical handoff",
+        "task_type": "plan",
+        "permission_boundary": "read-only",
+        "signals": {
+          "context": {
+            "status": "known",
+            "breadth": "broad",
+            "evidence_paths": [
+              "src/",
+              "docs/"
+            ]
+          },
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "context-curator"
+        ],
+        "deferred": [],
+        "pending": [],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "unknown_scope_routes_explorer",
+      "overrides": {
+        "verbatim": "Find where this behavior lives",
+        "intent": "Locate implementation",
+        "task_type": "diagnose",
+        "scope": [],
+        "permission_boundary": "read-only",
+        "signals": {
+          "context": {
+            "status": "unknown",
+            "breadth": "narrow",
+            "evidence_paths": []
+          },
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "repo-explorer",
+          "debugger"
+        ],
+        "deferred": [],
+        "pending": [
+          "diagnosis"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "declared_stage_not_scope_count_selects_planner",
+      "overrides": {
+        "verbatim": "Implement this one-file workflow",
+        "intent": "Multi-stage change within one file",
+        "task_type": "implement",
+        "scope": [
+          "src/job.py"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "general",
+              "evidence_paths": [
+                "src/job.py"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "src/job.py"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Inspect",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            },
+            {
+              "value": "Change",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "workflow",
+        "direct_action": false,
+        "selected": [
+          "planner"
+        ],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "one_stage_multi_scope_stays_direct",
+      "overrides": {
+        "verbatim": "Update two labels",
+        "intent": "Change two labels",
+        "task_type": "implement",
+        "scope": [
+          "a.md",
+          "b.md"
+        ],
+        "permission_boundary": "workspace-write",
+        "signals": {
+          "domains": [
+            {
+              "value": "documentation",
+              "evidence_paths": [
+                "a.md",
+                "b.md"
+              ]
+            }
+          ],
+          "impacts": [
+            {
+              "value": "local",
+              "evidence_paths": [
+                "a.md",
+                "b.md"
+              ]
+            }
+          ],
+          "stages": [
+            {
+              "value": "Edit labels",
+              "evidence_refs": [
+                "request.verbatim"
+              ]
+            }
+          ],
+          "controls": []
+        }
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "host_authorization_never_claimed",
+      "overrides": {
+        "verbatim": "Implement a change",
+        "intent": "Implement change",
+        "task_type": "implement",
+        "permission_boundary": "workspace-write"
+      },
+      "expected": {
+        "route_kind": "direct",
+        "direct_action": true,
+        "selected": [],
+        "deferred": [],
+        "pending": [
+          "tests"
+        ],
+        "conflicts": [],
+        "tool_gaps": [],
+        "essential_tool_gaps": [],
+        "blocking_conditions": []
+      }
+    },
+    {
+      "id": "evidence_paths_required_for_domain_signal",
+      "overrides": {
+        "signals": {
+          "domains": [
+            {
+              "value": "api",
+              "evidence_paths": []
+            }
+          ],
+          "stages": [],
+          "controls": []
+        }
+      },
+      "expected_error": "signals.domains[0].evidence_paths"
+    },
+    {
+      "id": "stage_without_evidence_ref_rejected",
+      "overrides": {
+        "signals": {
+          "stages": [
+            {
+              "value": "Implement"
+            }
+          ]
+        }
+      },
+      "expected_error": "signals.stages[0]"
+    },
+    {
+      "id": "control_without_evidence_ref_rejected",
+      "overrides": {
+        "signals": {
+          "controls": [
+            {
+              "value": "tests"
+            }
+          ]
+        }
+      },
+      "expected_error": "signals.controls[0]"
+    }
+  ]
+}

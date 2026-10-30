@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.json","compilerOptions":{"baseUrl":".","paths":{"@chambi/domain/*":["src/*"]}},"include":["src/**/*.ts"]}

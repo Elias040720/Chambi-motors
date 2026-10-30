@@ -1,0 +1,62 @@
+{
+  "version": "V4.2",
+  "date": "2026-10-25",
+  "source": "universal-agents/",
+  "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+  "generated_with": [
+    "tooling/build/generate_roles.py",
+    "tooling/build/generate_dist.py"
+  ],
+  "distributions": [
+    {
+      "host": "codex",
+      "manifest_sha256": "3e39c580d61d0dfa665d9dec97130ded7e18914de4d525734aa43b381244e19d",
+      "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+      "files": 39,
+      "skills": 23,
+      "native_agent_definitions": 6,
+      "hooks_enabled": false,
+      "mcp_enabled": false
+    },
+    {
+      "host": "antigravity-ide",
+      "manifest_sha256": "6fe51eed479cef8fb2168c3e14e831400872c5adf6b6ea0d9e1e8c1973974403",
+      "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+      "files": 40,
+      "skills": 23,
+      "native_agent_definitions": 6,
+      "hooks_enabled": false,
+      "mcp_enabled": false
+    },
+    {
+      "host": "antigravity-cli",
+      "manifest_sha256": "b40d7f6b7457262416422d4d91070d6893c4c1e075b08c1c3fe5ddcbfdceb43d",
+      "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+      "files": 40,
+      "skills": 23,
+      "native_agent_definitions": 6,
+      "hooks_enabled": false,
+      "mcp_enabled": false
+    },
+    {
+      "host": "claude-code",
+      "manifest_sha256": "75daf0151408d045b471900a7fcfedaeafc7d1df210e21e255369d7a474bc788",
+      "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+      "files": 39,
+      "skills": 23,
+      "native_agent_definitions": 6,
+      "hooks_enabled": false,
+      "mcp_enabled": false
+    },
+    {
+      "host": "opencode",
+      "manifest_sha256": "8ffa025608ec4aeea90505d0b47731aa541b281a1f4baa5784a73ba3649fa2b8",
+      "source_digest": "e15601a134110bd4b302e3ff7aa60f53a130308b61977891e0c7c52f2102f8a7",
+      "files": 39,
+      "skills": 23,
+      "native_agent_definitions": 6,
+      "hooks_enabled": false,
+      "mcp_enabled": false
+    }
+  ]
+}

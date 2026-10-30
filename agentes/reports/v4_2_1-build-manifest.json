@@ -1,0 +1,27 @@
+{
+  "release": "4.2.1",
+  "source_digest": "fb8eccfb881550f552d89e80db4f9a070a06ed883d726bd46855cc6e166c6b5c",
+  "source_of_truth": "universal-agents/",
+  "distributions": {
+    "codex": {
+      "manifest_sha256": "6c8af9058583401f7e634d3ebef29ac1eb91daac7dd84066e1bc65c03f53e401",
+      "file_count": 39
+    },
+    "antigravity-ide": {
+      "manifest_sha256": "fd2252bb6acd8afd4632a60b5f4d2e7b589cb92b7797209453f7f9a4733b565a",
+      "file_count": 40
+    },
+    "antigravity-cli": {
+      "manifest_sha256": "40c9a4cc4cadfab1c45b0f438fe0eaa68dc4923153882a3295c834efce1fda3f",
+      "file_count": 40
+    },
+    "claude-code": {
+      "manifest_sha256": "97647eb53bfdbef4e742265630a5c14872e75f528aecf82d32dddba905d854fb",
+      "file_count": 39
+    },
+    "opencode": {
+      "manifest_sha256": "4df587e93ed190a86df8c4c3138b2c86d76c4444c6f27ffc13fa88b0556f23df",
+      "file_count": 39
+    }
+  }
+}

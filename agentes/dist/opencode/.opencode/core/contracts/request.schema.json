@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/universal-agents/request.schema.json",
+  "title": "Normalized request with declared routing signals",
+  "type": "object",
+  "required": [
+    "request_id",
+    "verbatim",
+    "intent",
+    "task_type",
+    "scope",
+    "constraints",
+    "acceptance",
+    "unknowns",
+    "permission_boundary",
+    "risk",
+    "signals"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verbatim": {
+      "type": "string"
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_type": {
+      "enum": [
+        "answer",
+        "diagnose",
+        "plan",
+        "implement",
+        "review",
+        "release"
+      ]
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "permission_boundary": {
+      "enum": [
+        "read-only",
+        "workspace-write",
+        "needs-approval"
+      ],
+      "description": "A request-side boundary claim only; never an effective host permission."
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "description": "Declared risk signal; the router may add safeguards but cannot reduce host controls."
+    },
+    "signals": {
+      "type": "object",
+      "required": [
+        "domains",
+        "impacts",
+        "stages",
+        "context",
+        "controls"
+      ],
+      "properties": {
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "evidence_paths"
+            ],
+            "properties": {
+              "value": {
+                "enum": [
+                  "general",
+                  "documentation",
+                  "api",
+                  "database",
+                  "ui",
+                  "security",
+                  "performance",
+                  "infrastructure",
+                  "architecture",
+                  "test",
+                  "mobile",
+                  "frontend",
+                  "backend",
+                  "full_stack",
+                  "research",
+                  "desktop"
+                ]
+              },
+              "evidence_paths": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "impacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "evidence_paths"
+            ],
+            "properties": {
+              "value": {
+                "enum": [
+                  "local",
+                  "cross_component",
+                  "public_contract",
+                  "data_migration",
+                  "security_sensitive",
+                  "external_effect"
+                ]
+              },
+              "evidence_paths": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "evidence_refs"
+            ],
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "context": {
+          "type": "object",
+          "required": [
+            "status",
+            "breadth",
+            "evidence_paths"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "known",
+                "unknown"
+              ]
+            },
+            "breadth": {
+              "enum": [
+                "narrow",
+                "broad"
+              ]
+            },
+            "evidence_paths": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "controls": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "evidence_refs"
+            ],
+            "properties": {
+              "value": {
+              "enum": [
+                "tests",
+                "independent_review",
+                "security_check",
+                "security_audit",
+                "visual_review",
+                "accessibility",
+                "motion_review",
+                "new_visual_direction",
+                "rollback"
+              ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "project_profile": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "missing_tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "essential_tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

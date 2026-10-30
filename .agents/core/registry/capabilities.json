@@ -1,0 +1,213 @@
+{
+  "schema_version": 2,
+  "capabilities": [
+    {
+      "id": "architect",
+      "group": "direction",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "arch"
+      ],
+      "summary": "Compara opciones de arquitectura y contratos usando evidencia del repositorio, sin imponer patrones. Activar ante cambios estructurales o límites entre componentes."
+    },
+    {
+      "id": "implementer",
+      "group": "engineering",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Implementa el cambio autorizado más pequeño que cumpla aceptación y convenciones del repositorio. No amplía el alcance por inferencia."
+    },
+    {
+      "id": "debugger",
+      "group": "engineering",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Reproduce un fallo, prueba hipótesis y separa causa confirmada de sospecha. Activar ante comportamiento incorrecto o error reproducible."
+    },
+    {
+      "id": "api-engineer",
+      "group": "engineering",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "api-core"
+      ],
+      "summary": "Diseña o modifica contratos y endpoints de API compatibles con el stack existente. Activar ante evidencia explícita de API o contrato público."
+    },
+    {
+      "id": "db-engineer",
+      "group": "engineering",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "db-master"
+      ],
+      "summary": "Analiza persistencia, consultas e integridad; prepara migraciones seguras cuando hay evidencia explícita de datos o esquema."
+    },
+    {
+      "id": "performance-engineer",
+      "group": "engineering",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Investiga y optimiza una hipótesis de rendimiento con medición comparable y criterio de regresión."
+    },
+    {
+      "id": "qa-strategist",
+      "group": "quality",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Convierte riesgos y aceptación en una estrategia de pruebas proporcionada; distingue pruebas necesarias de pruebas ejecutadas."
+    },
+    {
+      "id": "test-engineer",
+      "group": "quality",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Añade y ejecuta pruebas apropiadas al contrato del proyecto; informa comandos y resultados observados con alcance exacto."
+    },
+    {
+      "id": "code-reviewer",
+      "group": "quality",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Busca defectos concretos en un diff con hallazgos priorizados y referencias de líneas. Activar para revisión solicitada o control independiente disponible."
+    },
+    {
+      "id": "security-check",
+      "group": "security",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "sec"
+      ],
+      "summary": "Realiza una revisión ligera y contextual de cambios sensibles: límites, autorización, validación, secretos y controles adyacentes."
+    },
+    {
+      "id": "security-auditor",
+      "group": "security",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "security-audit"
+      ],
+      "summary": "Conduce una auditoría de seguridad profunda, explícitamente acotada, con modelo de amenazas y validación de candidatos."
+    },
+    {
+      "id": "design-director",
+      "group": "design",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Define dirección visual basada en producto, marca, audiencia y restricciones antes de implementar UI."
+    },
+    {
+      "id": "ui-engineer",
+      "group": "design",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "ui-expert"
+      ],
+      "summary": "Implementa interfaz en el stack y sistema visual existentes con estados completos, responsive y accesibilidad básica."
+    },
+    {
+      "id": "ux-reviewer",
+      "group": "design",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Evalúa usabilidad, accesibilidad y estados de una experiencia con escenarios de usuario y evidencia observable."
+    },
+    {
+      "id": "motion-reviewer",
+      "group": "design",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Revisa animaciones por propósito, timing, accesibilidad, rendimiento y reduced motion."
+    },
+    {
+      "id": "docs-release",
+      "group": "release",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Prepara documentación, changelog, integridad y pasos de release/rollback sin publicar por cuenta propia."
+    },
+    {
+      "id": "agent-evaluator",
+      "group": "evaluation",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "eval-harness"
+      ],
+      "summary": "Evalúa activación, comportamiento y coste de skills/agentes con fixtures versionados y métricas honestas."
+    },
+    {
+      "id": "tech-lead",
+      "group": "direction",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [
+        "caio"
+      ],
+      "summary": "Clasifica, coordina y cierra trabajo de software con el mínimo routing suficiente, respetando autorización y evidencia."
+    },
+    {
+      "id": "request-analyst",
+      "group": "understanding",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Convierte una solicitud compleja en un brief fiel y compacto, preservando negaciones, prioridades, permisos y criterios."
+    },
+    {
+      "id": "prompt-refiner",
+      "group": "understanding",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Reestructura prompts complejos con fidelidad semántica verificable, manteniendo texto original y límites de autorización."
+    },
+    {
+      "id": "repo-explorer",
+      "group": "understanding",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Explora de forma focalizada un repositorio para identificar stack, convenciones, rutas, cambios y verificaciones sin escribir."
+    },
+    {
+      "id": "planner",
+      "group": "direction",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Prepara un plan corto y con dependencias, riesgos y condiciones observables para tareas multi-etapa."
+    },
+    {
+      "id": "context-curator",
+      "group": "understanding",
+      "mode": "skill",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Reduce contexto a fuentes relevantes y mantiene continuidad mediante decisiones, límites y evidencia mínima."
+    },
+    {
+      "id": "verifier",
+      "group": "quality",
+      "mode": "deterministic_script",
+      "status": "implemented",
+      "aliases": [],
+      "summary": "Validates documentary evidence shape only; never proves execution or issues approval."
+    }
+  ]
+}

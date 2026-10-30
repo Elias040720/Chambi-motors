@@ -1,0 +1,651 @@
+{
+  "workspace": "C:\\Users\\ABEL\\Downloads\\agentes",
+  "created_utc": "2026-10-24T06:00:47.0635348Z",
+  "git_repository_found": false,
+  "trees": [
+    {
+      "source": "agentes",
+      "archive_path": "C:\\Users\\ABEL\\Downloads\\agentes\\archive\\received\\baseline-20261024-010047\\agentes",
+      "file_count": 46,
+      "aggregate_sha256": "e402054818480092bb53e3a72e6bbd53434e6fcb1e1e71cef9170cc4ca584b04",
+      "files": [
+        {
+          "path": ".agents/hooks.json",
+          "length": 830,
+          "sha256": "749cbdfb5ccc4363195b70db358084454c107a97feb2149754165e6518f11611"
+        },
+        {
+          "path": ".agents/plugins/gitnexus/mcp_config.json",
+          "length": 267,
+          "sha256": "1ba8bcd72a9ac5f80bf03ae485a5beaa5065d81500fd5fa07ae808b6aae0d7fb"
+        },
+        {
+          "path": ".agents/plugins/gitnexus/plugin.json",
+          "length": 159,
+          "sha256": "377f77754fda9f003228ec869f6cf1e80bb20203c2c3e10ebfc89a2aa28949be"
+        },
+        {
+          "path": ".agents/rules/api-backend-guidelines.md",
+          "length": 1611,
+          "sha256": "900f1ebe43bf3b66cf2753cf87d8572fc94863cb5a7df6dd54f270d00066109c"
+        },
+        {
+          "path": ".agents/rules/architecture-standards.md",
+          "length": 1588,
+          "sha256": "6a31caa183750d696c18ae94981cf19b974e343eb909be893881234bd4af2401"
+        },
+        {
+          "path": ".agents/rules/database-governance.md",
+          "length": 1639,
+          "sha256": "456eeaded222fe232db67ebf2850b52906f410941b489ea9482ad3b3a837cb9a"
+        },
+        {
+          "path": ".agents/rules/frontend-excellence.md",
+          "length": 1695,
+          "sha256": "7fa5fd32e80999548629159e4136f41fbaf7b5c01a510d17b85f13f228537bdf"
+        },
+        {
+          "path": ".agents/rules/security-guardrails.md",
+          "length": 1798,
+          "sha256": "714c840d209f9e58bd073744cf8e220ef741a69d7ee57428d035fd6aa0fc2482"
+        },
+        {
+          "path": ".agents/skills/api-core/SKILL.md",
+          "length": 1782,
+          "sha256": "c33e928da624a2c2fd4b03a1427cf8c0981b5024f5b1bb307711fd72f7633a3f"
+        },
+        {
+          "path": ".agents/skills/arch/SKILL.md",
+          "length": 1724,
+          "sha256": "53d787bb93895d95b53dfa6fcff083c48c31c0b00f469558ca6a8dd817868f33"
+        },
+        {
+          "path": ".agents/skills/archify/SKILL.md",
+          "length": 1887,
+          "sha256": "f2c1fce9b7bb734421fb0a5876ad92aad98fad070a30fc7fff9f0ee20ff892c1"
+        },
+        {
+          "path": ".agents/skills/caio/SKILL.md",
+          "length": 1827,
+          "sha256": "fd68f52dd5d23f7ce5c5c7231105a90e430faab9efda979bee8e88b4b586360c"
+        },
+        {
+          "path": ".agents/skills/db-master/SKILL.md",
+          "length": 1889,
+          "sha256": "d7c486f5db2b6c28f64c1b164c419bd61b3db8459cbab1a224d151280af8829a"
+        },
+        {
+          "path": ".agents/skills/eval-harness/scripts/run_eval.py",
+          "length": 6181,
+          "sha256": "df11528b48d7863f13e4a46c00b56cc46ca4663e40c27248f4625e783a1f1638"
+        },
+        {
+          "path": ".agents/skills/eval-harness/SKILL.md",
+          "length": 1457,
+          "sha256": "fea4e9cc040ae6c20fc7d9af74dc1529d65420cafd789e49785f1e21ce1ce648"
+        },
+        {
+          "path": ".agents/skills/gitnexus/SKILL.md",
+          "length": 1744,
+          "sha256": "4915c4c282c23846b99250d432ede85c9f7f74e5cf6fbe3203dacaf7920c3827"
+        },
+        {
+          "path": ".agents/skills/sec/SKILL.md",
+          "length": 2096,
+          "sha256": "a82d7c2f5d705d706c3ffcca4f8e5c7fb53ce43b347bd8e703637c5f73e06edd"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/AI-AND-LLM.md",
+          "length": 10700,
+          "sha256": "0d57a4d8b1ce05015e867bc89277aabf80f4a3031beba42df4481fc92027f83b"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/ATTACK-CLASSES.md",
+          "length": 15825,
+          "sha256": "fff6ce0269696d17bda38bfeb27410bdce820f2299cb68a7ceb81883204a3604"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/CLIENT-SIDE.md",
+          "length": 8677,
+          "sha256": "e9098dc5da89a996e28c25e9e3e3e976ec777a19c4f05c9a04cd4c0d4a3ce120"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/CLOUD-AND-DEPLOYMENT.md",
+          "length": 8377,
+          "sha256": "29514d7c3a9e83d48f1f519e70e8b2fde4e1d1ac92d2500737b6c8be718c3b2d"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/DATA-ISOLATION-AND-LIFECYCLE.md",
+          "length": 7882,
+          "sha256": "5c546940150363cb4039038e2c00c080a8d302e7a2e50f72f3960e4c67801b5e"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/DESKTOP-MOBILE-AND-LOCAL-IPC.md",
+          "length": 8828,
+          "sha256": "055fec61e744d5ba434cbf0c1f2994b1f83d961f5e43d89cc0bb690d16a11f3b"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/HUNTING.md",
+          "length": 22697,
+          "sha256": "b980765f1a616a141044b00e3dcbb7c36ec4d7cf43740d85985d0bdbca9cfe91"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/MEMORY-SAFETY-AND-BINARY.md",
+          "length": 10614,
+          "sha256": "c88390b508fc86838b7b12889499fabf28acfe32ca34f2d4ff655a420264f44f"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/PROTOCOLS-RPC-AND-MESSAGING.md",
+          "length": 7564,
+          "sha256": "2bc534260d9842cc9a6bb15615e58c5350201008880083da78969bdeb657a7ce"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/RECONNAISSANCE.md",
+          "length": 16058,
+          "sha256": "a02316fae383754621d312215170479685f85c1142b6c117a9a03c6ad8f907e4"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md",
+          "length": 7554,
+          "sha256": "a9590f9966de194e51dd7c82f930bc910662f0275357e433e33758756755ec8d"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/SUPPLY-CHAIN-AND-RELEASE.md",
+          "length": 7331,
+          "sha256": "c1eb0a8b9a6ab1e979b214ee70fd8fff4c173d4063fd82df82fc5269cb115c17"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/VALIDATION-AND-REPORTING.md",
+          "length": 18029,
+          "sha256": "943e68578aa1d7031282837d1455cf64d1e95d032c9df09b3f182ce134e89072"
+        },
+        {
+          "path": ".agents/skills/security-audit/references/WEB-PROTOCOL-AND-AUTH.md",
+          "length": 12405,
+          "sha256": "757c5191cc397ad7145ffe5b6ffa438bdd36fefd351da640267630d05f01bfae"
+        },
+        {
+          "path": ".agents/skills/security-audit/resources/report-schema.json",
+          "length": 14955,
+          "sha256": "7bea150f30dcef07df1859d33d01406953cf600f6a08250e1e59e10f252e2c4c"
+        },
+        {
+          "path": ".agents/skills/security-audit/scripts/report-schema.json",
+          "length": 14955,
+          "sha256": "7bea150f30dcef07df1859d33d01406953cf600f6a08250e1e59e10f252e2c4c"
+        },
+        {
+          "path": ".agents/skills/security-audit/scripts/validate-coverage-ledger.cjs",
+          "length": 34701,
+          "sha256": "f0e04fa95adae0eaed6228f2178a95d1bb40ebfdc359d96fc23105f7a8eee491"
+        },
+        {
+          "path": ".agents/skills/security-audit/scripts/validate-coverage-ledger.test.cjs",
+          "length": 29223,
+          "sha256": "44dd5a6200952fb4f149a3f0dbabdbe116c402c63f0bd2858043207debe39bcc"
+        },
+        {
+          "path": ".agents/skills/security-audit/scripts/validate-findings.cjs",
+          "length": 29906,
+          "sha256": "9f7771eac1bdcecfcff11aa345472b03f1a419dbc0acfc53840018dd576dd921"
+        },
+        {
+          "path": ".agents/skills/security-audit/scripts/validate-findings.test.cjs",
+          "length": 27036,
+          "sha256": "7c91656073b51cbb7e029e33804de97c1d8c0b52f3521fd60e3978133e8cb73a"
+        },
+        {
+          "path": ".agents/skills/security-audit/SKILL.md",
+          "length": 3981,
+          "sha256": "3afedba87b40950a2b3aee160167fbda0e3c91a2cb993034aa2f2a271fb16851"
+        },
+        {
+          "path": ".agents/skills/tech-lead/SKILL.md",
+          "length": 2200,
+          "sha256": "2bc1a6eb1c8da62ab57b97f07c63332b8d99861d78b357111543e2d3f656cebb"
+        },
+        {
+          "path": ".agents/skills/ui-expert/SKILL.md",
+          "length": 1862,
+          "sha256": "7ae7d51c5fc2eb47ab0186df5852231a78524ad1bb9893568c5645728f4944cd"
+        },
+        {
+          "path": ".agents/workflows/build-module.md",
+          "length": 1771,
+          "sha256": "7bf542f84e177d39cbc68ea4f179562a3d66beb8f7704d859bfa05cda1ec316f"
+        },
+        {
+          "path": ".agents/workflows/eval.md",
+          "length": 1045,
+          "sha256": "24991b78e290ef87f0a72904a1d51db32b3ed4ef60b545a778cbe83d623281c2"
+        },
+        {
+          "path": ".agents/workflows/release.md",
+          "length": 1229,
+          "sha256": "9cf8108839bb3307603a2248a01c89b6a15cb94134d66b2adb4a4642e32c53fb"
+        },
+        {
+          "path": "AGENTS.md",
+          "length": 1858,
+          "sha256": "f1b307b67e0296f3f1923562ba1dc1d10b3c8c083031c4bafb8774093f66a8ce"
+        },
+        {
+          "path": "GEMINI.md",
+          "length": 1858,
+          "sha256": "f1b307b67e0296f3f1923562ba1dc1d10b3c8c083031c4bafb8774093f66a8ce"
+        },
+        {
+          "path": "tools/bridge/sync-graph-to-archify.mjs",
+          "length": 5742,
+          "sha256": "73b21014d575858b95f02d14d890e70be5ab11709fb6b1e056d12f4bd14fb0a2"
+        }
+      ]
+    },
+    {
+      "source": "release_v2/release_v2",
+      "archive_path": "C:\\Users\\ABEL\\Downloads\\agentes\\archive\\received\\baseline-20261024-010047\\release_v2\\release_v2",
+      "file_count": 49,
+      "aggregate_sha256": "434a14d1cd37f2e6f588712a4adb5945fb9cc7e086625b7f5e8e5b006212130d",
+      "files": [
+        {
+          "path": "init-project.cmd",
+          "length": 172,
+          "sha256": "d8c2212263e47957fd77c27e63275c3e1f016037b0951447c679e9f86ce370bf"
+        },
+        {
+          "path": "init-project.ps1",
+          "length": 12232,
+          "sha256": "f899916dd226fc433a2ca215d9dc22c9f531a83e485089ac8f47b484724e1bcf"
+        },
+        {
+          "path": "README.md",
+          "length": 3571,
+          "sha256": "7c3723cf929aca3768c437edc5fe993e21b8cd300bb5650450ebbafa0e4e3641"
+        },
+        {
+          "path": "template/.agents/hooks.json",
+          "length": 830,
+          "sha256": "749cbdfb5ccc4363195b70db358084454c107a97feb2149754165e6518f11611"
+        },
+        {
+          "path": "template/.agents/plugins/gitnexus/mcp_config.json",
+          "length": 267,
+          "sha256": "1ba8bcd72a9ac5f80bf03ae485a5beaa5065d81500fd5fa07ae808b6aae0d7fb"
+        },
+        {
+          "path": "template/.agents/plugins/gitnexus/plugin.json",
+          "length": 159,
+          "sha256": "377f77754fda9f003228ec869f6cf1e80bb20203c2c3e10ebfc89a2aa28949be"
+        },
+        {
+          "path": "template/.agents/rules/api-backend-guidelines.md",
+          "length": 1611,
+          "sha256": "900f1ebe43bf3b66cf2753cf87d8572fc94863cb5a7df6dd54f270d00066109c"
+        },
+        {
+          "path": "template/.agents/rules/architecture-standards.md",
+          "length": 1588,
+          "sha256": "6a31caa183750d696c18ae94981cf19b974e343eb909be893881234bd4af2401"
+        },
+        {
+          "path": "template/.agents/rules/database-governance.md",
+          "length": 1639,
+          "sha256": "456eeaded222fe232db67ebf2850b52906f410941b489ea9482ad3b3a837cb9a"
+        },
+        {
+          "path": "template/.agents/rules/frontend-excellence.md",
+          "length": 1695,
+          "sha256": "7fa5fd32e80999548629159e4136f41fbaf7b5c01a510d17b85f13f228537bdf"
+        },
+        {
+          "path": "template/.agents/rules/security-guardrails.md",
+          "length": 1798,
+          "sha256": "714c840d209f9e58bd073744cf8e220ef741a69d7ee57428d035fd6aa0fc2482"
+        },
+        {
+          "path": "template/.agents/skills/api-core/SKILL.md",
+          "length": 1782,
+          "sha256": "c33e928da624a2c2fd4b03a1427cf8c0981b5024f5b1bb307711fd72f7633a3f"
+        },
+        {
+          "path": "template/.agents/skills/arch/SKILL.md",
+          "length": 1724,
+          "sha256": "53d787bb93895d95b53dfa6fcff083c48c31c0b00f469558ca6a8dd817868f33"
+        },
+        {
+          "path": "template/.agents/skills/archify/SKILL.md",
+          "length": 1887,
+          "sha256": "f2c1fce9b7bb734421fb0a5876ad92aad98fad070a30fc7fff9f0ee20ff892c1"
+        },
+        {
+          "path": "template/.agents/skills/caio/SKILL.md",
+          "length": 1827,
+          "sha256": "fd68f52dd5d23f7ce5c5c7231105a90e430faab9efda979bee8e88b4b586360c"
+        },
+        {
+          "path": "template/.agents/skills/db-master/SKILL.md",
+          "length": 1889,
+          "sha256": "d7c486f5db2b6c28f64c1b164c419bd61b3db8459cbab1a224d151280af8829a"
+        },
+        {
+          "path": "template/.agents/skills/eval-harness/scripts/run_eval.py",
+          "length": 6181,
+          "sha256": "df11528b48d7863f13e4a46c00b56cc46ca4663e40c27248f4625e783a1f1638"
+        },
+        {
+          "path": "template/.agents/skills/eval-harness/SKILL.md",
+          "length": 1457,
+          "sha256": "fea4e9cc040ae6c20fc7d9af74dc1529d65420cafd789e49785f1e21ce1ce648"
+        },
+        {
+          "path": "template/.agents/skills/gitnexus/SKILL.md",
+          "length": 1744,
+          "sha256": "4915c4c282c23846b99250d432ede85c9f7f74e5cf6fbe3203dacaf7920c3827"
+        },
+        {
+          "path": "template/.agents/skills/sec/SKILL.md",
+          "length": 2096,
+          "sha256": "a82d7c2f5d705d706c3ffcca4f8e5c7fb53ce43b347bd8e703637c5f73e06edd"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/AI-AND-LLM.md",
+          "length": 10700,
+          "sha256": "0d57a4d8b1ce05015e867bc89277aabf80f4a3031beba42df4481fc92027f83b"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/ATTACK-CLASSES.md",
+          "length": 15825,
+          "sha256": "fff6ce0269696d17bda38bfeb27410bdce820f2299cb68a7ceb81883204a3604"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/CLIENT-SIDE.md",
+          "length": 8677,
+          "sha256": "e9098dc5da89a996e28c25e9e3e3e976ec777a19c4f05c9a04cd4c0d4a3ce120"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/CLOUD-AND-DEPLOYMENT.md",
+          "length": 8377,
+          "sha256": "29514d7c3a9e83d48f1f519e70e8b2fde4e1d1ac92d2500737b6c8be718c3b2d"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/DATA-ISOLATION-AND-LIFECYCLE.md",
+          "length": 7882,
+          "sha256": "5c546940150363cb4039038e2c00c080a8d302e7a2e50f72f3960e4c67801b5e"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/DESKTOP-MOBILE-AND-LOCAL-IPC.md",
+          "length": 8828,
+          "sha256": "055fec61e744d5ba434cbf0c1f2994b1f83d961f5e43d89cc0bb690d16a11f3b"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/HUNTING.md",
+          "length": 22697,
+          "sha256": "b980765f1a616a141044b00e3dcbb7c36ec4d7cf43740d85985d0bdbca9cfe91"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/MEMORY-SAFETY-AND-BINARY.md",
+          "length": 10614,
+          "sha256": "c88390b508fc86838b7b12889499fabf28acfe32ca34f2d4ff655a420264f44f"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/PROTOCOLS-RPC-AND-MESSAGING.md",
+          "length": 7564,
+          "sha256": "2bc534260d9842cc9a6bb15615e58c5350201008880083da78969bdeb657a7ce"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/RECONNAISSANCE.md",
+          "length": 16058,
+          "sha256": "a02316fae383754621d312215170479685f85c1142b6c117a9a03c6ad8f907e4"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md",
+          "length": 7554,
+          "sha256": "a9590f9966de194e51dd7c82f930bc910662f0275357e433e33758756755ec8d"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/SUPPLY-CHAIN-AND-RELEASE.md",
+          "length": 7331,
+          "sha256": "c1eb0a8b9a6ab1e979b214ee70fd8fff4c173d4063fd82df82fc5269cb115c17"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/VALIDATION-AND-REPORTING.md",
+          "length": 18029,
+          "sha256": "943e68578aa1d7031282837d1455cf64d1e95d032c9df09b3f182ce134e89072"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/references/WEB-PROTOCOL-AND-AUTH.md",
+          "length": 12405,
+          "sha256": "757c5191cc397ad7145ffe5b6ffa438bdd36fefd351da640267630d05f01bfae"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/resources/report-schema.json",
+          "length": 14955,
+          "sha256": "7bea150f30dcef07df1859d33d01406953cf600f6a08250e1e59e10f252e2c4c"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/scripts/report-schema.json",
+          "length": 14955,
+          "sha256": "7bea150f30dcef07df1859d33d01406953cf600f6a08250e1e59e10f252e2c4c"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/scripts/validate-coverage-ledger.cjs",
+          "length": 34701,
+          "sha256": "f0e04fa95adae0eaed6228f2178a95d1bb40ebfdc359d96fc23105f7a8eee491"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/scripts/validate-coverage-ledger.test.cjs",
+          "length": 29223,
+          "sha256": "44dd5a6200952fb4f149a3f0dbabdbe116c402c63f0bd2858043207debe39bcc"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/scripts/validate-findings.cjs",
+          "length": 29906,
+          "sha256": "9f7771eac1bdcecfcff11aa345472b03f1a419dbc0acfc53840018dd576dd921"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/scripts/validate-findings.test.cjs",
+          "length": 27036,
+          "sha256": "7c91656073b51cbb7e029e33804de97c1d8c0b52f3521fd60e3978133e8cb73a"
+        },
+        {
+          "path": "template/.agents/skills/security-audit/SKILL.md",
+          "length": 3981,
+          "sha256": "3afedba87b40950a2b3aee160167fbda0e3c91a2cb993034aa2f2a271fb16851"
+        },
+        {
+          "path": "template/.agents/skills/tech-lead/SKILL.md",
+          "length": 2200,
+          "sha256": "2bc1a6eb1c8da62ab57b97f07c63332b8d99861d78b357111543e2d3f656cebb"
+        },
+        {
+          "path": "template/.agents/skills/ui-expert/SKILL.md",
+          "length": 1862,
+          "sha256": "7ae7d51c5fc2eb47ab0186df5852231a78524ad1bb9893568c5645728f4944cd"
+        },
+        {
+          "path": "template/.agents/workflows/build-module.md",
+          "length": 1771,
+          "sha256": "7bf542f84e177d39cbc68ea4f179562a3d66beb8f7704d859bfa05cda1ec316f"
+        },
+        {
+          "path": "template/.agents/workflows/eval.md",
+          "length": 1045,
+          "sha256": "24991b78e290ef87f0a72904a1d51db32b3ed4ef60b545a778cbe83d623281c2"
+        },
+        {
+          "path": "template/.agents/workflows/release.md",
+          "length": 1229,
+          "sha256": "9cf8108839bb3307603a2248a01c89b6a15cb94134d66b2adb4a4642e32c53fb"
+        },
+        {
+          "path": "template/AGENTS.md",
+          "length": 1858,
+          "sha256": "f1b307b67e0296f3f1923562ba1dc1d10b3c8c083031c4bafb8774093f66a8ce"
+        },
+        {
+          "path": "template/GEMINI.md",
+          "length": 1858,
+          "sha256": "f1b307b67e0296f3f1923562ba1dc1d10b3c8c083031c4bafb8774093f66a8ce"
+        },
+        {
+          "path": "template/tools/bridge/sync-graph-to-archify.mjs",
+          "length": 5742,
+          "sha256": "73b21014d575858b95f02d14d890e70be5ab11709fb6b1e056d12f4bd14fb0a2"
+        }
+      ]
+    },
+    {
+      "source": "release_v3_1",
+      "archive_path": "C:\\Users\\ABEL\\Downloads\\agentes\\archive\\received\\baseline-20261024-010047\\release_v3_1",
+      "file_count": 29,
+      "aggregate_sha256": "1a80c7a8e1d77c8896e34cea23e76e79c0dff224dfe8ebe20ab82e7d3d9aee5b",
+      "files": [
+        {
+          "path": "core/contracts/delegation.md",
+          "length": 799,
+          "sha256": "3503f8aa34d60583665e9d889258a152287fc59e9a55eab5fad744a0a2506b64"
+        },
+        {
+          "path": "core/contracts/evidence.schema.json",
+          "length": 1476,
+          "sha256": "39bfc6ee8e9e9fa625c5d9059a5df9395db1c8a68e48925ed127a12456da2b44"
+        },
+        {
+          "path": "core/contracts/request.schema.json",
+          "length": 6610,
+          "sha256": "eb2b4165241c513bbfd4c56fc6c86671a8cae6b881fc0d4e1d9e6ceb76f64ec1"
+        },
+        {
+          "path": "core/contracts/result.schema.json",
+          "length": 1207,
+          "sha256": "8d1d89908a20a732c48a238d5e2307a1b6dbfb6f7fa808ba462bbb3b451fcd2b"
+        },
+        {
+          "path": "core/policies/constitution.md",
+          "length": 1795,
+          "sha256": "0c9e9441a3ba0960fc46da390dbf020d05930b76ee768af97bec48a782b1ed77"
+        },
+        {
+          "path": "core/registry/capabilities.json",
+          "length": 5020,
+          "sha256": "f64339c4b02e8e138cd0ed2efa198f76678dfcd9a764a1377442c6bf95b690b0"
+        },
+        {
+          "path": "core/routing/cases.json",
+          "length": 31149,
+          "sha256": "26d3cffc312f14ad29eed7ec0a042ce36772cd8fbee621abfa301f692f182ccc"
+        },
+        {
+          "path": "core/routing/policy.md",
+          "length": 4638,
+          "sha256": "c371a3b5f5e13ab047263dc56933e0be7e41d5bb5e0ccad4acea2ca36de8f743"
+        },
+        {
+          "path": "docs/evidence-provenance.md",
+          "length": 1788,
+          "sha256": "3bab9d3fba832fef91af31b453873bd30640bae501891e489632b88109492102"
+        },
+        {
+          "path": "docs/host-matrix.md",
+          "length": 3590,
+          "sha256": "761558e183b9eee7aa46aa590fc77f02a902dbf3a66650032d558db8e31e9660"
+        },
+        {
+          "path": "docs/phase-plan.md",
+          "length": 1944,
+          "sha256": "eb3f0278265a8c58f3d9cac84cf66f3212d5171eb5147aaedefd6b2c3e12f723"
+        },
+        {
+          "path": "docs/reference-packaging.md",
+          "length": 2556,
+          "sha256": "b6f3064e9ed1cdff22b57c20cdb26dce5f1b8cd39e291a59e15d35a9c0a1f208"
+        },
+        {
+          "path": "docs/security-capabilities.md",
+          "length": 1100,
+          "sha256": "cc6e5cde41a2146159a6db46e086030234b400dfbd9b22e3121a8969e380b536"
+        },
+        {
+          "path": "docs/source-integrity.md",
+          "length": 630,
+          "sha256": "7770ab5321debb9734c83495a1226ea49e6b5221dc0ae3aaf68b7fb29a5542e2"
+        },
+        {
+          "path": "README.md",
+          "length": 2437,
+          "sha256": "58dc07f38710421605e2b0093c54920a2cf5f278b3131ad40cae71a293d1bbbd"
+        },
+        {
+          "path": "skills/context-curator/SKILL.md",
+          "length": 1632,
+          "sha256": "59c09d189d4d71281c4f71ccd860e5e129b04309dd12d6bf94b905a0b4166d55"
+        },
+        {
+          "path": "skills/planner/SKILL.md",
+          "length": 1554,
+          "sha256": "940fa6f2a2de96fe4f4468487fa0f7af11d8246670d240e51ee79de3cc02b59a"
+        },
+        {
+          "path": "skills/prompt-refiner/SKILL.md",
+          "length": 1587,
+          "sha256": "093147500ba29518f8c832de4a7b98546bb24bba19b0135b0a3661ba31f6bc1f"
+        },
+        {
+          "path": "skills/repo-explorer/SKILL.md",
+          "length": 1572,
+          "sha256": "fe3a65438f4932d280a51c78e62ca475c74b10a7e3967ea6f3476d1add43267a"
+        },
+        {
+          "path": "skills/request-analyst/SKILL.md",
+          "length": 1660,
+          "sha256": "a451d4631b0e0f8fff7677423daa6f12196f0e3fb4e30acc981f8c3e66dff826"
+        },
+        {
+          "path": "skills/tech-lead/SKILL.md",
+          "length": 2632,
+          "sha256": "4a98d9f7d744f213bae7ff55a757b801f456a59c3d4c4ad5266468dd7d32175a"
+        },
+        {
+          "path": "tests/__pycache__/test_core.cpython-39.pyc",
+          "length": 10827,
+          "sha256": "855537a17913473135c5287d1fe1ceae39b06ca22560c3b3e0ade4fc79271f40"
+        },
+        {
+          "path": "tests/test_core.py",
+          "length": 8957,
+          "sha256": "06acf0ff2fdb4e64264ae8b49af66e9274210db94bda1f2113b0040bd1a11290"
+        },
+        {
+          "path": "tools/__pycache__/route_request.cpython-39.pyc",
+          "length": 12799,
+          "sha256": "cdb78c3cce0eb6faf1cad48fcce535b66a2e78450d3ca4b5efe96a68cce2987c"
+        },
+        {
+          "path": "tools/__pycache__/validate_package.cpython-39.pyc",
+          "length": 7037,
+          "sha256": "ae214d5cc9045e6f1ff5e5b918b5c529558d9be20098ff1192135a8cd953824c"
+        },
+        {
+          "path": "tools/__pycache__/verify_evidence.cpython-39.pyc",
+          "length": 2822,
+          "sha256": "290da306352173272efbd19e3da053ec5e077b085604673c71dcb3a4f73e2544"
+        },
+        {
+          "path": "tools/route_request.py",
+          "length": 16103,
+          "sha256": "b3af06b23fb158ec9500751c8c6fe17ddf130c6bbd139cb845158188420fcd96"
+        },
+        {
+          "path": "tools/validate_package.py",
+          "length": 7764,
+          "sha256": "94814c5253d31ccfd9b6ff1a0feb89d3324124430a8a33e2d393168d2f940c76"
+        },
+        {
+          "path": "tools/verify_evidence.py",
+          "length": 3347,
+          "sha256": "f9fd679c04c641d50dc6610bb0121f8e1d11c82027f66896144f80c95e221326"
+        }
+      ]
+    }
+  ]
+}
