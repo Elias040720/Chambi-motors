@@ -1,5 +1,14 @@
 # Estado de ejecución · 29-10-2026
 
+## CM-006 / CM-009 · Integración local (29-10-2026)
+
+- PASS sintético: integrado el paquete de referencia en la rama actual mediante migración aditiva `202610290008_diagnosis_contacts_recovery.sql`, APIs/UI web y móvil para revisiones de diagnóstico y contactos por orden, y recuperación del enlace simulada solo en entorno local de pruebas. Las revisiones son append-only; la proyección pública incluye únicamente el último resumen publicado y no notas privadas ni evidencia privada.
+- PASS seguridad local: contactos vinculados a una OT, permisos separados de consulta/aprobación, verificación presencial registrada por administrador, revocación, recuperación con código de un uso/5 minutos/5 intentos y límite de solicitudes; concesiones recuperadas ligadas a una OT y contacto. Migración RLS mantiene desafíos inaccesibles a `anon`/`authenticated`; `pnpm test:rls` pasó con rollback. Representantes pueden registrarse con permiso explícito, pero la aprobación remota por representante aún no está conectada.
+- PASS pruebas de referencia adjuntas: `node --test CHAMBI_CM009_CM006_PILOTO_SINTETICO/CHAMBI_CM009_CM006_PILOTO_SINTETICO/tests/reference-model.test.mjs` 27/27. Son un modelo independiente, no prueba de integración.
+- PASS verificación local observada: `pnpm test` 115/115 en 11 archivos; `pnpm test:rls` exit 0; `pnpm test:e2e tests/e2e/recovery-diagnosis.spec.ts` 2/2 y suite integral `pnpm test:e2e` 12/12 sobre PostgreSQL desechable/Chromium; `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm build` y `git diff --check` exit 0. No se probó integración visual del formulario nuevo por automatización dedicada; el build/TS y los E2E del contrato sí cubren estas rutas.
+- No se configuró proveedor SMS, Supabase remoto ni datos reales. Recuperación responde como no disponible fuera del simulador local; el código de prueba se muestra solo en ese modo. No se inicia piloto real hasta disponer de canal OTP autorizado, backend de pruebas, Auth/Storage/RLS remotos y revisión de privacidad.
+- El APK EAS existente corresponde al commit `0e18590`; no contiene estos cambios. No se generó un APK nuevo ni se declara validación nativa de esta integración.
+
 ## Plan maestro 2.0 · auditoría incremental
 
 El snapshot se auditó el 29-10-2026 sobre `fa077de` en `feat/chambi-motors-platform-v1`; no se reinició ni modificó lógica de producto. La matriz CM-001..030 y el plan de cortes están documentados en [auditoría base](audits/CHAMBI_BASELINE_2026-10.md), [gap matrix](product/CHAMBI_GAP_MATRIX.md) y [backlog](product/CHAMBI_IMPLEMENTATION_BACKLOG.md).

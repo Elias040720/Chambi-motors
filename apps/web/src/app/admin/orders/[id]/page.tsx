@@ -27,6 +27,30 @@ type Part = {
   resolution: string;
   promised_at: string | null;
 };
+type DiagnosisRevision = {
+  id: string;
+  revision: number;
+  kind: "preliminary" | "confirmed" | "correction";
+  effective_kind: "preliminary" | "confirmed";
+  supersedes_id: string | null;
+  internal_notes: string;
+  public_summary: string;
+  evidence_ids: string[];
+  published_at: string | null;
+  created_at: string;
+};
+type OrderContact = {
+  id: string;
+  name: string;
+  phone_e164: string;
+  relation_type: "client" | "representative";
+  can_view_progress: boolean;
+  can_approve_quote: boolean;
+  verified_at: string;
+  verification_note: string;
+  delegation_note: string | null;
+  revoked_at: string | null;
+};
 type Detail = {
   workOrder: {
     id: string;
@@ -61,6 +85,8 @@ type Detail = {
   media: { id: string; category: string; caption: string | null; visible_to_customer: boolean }[];
   progress: number;
   history: { id: string; code: string; status: WorkOrderStatus }[];
+  diagnoses: DiagnosisRevision[];
+  contacts: OrderContact[];
 };
 const card = "rounded-2xl border border-white/10 bg-graphite p-5";
 const button = "min-h-11 rounded-lg border border-white/25 px-4 py-2 disabled:opacity-50";
@@ -165,6 +191,52 @@ export default function OrderDetail() {
       },
     });
   }
+  async function saveDiagnosis(form: FormData) {
+    if (!data) return;
+    await transmit({
+      path: `/api/v1/admin/work-orders/${id}/diagnoses`,
+      body: {
+        expectedVersion: data.workOrder.version,
+        kind: form.get("kind"),
+        supersedesId: form.get("supersedesId") || undefined,
+        internalNotes: form.get("internalNotes"),
+        publicSummary: form.get("publicSummary"),
+        evidenceIds: form.getAll("evidenceIds"),
+        publish: form.get("publish") === "on",
+      },
+    });
+  }
+  async function saveContact(form: FormData) {
+    await transmit({
+      path: `/api/v1/admin/work-orders/${id}/contacts`,
+      body: {
+        name: form.get("name"),
+        phone: form.get("phone"),
+        relationType: form.get("relationType"),
+        canViewProgress: form.get("canViewProgress") === "on",
+        canApproveQuote: form.get("canApproveQuote") === "on",
+        verifiedInPerson: form.get("verifiedInPerson") === "on",
+        verificationNote: form.get("verificationNote"),
+        delegationNote: form.get("delegationNote") || undefined,
+      },
+    });
+  }
+  async function revokeContact(contactId: string) {
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/v1/admin/work-orders/${id}/contacts/${contactId}`, {
+        method: "DELETE",
+      });
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error);
+      await load();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "No se pudo revocar el contacto.");
+    } finally {
+      setBusy(false);
+    }
+  }
   async function shareLink() {
     setError("");
     try {
@@ -266,6 +338,8 @@ export default function OrderDetail() {
       <nav className="flex flex-wrap gap-2" aria-label="Secciones de la orden">
         {[
           "Resumen",
+          "Diagnóstico",
+          "Contactos",
           "Tareas",
           "Presupuesto",
           "Repuestos",
@@ -287,6 +361,187 @@ export default function OrderDetail() {
         disabled={busy || !!pending || closed}
         className="min-w-0 space-y-5 disabled:opacity-75"
       >
+        {tab === "Diagnóstico" && (
+          <>
+            <section className={card}>
+              <h2 className="text-xl font-semibold">Nueva revisión de diagnóstico</h2>
+              <p className="mt-2 text-sm text-ink-muted">
+                La evaluación inicial se muestra como pendiente de confirmar. Las correcciones
+                conservan la revisión anterior.
+              </p>
+              <form action={saveDiagnosis} className="mt-4 space-y-3">
+                <label className="block text-sm">
+                  Tipo
+                  <select className={input} name="kind">
+                    <option value="preliminary">Evaluación preliminar</option>
+                    <option value="confirmed">Diagnóstico confirmado</option>
+                    <option value="correction">Corrección</option>
+                  </select>
+                </label>
+                <label className="block text-sm">
+                  Revisión que corriges (solo para corrección)
+                  <select className={input} name="supersedesId" defaultValue="">
+                    <option value="">Selecciona la revisión vigente</option>
+                    {data.diagnoses.map((diagnosis) => (
+                      <option key={diagnosis.id} value={diagnosis.id}>
+                        Revisión {diagnosis.revision} ·{" "}
+                        {diagnosis.effective_kind === "preliminary" ? "Preliminar" : "Confirmada"}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-sm">
+                  Notas internas y motivo de corrección
+                  <textarea className={input} name="internalNotes" maxLength={4000} />
+                </label>
+                <label className="block text-sm">
+                  Resumen para el cliente
+                  <textarea className={input} name="publicSummary" maxLength={1200} />
+                </label>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium">Evidencia asociada a esta orden</legend>
+                  {data.media.length === 0 ? (
+                    <p className="text-sm text-ink-muted">
+                      Carga una fotografía en la sección Fotos.
+                    </p>
+                  ) : (
+                    data.media.map((asset) => (
+                      <label key={asset.id} className="flex min-h-11 items-center gap-3 text-sm">
+                        <input type="checkbox" name="evidenceIds" value={asset.id} />
+                        {asset.category} · {asset.caption ?? "Foto"} ·{" "}
+                        {asset.visible_to_customer ? "visible" : "privada"}
+                      </label>
+                    ))
+                  )}
+                </fieldset>
+                <label className="flex min-h-11 items-center gap-3 text-sm">
+                  <input type="checkbox" name="publish" /> Publicar el resumen en el portal
+                </label>
+                {submit("Guardar revisión")}
+              </form>
+            </section>
+            <section className={card}>
+              <h2 className="text-xl font-semibold">Historial de diagnósticos</h2>
+              <ol className="mt-4 space-y-4">
+                {data.diagnoses.map((diagnosis) => (
+                  <li key={diagnosis.id} className="border-l-2 border-racing/50 pl-4">
+                    <p className="font-medium">
+                      Revisión {diagnosis.revision} ·{" "}
+                      {diagnosis.effective_kind === "preliminary"
+                        ? "Evaluación preliminar"
+                        : "Diagnóstico confirmado"}
+                    </p>
+                    <p className="mt-1">
+                      {diagnosis.published_at
+                        ? diagnosis.public_summary
+                        : "Revisión interna, no publicada."}
+                    </p>
+                    {diagnosis.internal_notes && (
+                      <p className="mt-1 text-sm text-ink-muted">
+                        Interno: {diagnosis.internal_notes}
+                      </p>
+                    )}
+                    <p className="mt-1 text-xs text-ink-muted">
+                      {new Date(diagnosis.created_at).toLocaleString("es-PE", {
+                        timeZone: "America/Lima",
+                      })}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </>
+        )}
+        {tab === "Contactos" && (
+          <>
+            <section className={card}>
+              <h2 className="text-xl font-semibold">Contactos de esta orden</h2>
+              <p className="mt-2 text-sm text-ink-muted">
+                Los permisos se aplican solo a esta OT. Cambiar el contacto cliente invalida sus
+                enlaces y sesiones anteriores. La autorización de representantes queda registrada,
+                pero su aprobación remota aún no está habilitada; usa constancia presencial.
+              </p>
+              <ul className="mt-4 space-y-3">
+                {data.contacts.map((contact) => (
+                  <li key={contact.id} className="rounded-xl border border-white/10 p-4">
+                    <p className="font-semibold">
+                      {contact.name} ·{" "}
+                      {contact.relation_type === "client" ? "Cliente" : "Representante"}
+                    </p>
+                    <p className="mt-1">{contact.phone_e164}</p>
+                    <p className="mt-1 text-sm text-ink-muted">
+                      {contact.can_view_progress ? "Puede consultar" : "Sin consulta"} ·{" "}
+                      {contact.can_approve_quote
+                        ? "Autorización registrada; aprobación remota pendiente"
+                        : "No puede aprobar cotizaciones"}
+                    </p>
+                    <p className="mt-1 text-sm text-ink-muted">
+                      Verificado en recepción: {contact.verification_note}
+                    </p>
+                    {contact.delegation_note && (
+                      <p className="mt-1 text-sm text-ink-muted">
+                        Delegación: {contact.delegation_note}
+                      </p>
+                    )}
+                    {contact.revoked_at ? (
+                      <p className="mt-2 text-sm text-red-200">Revocado</p>
+                    ) : (
+                      <button
+                        type="button"
+                        className={`${button} mt-3`}
+                        disabled={busy}
+                        onClick={() => void revokeContact(contact.id)}
+                      >
+                        Revocar acceso
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            <section className={card}>
+              <h2 className="text-xl font-semibold">Registrar contacto verificado</h2>
+              <form action={saveContact} className="mt-4 space-y-3">
+                <Field name="name" label="Nombre" />
+                <Field name="phone" label="Teléfono verificado (+519XXXXXXXX)" />
+                <label className="block text-sm">
+                  Relación
+                  <select className={input} name="relationType">
+                    <option value="client">Cliente</option>
+                    <option value="representative">Representante</option>
+                  </select>
+                </label>
+                <label className="flex min-h-11 items-center gap-3 text-sm">
+                  <input type="checkbox" name="canViewProgress" defaultChecked /> Puede consultar el
+                  seguimiento
+                </label>
+                <label className="flex min-h-11 items-center gap-3 text-sm">
+                  <input type="checkbox" name="canApproveQuote" /> Registrar autorización para
+                  presupuesto (flujo remoto pendiente)
+                </label>
+                <label className="block text-sm">
+                  Cómo se verificó identidad y teléfono
+                  <textarea
+                    className={input}
+                    name="verificationNote"
+                    minLength={3}
+                    maxLength={500}
+                    required
+                  />
+                </label>
+                <label className="block text-sm">
+                  Delegación para aprobar (obligatoria si es representante autorizante)
+                  <textarea className={input} name="delegationNote" maxLength={500} />
+                </label>
+                <label className="flex min-h-11 items-center gap-3 text-sm">
+                  <input type="checkbox" name="verifiedInPerson" required /> Confirmo que comprobé
+                  presencialmente identidad y teléfono
+                </label>
+                {submit("Registrar en esta orden")}
+              </form>
+            </section>
+          </>
+        )}
         {tab === "Resumen" && (
           <>
             <section className={card}>

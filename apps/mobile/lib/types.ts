@@ -87,6 +87,34 @@ export type Event = {
   to_status?: string;
   created_at: string;
 };
+export type DiagnosisRevision = {
+  id: string;
+  revision: number;
+  kind: "preliminary" | "confirmed" | "correction";
+  effective_kind: "preliminary" | "confirmed";
+  supersedes_id: string | null;
+  internal_notes: string;
+  public_summary: string;
+  evidence_ids: string[];
+  author_id: string;
+  published_at: string | null;
+  created_at: string;
+};
+export type WorkOrderContact = {
+  id: string;
+  name: string;
+  phone_e164: string;
+  relation_type: "client" | "representative";
+  can_view_progress: boolean;
+  can_approve_quote: boolean;
+  verified_at: string;
+  verified_method: "in_person" | "otp";
+  verification_note: string;
+  delegation_verified_at: string | null;
+  delegation_note: string | null;
+  revoked_at: string | null;
+  created_at: string;
+};
 export type Detail = {
   workOrder: Order;
   tasks: Task[];
@@ -101,6 +129,8 @@ export type Detail = {
   }[];
   events: Event[];
   media: Media[];
+  diagnoses: DiagnosisRevision[];
+  contacts: WorkOrderContact[];
   progress: number;
   history: Order[];
 };

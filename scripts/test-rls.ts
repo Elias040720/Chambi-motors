@@ -36,6 +36,12 @@ async function main() {
     await client.query(
       await readFile(resolve("supabase/migrations/202610270007_backend_writes_only.sql"), "utf8"),
     );
+    const extensionMigration = "202610290008_diagnosis_contacts_recovery.sql";
+    await client.query(await readFile(resolve("supabase/migrations", extensionMigration), "utf8"));
+    await client.query(
+      "insert into public.schema_migrations(name) values($1) on conflict(name) do nothing",
+      [extensionMigration],
+    );
     const owner = await fixtureAdmin(client);
     const admin = owner.id,
       outsider = randomUUID(),
@@ -73,7 +79,7 @@ async function main() {
       ADMIN_EMAIL: owner.email,
       SUPABASE_MEDIA_BUCKET: inspectionBucket,
     });
-    if (inspection.length !== 5 || inspection.some((row) => row.status !== "PASS"))
+    if (inspection.length !== 6 || inspection.some((row) => row.status !== "PASS"))
       throw new Error("Metadata inspection SQL failed with synthetic transactional fixtures");
     await client.query("rollback to savepoint inspection_fixture");
     await client.query(
@@ -187,6 +193,23 @@ async function main() {
           `${label} must fail with SQLSTATE 42501; received ${sqlState ?? "success"}`,
         );
     }
+    await client.query("savepoint recovery_secret_read");
+    await client.query("set local role authenticated");
+    await client.query("select set_config('request.jwt.claim.sub',$1,true)", [outsider]);
+    let recoveryReadState: string | undefined;
+    try {
+      await client.query("select code_hash from portal_recovery_challenges limit 1");
+    } catch (error) {
+      recoveryReadState =
+        typeof error === "object" && error !== null && "code" in error
+          ? String(error.code)
+          : undefined;
+    }
+    await client.query("rollback to savepoint recovery_secret_read");
+    if (recoveryReadState !== "42501")
+      throw new Error(
+        `authenticated role must not read OTP hashes; received ${recoveryReadState ?? "success"}`,
+      );
     await rejectsDirectWrite(
       "Direct delivery bypass",
       "update work_orders set status='entregado',qa_passed=true where id=$1",

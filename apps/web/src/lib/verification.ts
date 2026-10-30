@@ -1,9 +1,9 @@
 import { createHmac, randomInt } from "node:crypto";
 export const testOtpEnabled = () =>
   process.env.NODE_ENV !== "production" && process.env.ENABLE_TEST_OTP === "true";
-export const otpHash = (id: string, code: string) =>
+export const otpHash = (id: string, code: string, purpose = "quote_approval") =>
   createHmac("sha256", process.env.OTP_SIGNING_SECRET ?? "only-development-test-otp")
-    .update(`${id}:${code}`)
+    .update(`${id}:${purpose}:${code}`)
     .digest();
 export const newOtp = () => String(randomInt(100000, 1000000));
 export const commercialOtpAllowed = () =>

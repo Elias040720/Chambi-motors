@@ -27,36 +27,45 @@ export async function getOrder(id: string) {
     [id],
   );
   if (!order.rowCount) throw new DomainError("Orden no encontrada", 404);
-  const [tasks, quotes, parts, blockers, inspections, events, media, history] = await Promise.all([
-    db.query(
-      "select * from work_order_tasks where work_order_id=$1 order by case priority when 'alta' then 0 when 'media' then 1 else 2 end,created_at",
-      [id],
-    ),
-    db.query(
-      `select q.*,case when q.status='pendiente' and q.expires_at<now() then 'vencido' else q.status end status,coalesce((select sum(round(quantity*unit_price,2)) from quote_lines where quote_id=q.id),0) total,
+  const [tasks, quotes, parts, blockers, inspections, events, media, history, diagnoses, contacts] =
+    await Promise.all([
+      db.query(
+        "select * from work_order_tasks where work_order_id=$1 order by case priority when 'alta' then 0 when 'media' then 1 else 2 end,created_at",
+        [id],
+      ),
+      db.query(
+        `select q.*,case when q.status='pendiente' and q.expires_at<now() then 'vencido' else q.status end status,coalesce((select sum(round(quantity*unit_price,2)) from quote_lines where quote_id=q.id),0) total,
       coalesce((select json_agg(l order by l.id) from quote_lines l where l.quote_id=q.id),'[]') lines,
       (select row_to_json(d) from quote_decisions d where d.quote_id=q.id) decision from quotes q where q.work_order_id=$1 order by version desc`,
-      [id],
-    ),
-    db.query("select * from part_requests where work_order_id=$1 order by created_at", [id]),
-    db.query(
-      "select * from work_order_blockers where work_order_id=$1 and resolved_at is null order by created_at",
-      [id],
-    ),
-    db.query("select * from inspections where work_order_id=$1 order by created_at desc", [id]),
-    db.query(
-      "select * from work_order_events where work_order_id=$1 order by created_at desc limit 200",
-      [id],
-    ),
-    db.query(
-      "select id,category,caption,visible_to_customer,created_at from media_assets where work_order_id=$1 order by created_at desc",
-      [id],
-    ),
-    db.query(
-      "select id,code,status,created_at,delivery_summary from work_orders where vehicle_id=$1 order by created_at desc",
-      [order.rows[0].vehicle_id],
-    ),
-  ]);
+        [id],
+      ),
+      db.query("select * from part_requests where work_order_id=$1 order by created_at", [id]),
+      db.query(
+        "select * from work_order_blockers where work_order_id=$1 and resolved_at is null order by created_at",
+        [id],
+      ),
+      db.query("select * from inspections where work_order_id=$1 order by created_at desc", [id]),
+      db.query(
+        "select * from work_order_events where work_order_id=$1 order by created_at desc limit 200",
+        [id],
+      ),
+      db.query(
+        "select id,category,caption,visible_to_customer,created_at from media_assets where work_order_id=$1 order by created_at desc",
+        [id],
+      ),
+      db.query(
+        "select id,code,status,created_at,delivery_summary from work_orders where vehicle_id=$1 order by created_at desc",
+        [order.rows[0].vehicle_id],
+      ),
+      db.query(
+        "select id,revision,kind,effective_kind,supersedes_id,internal_notes,public_summary,evidence_ids,author_id,published_at,created_at from diagnosis_revisions where work_order_id=$1 order by revision desc",
+        [id],
+      ),
+      db.query(
+        "select id,name,phone_e164,relation_type,can_view_progress,can_approve_quote,verified_at,verified_method,verification_note,delegation_verified_at,delegation_note,revoked_at,created_at from work_order_contacts where work_order_id=$1 order by created_at",
+        [id],
+      ),
+    ]);
   return {
     workOrder: order.rows[0],
     tasks: tasks.rows,
@@ -67,6 +76,8 @@ export async function getOrder(id: string) {
     events: events.rows,
     media: media.rows,
     history: history.rows,
+    diagnoses: diagnoses.rows,
+    contacts: contacts.rows,
     progress: verifiedProgress(tasks.rows),
   };
 }

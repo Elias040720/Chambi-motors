@@ -3,6 +3,7 @@ import {
   applicationTables,
   inspectAuthSettings,
   inspectPilotDatabase,
+  latestApplicationMigration,
 } from "../../scripts/lib/pilot-inspection";
 const env = {
   SUPABASE_URL: "https://synthetic.example.test",
@@ -19,6 +20,8 @@ function metadata(
   } = {},
 ) {
   return vi.fn(async (sql: string) => {
+    if (sql.includes("portal_recovery_challenges"))
+      return { rows: [{ authenticated: overrides.dml ?? false, anon: overrides.dml ?? false }] };
     if (sql.includes("has_table_privilege"))
       return { rows: overrides.dml ? [{ privilege: "UPDATE" }] : [] };
     if (sql.includes("from pg_class"))
@@ -30,8 +33,7 @@ function metadata(
           }),
         ),
       };
-    if (sql.includes("schema_migrations"))
-      return { rows: [{ name: "202610270007_backend_writes_only.sql" }] };
+    if (sql.includes("schema_migrations")) return { rows: [{ name: latestApplicationMigration }] };
     if (sql.includes("admin_profiles")) return { rows: [{ total: 1, matching: 1 }] };
     return {
       rows: overrides.bucket ?? [
@@ -44,7 +46,7 @@ describe("read-only pilot inspection contract", () => {
   it("reports only metadata without reading customer contents or writing", async () => {
     const query = metadata();
     const result = await inspectPilotDatabase(query, env);
-    expect(result).toHaveLength(5);
+    expect(result).toHaveLength(6);
     expect(result.every((row) => row.status === "PASS")).toBe(true);
     expect(query.mock.calls.every(([sql]) => sql.trim().startsWith("select"))).toBe(true);
     expect(query.mock.calls.some(([sql]) => /select.*from public\.customers/i.test(sql))).toBe(

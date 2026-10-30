@@ -19,6 +19,11 @@ afterEach(() => {
 });
 
 describe("OTP deployment boundaries", () => {
+  it("binds OTP digests to their purpose so recovery cannot approve a quote", () => {
+    const quote = otpHash("challenge-a", "123456", "quote_approval");
+    const recovery = otpHash("challenge-a", "123456", "portal_recovery");
+    expect(quote.equals(recovery)).toBe(false);
+  });
   it("does not send commercial SMS in a synthetic pilot without explicit authorization", async () => {
     vi.stubEnv("APP_ENV", "pilot");
     vi.stubEnv("PILOT_ALLOW_COMMERCIAL_MESSAGES", "false");

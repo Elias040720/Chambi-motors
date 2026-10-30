@@ -35,6 +35,7 @@ type PublicOrder = {
   quotes: Quote[];
   parts: { description: string; status: string; resolution: string; promisedAt: string | null }[];
   media: { id: string; url: string; caption: string | null; category: string }[];
+  diagnosis: { revision: number; label: string; summary: string; updatedAt: string } | null;
   business: { name: string; phone: string; hours: string; privacy_notice: string };
   remoteApprovalEnabled: boolean;
 };
@@ -273,6 +274,20 @@ export default function TrackingView({ id }: { id: string }) {
         <section className={panel}>
           <h2 className="text-xl font-semibold">Mensaje del taller</h2>
           <p className="mt-3 whitespace-pre-wrap">{data.public_notes}</p>
+        </section>
+      )}
+      {data.diagnosis && (
+        <section className={panel} aria-labelledby="diagnosis-title">
+          <p className="text-sm font-semibold tracking-wide text-racing">
+            Revisión {data.diagnosis.revision}
+          </p>
+          <h2 id="diagnosis-title" className="mt-2 text-xl font-semibold">
+            {data.diagnosis.label}
+          </h2>
+          <p className="mt-3 whitespace-pre-wrap">{data.diagnosis.summary}</p>
+          <p className="mt-3 text-sm text-ink-muted">
+            Actualizado: {date(data.diagnosis.updatedAt)}
+          </p>
         </section>
       )}
       {data.tasks.length > 0 && (

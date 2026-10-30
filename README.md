@@ -41,6 +41,8 @@ El primer APK privado ya está firmado y generado en EAS; no necesita Metro. [De
 4. Completa tareas y entra a QA. Una falla genera tareas de retrabajo y regresa a reparación. Solo QA aprobado permite marcar listo; la entrega registra resumen y garantía y cierra la OT.
 5. Genera/copia/comparte el enlace mediante la intención nativa. Regenerarlo revoca los anteriores. El cliente recibe solo la proyección autorizada de esa orden, fotos habilitadas y sus presupuestos. Los enlaces y fotos se invalidan al revocarlos.
 
+El diagnóstico admite revisiones preliminares, confirmadas y correcciones con historial; solo se comparte el último resumen publicado. Contactos por orden requieren verificación presencial registrada. La recuperación por placa está disponible únicamente en el entorno sintético local (`ENABLE_TEST_OTP`), donde muestra un código de prueba y no envía SMS. No habilites este modo con usuarios o datos reales.
+
 La lectura nativa conserva una caché fechada; los borradores y operaciones pendientes viven en SQLite dentro del almacenamiento privado de la app. Las solicitudes de resultado incierto conservan cuerpo, versión y UUID y se reintentan explícitamente; nunca se anuncian sincronizadas antes de respuesta. SQLite no se presenta como cifrado propio. Cerrar sesión intenta revocar la sesión del servidor y elimina caché/borradores/fotos; un fallo parcial se comunica.
 
 ## Pruebas

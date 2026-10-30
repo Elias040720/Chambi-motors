@@ -22,8 +22,12 @@ export const applicationTables = [
   "business_settings",
   "request_limits",
   "verification_challenges",
+  "work_order_contacts",
+  "portal_recovery_challenges",
+  "diagnosis_revisions",
   "schema_migrations",
 ];
+export const latestApplicationMigration = "202610290008_diagnosis_contacts_recovery.sql";
 export type Inspection = {
   component: string;
   status: "PASS" | "FAIL" | "BLOCKED";
@@ -56,10 +60,14 @@ export async function inspectPilotDatabase(query: Query, env: Env): Promise<Insp
       tables.rows.every((r) => r.relname === "schema_migrations" || r.relrowsecurity === true),
       "RLS habilitado en las tablas operativas; no prueba autorización HTTP.",
     );
-    const migrations = await query(
-      "select name from public.schema_migrations where name='202610270007_backend_writes_only.sql'",
+    const migrations = await query("select name from public.schema_migrations where name=$1", [
+      latestApplicationMigration,
+    ]);
+    add(
+      "Migración 008",
+      migrations.rows.length === 1,
+      "Contactos, recuperación y diagnósticos versionados registrados.",
     );
-    add("Migración 007", migrations.rows.length === 1, "Revocación de DML cliente registrada.");
     const dml = await query(
       `select c.relname,role_name,privilege from pg_class c
       join pg_namespace n on n.oid=c.relnamespace
@@ -74,6 +82,15 @@ export async function inspectPilotDatabase(query: Query, env: Env): Promise<Insp
       "DML cliente",
       dml.rows.length === 0,
       "Sin privilegios efectivos de escritura de tabla/columna para anon/authenticated.",
+    );
+    const challengeRead = await query(
+      `select has_table_privilege('authenticated','public.portal_recovery_challenges','SELECT') as authenticated,
+        has_table_privilege('anon','public.portal_recovery_challenges','SELECT') as anon`,
+    );
+    add(
+      "Privacidad OTP",
+      challengeRead.rows[0]?.authenticated === false && challengeRead.rows[0]?.anon === false,
+      "Los roles cliente no tienen privilegio de lectura de desafíos ni hashes OTP.",
     );
     const profile = await query(
       "select count(*)::int as total,count(*) filter(where lower(u.email)=lower($1))::int as matching from public.admin_profiles p join auth.users u on u.id=p.id",

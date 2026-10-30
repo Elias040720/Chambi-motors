@@ -19,7 +19,9 @@ export async function publicGrant(orderId?: string) {
   if (!token || token.length > 100) throw new DomainError("Enlace no válido o vencido", 404);
   const r = await db.query(
     `select g.id,g.work_order_id,g.expires_at from access_grants g
- where token_hash=$1 and expires_at>now() and revoked_at is null and ($2::uuid is null or work_order_id=$2)`,
+ where token_hash=$1 and expires_at>now() and revoked_at is null
+ and (contact_id is null or exists(select 1 from work_order_contacts c where c.id=g.contact_id and c.work_order_id=g.work_order_id and c.revoked_at is null and c.verified_at<=now() and c.can_view_progress))
+ and ($2::uuid is null or g.work_order_id=$2)`,
     [tokenHash(token), orderId ?? null],
   );
   if (!r.rows[0]) throw new DomainError("Enlace no válido o vencido", 404);
@@ -47,6 +49,11 @@ export async function getPublicOrder(orderId?: string) {
   const s = await db.query(
     "select name,phone,hours,privacy_notice from business_settings where id=true",
   );
+  const diagnosis = await db.query(
+    `select revision,effective_kind,public_summary,published_at from diagnosis_revisions
+     where work_order_id=$1 and published_at is not null order by revision desc limit 1`,
+    [id],
+  );
   const result = rows[0];
   const expires = Math.floor(Date.now() / 1000) + 300;
   result.media = result.media.map(
@@ -55,5 +62,21 @@ export async function getPublicOrder(orderId?: string) {
       url: `/api/v1/public/media/${m.id}?exp=${expires}&sig=${mediaSignature(m.id, grant.id, expires)}`,
     }),
   );
-  return { ...result, business: s.rows[0], remoteApprovalEnabled: remoteApprovalEnabled() };
+  const latestDiagnosis = diagnosis.rows[0];
+  return {
+    ...result,
+    diagnosis: latestDiagnosis
+      ? {
+          revision: latestDiagnosis.revision,
+          label:
+            latestDiagnosis.effective_kind === "preliminary"
+              ? "Evaluación inicial, pendiente de confirmar"
+              : "Diagnóstico confirmado",
+          summary: latestDiagnosis.public_summary,
+          updatedAt: latestDiagnosis.published_at,
+        }
+      : null,
+    business: s.rows[0],
+    remoteApprovalEnabled: remoteApprovalEnabled(),
+  };
 }

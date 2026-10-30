@@ -42,10 +42,37 @@ test("administrator creates an intake and task using the phone interface", async
   ]);
   expect(task.status()).toBe(200);
   await expect(page.getByText("Revisar amortiguadores · Peso 1", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Diagnóstico", exact: true }).click();
+  await page
+    .getByLabel("Notas internas y motivo de corrección")
+    .fill("Síntoma preliminar de prueba visual.");
+  await page
+    .getByLabel("Resumen para el cliente")
+    .fill("Estamos evaluando una vibración antes de confirmar el diagnóstico.");
+  await page.getByLabel("Publicar el resumen en el portal").check();
+  const [diagnosis] = await Promise.all([
+    page.waitForResponse((r) => r.url().endsWith("/diagnoses") && r.request().method() === "POST"),
+    page.getByRole("button", { name: "Guardar revisión", exact: true }).click(),
+  ]);
+  expect(diagnosis.status()).toBe(201);
+  await expect(page.getByText("Estamos evaluando una vibración", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Contactos", exact: true }).click();
+  await page.getByLabel("Nombre", { exact: true }).fill("Abel Cliente QA");
+  await page.getByLabel("Teléfono verificado (+519XXXXXXXX)").fill("+51966111222");
+  await page
+    .getByLabel("Cómo se verificó identidad y teléfono")
+    .fill("Identidad y teléfono comprobados presencialmente en recepción.");
+  await page.getByLabel("Confirmo que comprobé presencialmente identidad y teléfono").check();
+  const [contact] = await Promise.all([
+    page.waitForResponse((r) => r.url().endsWith("/contacts") && r.request().method() === "POST"),
+    page.getByRole("button", { name: "Registrar en esta orden", exact: true }).click(),
+  ]);
+  expect(contact.status()).toBe(201);
+  await expect(page.getByText("Abel Cliente QA · Cliente")).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
     ),
   ).toBe(true);
-  await page.screenshot({ path: "test-results/admin-detail-phone.png", fullPage: true });
+  await page.screenshot({ path: "test-results/admin-contacts-phone.png", fullPage: true });
 });

@@ -51,6 +51,8 @@ type QueuedPhoto = {
 };
 const sections = [
   "Resumen",
+  "Diagnóstico",
+  "Contactos",
   "Tareas",
   "Presupuestos",
   "Repuestos",
@@ -94,6 +96,20 @@ export default function OrderDetail() {
   const [etaTo, setEtaTo] = useState("");
   const [confidence, setConfidence] = useState("tentativa");
   const [blockKind, setBlockKind] = useState("pausado");
+  const [diagnosisKind, setDiagnosisKind] = useState("preliminary");
+  const [diagnosisInternal, setDiagnosisInternal] = useState("");
+  const [diagnosisPublic, setDiagnosisPublic] = useState("");
+  const [diagnosisPublished, setDiagnosisPublished] = useState(false);
+  const [diagnosisSupersedes, setDiagnosisSupersedes] = useState("");
+  const [diagnosisEvidence, setDiagnosisEvidence] = useState<string[]>([]);
+  const [contactName, setContactName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactRelation, setContactRelation] = useState<"client" | "representative">("client");
+  const [contactCanView, setContactCanView] = useState(true);
+  const [contactCanApprove, setContactCanApprove] = useState(false);
+  const [contactVerifiedInPerson, setContactVerifiedInPerson] = useState(false);
+  const [contactVerificationNote, setContactVerificationNote] = useState("");
+  const [contactDelegationNote, setContactDelegationNote] = useState("");
   const uploadController = useRef<AbortController>(null);
   const notesKey = `draft:notes:${id}`;
   latestNotes.current = notes;
@@ -320,6 +336,83 @@ export default function OrderDetail() {
       setBusy(false);
       uploadController.current = null;
     }
+  }
+  async function saveDiagnosis() {
+    setBusy(true);
+    setMessage("");
+    try {
+      await request(`/api/v1/admin/work-orders/${id}/diagnoses`, {
+        method: "POST",
+        body: JSON.stringify({
+          expectedVersion: order.version,
+          kind: diagnosisKind,
+          ...(diagnosisKind === "correction" ? { supersedesId: diagnosisSupersedes } : {}),
+          internalNotes: diagnosisInternal,
+          publicSummary: diagnosisPublic,
+          evidenceIds: diagnosisEvidence,
+          publish: diagnosisPublished,
+        }),
+      });
+      setDiagnosisInternal("");
+      setDiagnosisPublic("");
+      setDiagnosisEvidence([]);
+      setMessage("Nueva revisión de diagnóstico guardada. El historial anterior se conserva.");
+      await client.invalidateQueries({ queryKey: [`detail:${id}`] });
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "No se pudo guardar el diagnóstico.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function saveContact() {
+    setBusy(true);
+    setMessage("");
+    try {
+      await request(`/api/v1/admin/work-orders/${id}/contacts`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: contactName,
+          phone: contactPhone,
+          relationType: contactRelation,
+          canViewProgress: contactCanView,
+          canApproveQuote: contactCanApprove,
+          verifiedInPerson: true,
+          verificationNote: contactVerificationNote,
+          ...(contactCanApprove ? { delegationNote: contactDelegationNote } : {}),
+        }),
+      });
+      setContactName("");
+      setContactPhone("");
+      setContactVerificationNote("");
+      setContactDelegationNote("");
+      setContactVerifiedInPerson(false);
+      setMessage("Contacto registrado. El número y sus permisos están limitados a esta orden.");
+      await client.invalidateQueries({ queryKey: [`detail:${id}`] });
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "No se pudo registrar el contacto.");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function revokeContact(contactId: string) {
+    Alert.alert("Revocar contacto", "Se cerrarán sus enlaces de recuperación de esta orden.", [
+      { text: "Volver", style: "cancel" },
+      {
+        text: "Revocar",
+        style: "destructive",
+        onPress: () => {
+          setBusy(true);
+          void request(`/api/v1/admin/work-orders/${id}/contacts/${contactId}`, {
+            method: "DELETE",
+          })
+            .then(() => client.invalidateQueries({ queryKey: [`detail:${id}`] }))
+            .catch((error) =>
+              setMessage(error instanceof Error ? error.message : "No se pudo revocar."),
+            )
+            .finally(() => setBusy(false));
+        },
+      },
+    ]);
   }
   async function generateLink() {
     setBusy(true);
@@ -717,6 +810,221 @@ export default function OrderDetail() {
           disabled={disabled}
           templates={config.data?.templates}
         />
+      )}
+      {section === "Diagnóstico" && (
+        <>
+          <Card>
+            <Heading>Nueva revisión de diagnóstico</Heading>
+            <Copy muted>
+              La evaluación inicial no afirma una causa confirmada. Las correcciones crean una
+              revisión nueva y conservan las anteriores.
+            </Copy>
+            {["preliminary", "confirmed", "correction"].map((kind) => (
+              <Choice
+                key={kind}
+                label={
+                  kind === "preliminary"
+                    ? "Evaluación preliminar"
+                    : kind === "confirmed"
+                      ? "Diagnóstico confirmado"
+                      : "Corregir revisión vigente"
+                }
+                selected={diagnosisKind === kind}
+                onPress={() => setDiagnosisKind(kind)}
+              />
+            ))}
+            {diagnosisKind === "correction" && data.diagnoses.length > 0 && (
+              <>
+                <Heading>Revisión que se corrige</Heading>
+                {data.diagnoses.map((item) => (
+                  <Choice
+                    key={item.id}
+                    label={`Revisión ${item.revision} · ${item.effective_kind === "preliminary" ? "Preliminar" : "Confirmada"}`}
+                    selected={diagnosisSupersedes === item.id}
+                    onPress={() => setDiagnosisSupersedes(item.id)}
+                  />
+                ))}
+              </>
+            )}
+            <Field
+              label="Notas internas y motivo de corrección"
+              value={diagnosisInternal}
+              onChangeText={setDiagnosisInternal}
+              multiline
+            />
+            <Field
+              label="Resumen para el cliente"
+              value={diagnosisPublic}
+              onChangeText={setDiagnosisPublic}
+              multiline
+            />
+            <Heading>Evidencia de esta orden</Heading>
+            {data.media.length === 0 ? (
+              <Copy muted>Primero carga una fotografía en la sección Fotos.</Copy>
+            ) : (
+              data.media.map((asset) => (
+                <Choice
+                  key={asset.id}
+                  label={`${asset.category} · ${asset.caption ?? "Foto"}${asset.visible_to_customer ? " · visible" : " · privada"}`}
+                  selected={diagnosisEvidence.includes(asset.id)}
+                  onPress={() =>
+                    setDiagnosisEvidence((current) =>
+                      current.includes(asset.id)
+                        ? current.filter((item) => item !== asset.id)
+                        : [...current, asset.id],
+                    )
+                  }
+                />
+              ))
+            )}
+            <Choice
+              label="Publicar este resumen en el portal"
+              selected={diagnosisPublished}
+              onPress={() => setDiagnosisPublished(!diagnosisPublished)}
+            />
+            <Action
+              title="Guardar revisión"
+              disabled={
+                disabled ||
+                (diagnosisPublished && diagnosisPublic.trim().length === 0) ||
+                (diagnosisKind === "confirmed" && diagnosisEvidence.length === 0) ||
+                (diagnosisKind === "correction" &&
+                  (!diagnosisSupersedes || diagnosisInternal.trim().length < 3))
+              }
+              onPress={() => void saveDiagnosis()}
+            />
+          </Card>
+          <Heading>Historial de diagnósticos</Heading>
+          {data.diagnoses.map((item) => (
+            <Card key={item.id}>
+              <Heading>
+                Revisión {item.revision} ·{" "}
+                {item.effective_kind === "preliminary"
+                  ? "Evaluación preliminar"
+                  : "Diagnóstico confirmado"}
+              </Heading>
+              {item.kind === "correction" && <Copy muted>Corrige una revisión anterior.</Copy>}
+              {item.published_at ? (
+                <Copy>{item.public_summary}</Copy>
+              ) : (
+                <Copy muted>Revisión interna, no publicada.</Copy>
+              )}
+              {item.internal_notes && <Copy muted>Interno: {item.internal_notes}</Copy>}
+              <Copy muted>{date(item.created_at)}</Copy>
+            </Card>
+          ))}
+        </>
+      )}
+      {section === "Contactos" && (
+        <>
+          <Card>
+            <Heading>Contactos de esta orden</Heading>
+            <Copy muted>
+              La recuperación se habilita solo para un cliente principal con teléfono verificado.
+              Los permisos de representantes son exclusivos de esta orden.
+            </Copy>
+            {data.contacts.map((contact) => (
+              <Card key={contact.id}>
+                <Heading>{contact.name}</Heading>
+                <Copy>
+                  {contact.phone_e164} ·{" "}
+                  {contact.relation_type === "client" ? "Cliente" : "Representante"}
+                </Copy>
+                <Copy muted>
+                  {contact.can_view_progress ? "Puede consultar" : "Sin consulta"} ·{" "}
+                  {contact.can_approve_quote
+                    ? "Autorización registrada; aprobación remota pendiente"
+                    : "No puede aprobar presupuestos"}
+                </Copy>
+                <Copy muted>
+                  Verificación presencial: {date(contact.verified_at)} · {contact.verification_note}
+                </Copy>
+                {contact.delegation_note && (
+                  <Copy muted>Delegación: {contact.delegation_note}</Copy>
+                )}
+                {contact.revoked_at ? (
+                  <Notice error text={`Revocado: ${date(contact.revoked_at)}`} />
+                ) : (
+                  <Action
+                    title="Revocar acceso"
+                    secondary
+                    danger
+                    disabled={disabled}
+                    onPress={() => revokeContact(contact.id)}
+                  />
+                )}
+              </Card>
+            ))}
+          </Card>
+          <Card>
+            <Heading>Registrar contacto verificado</Heading>
+            <Field
+              label="Nombre"
+              value={contactName}
+              onChangeText={setContactName}
+              autoComplete="name"
+            />
+            <Field
+              label="Teléfono verificado (+519XXXXXXXX)"
+              value={contactPhone}
+              onChangeText={setContactPhone}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+            />
+            {(["client", "representative"] as const).map((relation) => (
+              <Choice
+                key={relation}
+                label={relation === "client" ? "Cliente" : "Representante"}
+                selected={contactRelation === relation}
+                onPress={() => setContactRelation(relation)}
+              />
+            ))}
+            <Choice
+              label="Puede consultar el seguimiento"
+              selected={contactCanView}
+              onPress={() => setContactCanView(!contactCanView)}
+            />
+            <Choice
+              label="Registrar autorización de aprobación (flujo remoto pendiente)"
+              selected={contactCanApprove}
+              onPress={() => setContactCanApprove(!contactCanApprove)}
+            />
+            <Field
+              label="Cómo comprobaste el teléfono y la identidad"
+              value={contactVerificationNote}
+              onChangeText={setContactVerificationNote}
+              multiline
+            />
+            {contactCanApprove && (
+              <Field
+                label="Delegación para aprobar presupuestos"
+                value={contactDelegationNote}
+                onChangeText={setContactDelegationNote}
+                multiline
+              />
+            )}
+            <Choice
+              label="Confirmo que comprobé presencialmente la identidad y el teléfono"
+              selected={contactVerifiedInPerson}
+              onPress={() => setContactVerifiedInPerson(!contactVerifiedInPerson)}
+            />
+            <Action
+              title="Registrar para esta orden"
+              disabled={
+                disabled ||
+                !contactVerifiedInPerson ||
+                contactName.trim().length < 2 ||
+                !/^\+519\d{8}$/.test(contactPhone) ||
+                (!contactCanView && !contactCanApprove) ||
+                contactVerificationNote.trim().length < 3 ||
+                (contactRelation === "representative" &&
+                  contactCanApprove &&
+                  contactDelegationNote.trim().length < 3)
+              }
+              onPress={() => void saveContact()}
+            />
+          </Card>
+        </>
       )}
       {section === "Presupuestos" && (
         <QuotePanel data={data} perform={perform} disabled={disabled} />

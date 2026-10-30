@@ -28,7 +28,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       [id],
     );
     const r = await c.query(
-      "insert into access_grants(work_order_id,token_hash,expires_at) values($1,$2,now()+($3*interval '1 day')) returning expires_at",
+      `insert into access_grants(work_order_id,contact_id,scope,token_hash,expires_at)
+       values($1,(select id from work_order_contacts where work_order_id=$1 and relation_type='client'
+         and can_view_progress and verified_at<=now() and revoked_at is null order by created_at desc limit 1),
+         'view_progress',$2,now()+($3*interval '1 day')) returning expires_at`,
       [id, tokenHash(token), days.data],
     );
     await c.query(

@@ -20,7 +20,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ toke
   if (!/^[A-Za-z0-9_-]{43}$/.test(token))
     return NextResponse.redirect(new URL("/seguimiento/vencido", request.url), 302);
   const { rows } = await db.query(
-    "select work_order_id,expires_at from access_grants where token_hash=$1 and expires_at>now() and revoked_at is null",
+    `select work_order_id,expires_at from access_grants g where token_hash=$1 and expires_at>now() and revoked_at is null
+     and (contact_id is null or exists(select 1 from work_order_contacts c where c.id=g.contact_id and c.work_order_id=g.work_order_id and c.revoked_at is null and c.verified_at<=now() and c.can_view_progress))`,
     [tokenHash(token)],
   );
   if (!rows[0]) return NextResponse.redirect(new URL("/seguimiento/vencido", request.url), 302);

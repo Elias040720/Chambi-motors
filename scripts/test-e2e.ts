@@ -42,7 +42,7 @@ async function main() {
     };
     if (env.FORCE_COLOR) delete env.NO_COLOR;
     await run(["db:migrate"], env);
-    await run(["exec", "playwright", "test"], env);
+    await run(["exec", "playwright", "test", ...process.argv.slice(2)], env);
   } finally {
     await admin.query(`drop database if exists "${database}" with (force)`);
     if (dirname(resolve(media)) !== resolve(tmpdir()) || !basename(media).startsWith("chambi-e2e-"))

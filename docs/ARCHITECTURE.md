@@ -35,6 +35,12 @@ flowchart LR
 
 Las mutaciones de OT toman un lock transaccional de idempotencia y luego de orden. Mismo UUID/cuerpo devuelve el resultado anterior; otro cuerpo genera 409; versión desactualizada genera 409. El evento append-only, auditoría, incremento de versión y outbox se guardan en la misma transacción. La app no reintenta cambios críticos en segundo plano ni inventa éxito ante pérdida de red.
 
+## Contactos, recuperación y revisiones CM-006/CM-009
+
+`work_order_contacts` registra, por OT, al cliente y representantes, los permisos de consulta y aprobación y la verificación presencial del teléfono/delegación. Las concesiones del portal recuperadas llevan el contacto de origen y alcance de solo consulta. Cambiar o revocar el contacto revoca sus desafíos y sesiones relacionadas. La recuperación normaliza placa, exige una coincidencia no ambigua y un cliente primario activo con teléfono verificado; respuesta pública genérica, límites por origen/placa, código HMAC de un uso (5 minutos/5 intentos) y grant de 30 minutos, serializados con los locks de la OT/contacto. El adaptador de mensajes **no existe**: el código solo se entrega en el simulador local y producción devuelve no disponible.
+
+`diagnosis_revisions` conserva revisiones append-only preliminares, confirmadas y correcciones enlazadas a su antecesora. Confirmar requiere evidencia de la misma OT; la corrección conserva el tipo efectivo y requiere motivo/evidencia si corrige una confirmación. Solo el resumen publicado más reciente sale en la proyección pública; notas privadas y evidencia no se serializan. Toda mutación aplica `expectedVersion`, evento y auditoría en transacción.
+
 Flujo: recepción → diagnóstico → aprobación opcional → reparación → QA → listo → entregado. Los bloqueos son paralelos, con motivos. Repuesto conforme resuelve su bloqueo; una promesa no lo hace. QA fallido agrega tareas de retrabajo y vuelve a reparación, conservando inspecciones. La OT cerrada rechaza cambios; otro servicio/corrección requiere nueva orden. Los presupuestos se sellan después de insertar sus líneas y no admiten cambios de alcance/importes; nuevas versiones exigen nueva decisión.
 
 ## Lectura y medios
