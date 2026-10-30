@@ -14,11 +14,16 @@ export function remoteApprovalEnabled() {
     (process.env.NODE_ENV !== "production" && process.env.ENABLE_TEST_OTP === "true")
   );
 }
-export async function publicGrant(orderId?: string) {
+export async function publicGrant(orderId?: string): Promise<{
+  id: string;
+  work_order_id: string;
+  contact_id: string | null;
+  expires_at: Date;
+}> {
   const token = (await cookies()).get("cm_view")?.value;
   if (!token || token.length > 100) throw new DomainError("Enlace no válido o vencido", 404);
   const r = await db.query(
-    `select g.id,g.work_order_id,g.expires_at from access_grants g
+    `select g.id,g.work_order_id,g.contact_id,g.expires_at from access_grants g
  where token_hash=$1 and expires_at>now() and revoked_at is null
  and (contact_id is null or exists(select 1 from work_order_contacts c where c.id=g.contact_id and c.work_order_id=g.work_order_id and c.revoked_at is null and c.verified_at<=now() and c.can_view_progress))
  and ($2::uuid is null or g.work_order_id=$2)`,

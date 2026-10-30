@@ -50,15 +50,32 @@ export async function POST(request: Request) {
         );
         if (!lock.rows[0]?.unexpired) throw new DomainError("Código vencido; solicita uno nuevo");
         if (lock.rows[0].used_at) throw new DomainError("El código ya fue utilizado");
-        const contact = testOtpEnabled()
-          ? null
-          : await c.query(
-              "select c.phone from customers c join work_orders w on w.customer_id=c.id where w.id=$1",
-              [g.work_order_id],
+        let verifiedPhone: string | undefined;
+        if (g.contact_id) {
+          const authorization = await c.query(
+            `select phone_e164 from work_order_contacts
+             where id=$1 and work_order_id=$2 and relation_type='client'
+               and can_approve_quote and can_view_progress and verified_at<=clock_timestamp()
+               and revoked_at is null for update`,
+            [g.contact_id, g.work_order_id],
+          );
+          if (!authorization.rowCount)
+            throw new DomainError(
+              "Este contacto no está autorizado para aprobar presupuestos",
+              403,
             );
+          verifiedPhone = authorization.rows[0].phone_e164;
+        }
+        if (!testOtpEnabled() && !verifiedPhone) {
+          const customer = await c.query(
+            "select c.phone from customers c join work_orders w on w.customer_id=c.id where w.id=$1",
+            [g.work_order_id],
+          );
+          verifiedPhone = customer.rows[0]?.phone;
+        }
         const valid = testOtpEnabled()
           ? ch.code_hash && timingSafeEqual(ch.code_hash, otpHash(ch.id, a.code))
-          : await twilioVerify(contact?.rows[0]?.phone ?? "", a.code);
+          : await twilioVerify(verifiedPhone ?? "", a.code);
         if (!valid) throw new DomainError("Código no válido");
         const quote = await c.query(
           "select * from quotes where id=$1 and work_order_id=$2 for update",

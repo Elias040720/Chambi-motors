@@ -27,12 +27,22 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       "update access_grants set revoked_at=now() where work_order_id=$1 and revoked_at is null",
       [id],
     );
+    const contacts = await c.query(
+      `select id,relation_type from work_order_contacts where work_order_id=$1
+       and can_view_progress and verified_at<=now() and revoked_at is null
+       order by case relation_type when 'client' then 0 else 1 end,created_at desc limit 1`,
+      [id],
+    );
+    const registeredContacts = await c.query(
+      "select exists(select 1 from work_order_contacts where work_order_id=$1) registered",
+      [id],
+    );
+    if (registeredContacts.rows[0].registered && !contacts.rowCount)
+      throw new DomainError("No hay un contacto activo autorizado para compartir esta orden", 409);
     const r = await c.query(
       `insert into access_grants(work_order_id,contact_id,scope,token_hash,expires_at)
-       values($1,(select id from work_order_contacts where work_order_id=$1 and relation_type='client'
-         and can_view_progress and verified_at<=now() and revoked_at is null order by created_at desc limit 1),
-         'view_progress',$2,now()+($3*interval '1 day')) returning expires_at`,
-      [id, tokenHash(token), days.data],
+       values($1,$2,'view_progress',$3,now()+($4*interval '1 day')) returning expires_at`,
+      [id, contacts.rows[0]?.id ?? null, tokenHash(token), days.data],
     );
     await c.query(
       "insert into audit_events(actor,action,entity_type,entity_id) values('admin','link_rotated','work_order',$1)",
